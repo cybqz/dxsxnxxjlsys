@@ -1,12 +1,14 @@
-package com.cyb.blogserver.dao;
+package com.cyb.blogserver.service;
 
+import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.domain.Interest;
-import org.apache.ibatis.annotations.Mapper;
+import com.cyb.blogserver.domain.User;
 
 import java.util.List;
+import java.util.Set;
 
-@Mapper
-public interface InterestMapper {
+public interface InterestServices {
+
     int deleteByPrimaryKey(String id);
 
     int insert(Interest record);

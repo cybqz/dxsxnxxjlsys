@@ -155,12 +155,11 @@ public class UserController {
 
 	/**
 	 * 签到
-	 * @param user
 	 * @return
 	 */
 	@RequestMapping(value="/signin")
 	@ResponseBody
-	public Tips signin (User user) {
-		return userSerivces.signin(user);
+	public Tips signin () {
+		return userSerivces.signin();
 	}
 }

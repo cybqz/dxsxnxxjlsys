@@ -25,12 +25,11 @@ public interface UserServices {
 
 	Set<String> queryPermissionByName(String userName);
 
-    List<User> selectByUserName(String username);
+    User selectByUserName(String username);
 
     /**
      * 签到
-     * @param user
      * @return
      */
-    public Tips signin(User user);
+    public Tips signin();
 }

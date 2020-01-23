@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cyb.blogserver.common.Tips;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,11 +16,11 @@ public class TestController {
 	
 	@RequestMapping(value="/test")
 	@ResponseBody
-	public List test () {
-		List list = new ArrayList<Object>();
+	public Tips test () {
+		Tips tips = new Tips("true", true);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("name", "cyb");
-		list.add(map);
-		return list;
+		tips.setData(map);
+		return tips;
 	}
 }

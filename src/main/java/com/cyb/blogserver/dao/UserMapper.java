@@ -32,7 +32,7 @@ public interface UserMapper {
 
 	Set<String> queryPermissionByName(String userName);
 
-    User selectByUserName(String name);
+    User selectByUserName(String userName);
 
     User selectByPrimaryKey(String id);
 }

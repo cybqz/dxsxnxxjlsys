@@ -31,8 +31,8 @@ public class RegisterController {
 			if(StringUtils.isNotBlank(username) && StringUtils.isNotBlank(user.getPassword()) &&
 			   (sex == 0 || sex == 1)) {
 				//检查用户名是否存在
-				List<User> users = userSerivces.selectByUserName(username);
-				if(users != null && users.size() > 0) {
+				User userTemp = userSerivces.selectByUserName(username);
+				if(null != userTemp) {
 					tips.setMsg("用户已存在！");
 				}else {
 					String url = session.getServletContext().getRealPath("/");

@@ -26,6 +26,9 @@ public class Constant {
 	 * modals
 	 */
 	public static Set<String> MODALS = new HashSet<String>();
+
+	public static String PARAMES_INTEREST = "INTEREST";
+
 	static{
 	}
 }

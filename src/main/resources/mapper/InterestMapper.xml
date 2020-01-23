@@ -17,6 +17,18 @@
     from interest
     where id = #{id,jdbcType=VARCHAR}
   </select>
+  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.cyb.blogserver.domain.Interest" >
+    select
+    <include refid="Base_Column_List" />
+    from interest
+    where 1 = 1
+    <if test="user_id != null and user_id != ''">
+      user_id = #{userId,jdbcType=VARCHAR}
+    </if>
+    <if test="interest_code != null and interest_code != ''">
+      interest_code = #{interestCode,jdbcType=VARCHAR}
+    </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from interest
     where id = #{id,jdbcType=VARCHAR}

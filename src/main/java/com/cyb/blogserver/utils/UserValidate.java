@@ -1,12 +1,18 @@
 package com.cyb.blogserver.utils;
 
+import com.cyb.authority.domain.CybAuthorityUser;
+import com.cyb.blogserver.service.UserServices;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import com.cyb.blogserver.domain.User;
 import com.cyb.blogserver.common.Tips;
+import javax.annotation.Resource;
 
 public class UserValidate {
+
+	@Resource
+	private UserServices userSerivces;
 	
 	/**
 	 * 获取当前已登录且验证通过的用户信息
@@ -18,9 +24,10 @@ public class UserValidate {
 			subject = SecurityUtils.getSubject();
 		}
 		if(subject.isAuthenticated()) {
-			user = (User) subject.getPrincipal();
+			CybAuthorityUser cybAuthorityUser = (CybAuthorityUser) subject.getPrincipal();
+			return cybAuthorityUserToUser(cybAuthorityUser);
 		}
-		return user;
+		return null;
 	}
 	
 	public User isLoginAuthenticated() {
@@ -34,8 +41,8 @@ public class UserValidate {
 	 */
 	public User isLoginNoAuthenticated() {
 		Subject subject = SecurityUtils.getSubject();
-		User user = (User) subject.getPrincipal();
-		return user;
+		CybAuthorityUser cybAuthorityUser = (CybAuthorityUser) subject.getPrincipal();
+		return cybAuthorityUserToUser(cybAuthorityUser);
 	}
 	
 	/**
@@ -61,5 +68,12 @@ public class UserValidate {
 			tips.setMsg("请登录后继续操作！");
 		}
 		return user;
+	}
+
+	private User cybAuthorityUserToUser (CybAuthorityUser cybAuthorityUser){
+		if(null != cybAuthorityUser){
+			return userSerivces.selectByUserName(cybAuthorityUser.getName());
+		}
+		return null;
 	}
 }

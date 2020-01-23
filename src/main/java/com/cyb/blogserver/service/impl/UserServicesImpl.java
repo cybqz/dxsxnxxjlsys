@@ -11,6 +11,7 @@ import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.dao.SigninMapper;
 import com.cyb.blogserver.domain.Signin;
 import com.cyb.blogserver.utils.MyUtils;
+import com.cyb.blogserver.utils.UserValidate;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -80,21 +81,18 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	@Override
-	public List<User> selectByUserName(String username) {
-		return null;
+	public User selectByUserName(String username) {
+		return userMapper.selectByUserName(username);
 	}
 
 	@Override
-	public Tips signin(User user) {
+	public Tips signin() {
 		Tips tips = new Tips("false", false);
-		Subject subject = SecurityUtils.getSubject();
-		if(subject.isAuthenticated()) {
-
-			//判断是否签到
-			CybAuthorityUser cybAuthorityUser = (CybAuthorityUser) subject.getPrincipal();
-			User loginedUser = userMapper.selectByUserName(cybAuthorityUser.getName());
+		UserValidate validate = new UserValidate();
+		User user = validate.isLoginNoAuthenticated();
+		if(user == null) {
 			Date now = new Date();
-			Signin signinParam = new Signin(null, loginedUser.getId(), MyUtils.parse("yyyyMMDD", now));
+			Signin signinParam = new Signin(null, user.getId(), MyUtils.parse("yyyyMMDD", now));
 			Signin signin = signinMapper.selectOneByUserDateTime(signinParam);
 			if(null == signin){
 				//签到

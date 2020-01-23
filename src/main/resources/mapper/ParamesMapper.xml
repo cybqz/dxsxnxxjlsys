@@ -5,7 +5,21 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="order" jdbcType="INTEGER" property="order" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+
+  <select id="selectByParames" resultMap="BaseResultMap" parameterType="com.cyb.blogserver.domain.Parames">
+    select *
+    from parames
+    where 1 = 1
+    <if test="name != null and name != ''">
+      and name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="value != null and value != ''">
+      and value = #{value,jdbcType=VARCHAR}
+    </if>
+    order by 'order' asc
+  </select>
 
 </mapper>
