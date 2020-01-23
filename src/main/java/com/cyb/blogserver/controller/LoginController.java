@@ -1,8 +1,6 @@
 package com.cyb.blogserver.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,34 +9,32 @@ import com.cyb.blogserver.domain.User;
 import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.service.LoginServices;
 
+/**
+ * 用户登录控制层
+ */
 @Controller
-@RequestMapping(value="/loginController")
+@RequestMapping(value="/login")
 public class LoginController {
 	
 	@Autowired
 	private LoginServices loginServices;
-	
+
+	/**
+	 * 登陆
+	 * @param user
+	 * @return Tips
+	 */
 	@RequestMapping(value="/login")
 	@ResponseBody
 	public Tips login (User user) {
 		return loginServices.login(user);
 	}
-	
-	@RequestMapping(value="/loginWithQQ")
-	public void loginWithQQ (HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		loginServices.loginWithQQ(request, response, session);
-	}
-	
-	@RequestMapping(value="/afterLoginWithQQ")
-	public Tips afterLoginWithQQ (HttpServletRequest request) {
-		return loginServices.afterLoginWithQQ(request);
-	}
-	
-	@RequestMapping(value="/loginWithWebChat")
-	public void loginWithWebChat () {
-		loginServices.loginWithWebChat();
-	}
-	
+
+	/**
+	 * 登出
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(value="/logout")
 	@ResponseBody
 	public Tips logout (User user) {

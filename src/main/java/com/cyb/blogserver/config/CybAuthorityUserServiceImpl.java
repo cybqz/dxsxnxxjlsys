@@ -33,18 +33,16 @@ public class CybAuthorityUserServiceImpl implements CybAuthorityUserService {
     }
 
     @Override
-    public List<CybAuthorityUser> selectByName(String name){
+    public CybAuthorityUser selectByName(String name){
         logger.info("start selectByName:\t" + name);
         List<CybAuthorityUser> resultList = new ArrayList<CybAuthorityUser>();
-        List<User> list = userMapper.selectByUserName(name);
-        if(null != list && list.size() > 0){
-            for(User user : list){
-                CybAuthorityUser cybAuthorityUser = new CybAuthorityUser();
-                cybAuthorityUser.setName(user.getUserName());
-                cybAuthorityUser.setPassword(user.getPassword());
-                resultList.add(cybAuthorityUser);
-            }
+        User user = userMapper.selectByUserName(name);
+        if(null != user){
+            CybAuthorityUser cybAuthorityUser = new CybAuthorityUser();
+            cybAuthorityUser.setName(user.getUserName());
+            cybAuthorityUser.setPassword(user.getPassword());
+            return cybAuthorityUser;
         }
-        return resultList;
+        return null;
     }
 }

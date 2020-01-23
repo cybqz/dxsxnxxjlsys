@@ -1,10 +1,18 @@
 package com.cyb.blogserver.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Resource;
 
+import com.cyb.authority.domain.CybAuthorityUser;
 import com.cyb.authority.utils.EncryptionDecrypt;
+import com.cyb.blogserver.common.Tips;
+import com.cyb.blogserver.dao.SigninMapper;
+import com.cyb.blogserver.domain.Signin;
+import com.cyb.blogserver.utils.MyUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 import com.cyb.blogserver.dao.UserMapper;
 import com.cyb.blogserver.domain.User;
@@ -15,6 +23,8 @@ public class UserServicesImpl implements UserServices {
 	
 	@Resource
 	private UserMapper userMapper;
+	@Resource
+	private SigninMapper signinMapper;
 
 	@Override
 	public int deleteByPrimaryKey(String id) {
@@ -72,5 +82,30 @@ public class UserServicesImpl implements UserServices {
 	@Override
 	public List<User> selectByUserName(String username) {
 		return null;
+	}
+
+	@Override
+	public Tips signin(User user) {
+		Tips tips = new Tips("false", false);
+		Subject subject = SecurityUtils.getSubject();
+		if(subject.isAuthenticated()) {
+
+			//判断是否签到
+			CybAuthorityUser cybAuthorityUser = (CybAuthorityUser) subject.getPrincipal();
+			User loginedUser = userMapper.selectByUserName(cybAuthorityUser.getName());
+			Date now = new Date();
+			Signin signinParam = new Signin(null, loginedUser.getId(), MyUtils.parse("yyyyMMDD", now));
+			Signin signin = signinMapper.selectOneByUserDateTime(signinParam);
+			if(null == signin){
+				//签到
+				signinParam.setDatetime(now);
+				signinParam.setId(MyUtils.getPrimaryKey());
+				signinMapper.insert(signinParam);
+				tips = new Tips("签到成功！", true);
+			}else{
+				tips = new Tips("今天已签到！", true);
+			}
+		}
+		return tips;
 	}
 }

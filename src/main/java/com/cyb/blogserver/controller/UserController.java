@@ -24,7 +24,7 @@ import com.cyb.blogserver.service.UserServices;
 import com.cyb.blogserver.utils.UserValidate;
 
 @Controller
-@RequestMapping(value="/userController")
+@RequestMapping(value="/user")
 public class UserController {
 	
 	@Autowired
@@ -150,5 +150,17 @@ public class UserController {
 			return userRolePermissionVO;
 		}
 		return null;
+	}
+
+
+	/**
+	 * 签到
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value="/signin")
+	@ResponseBody
+	public Tips signin (User user) {
+		return userSerivces.signin(user);
 	}
 }

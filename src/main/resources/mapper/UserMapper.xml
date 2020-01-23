@@ -14,4 +14,10 @@
     <result column="introduce" jdbcType="VARCHAR" property="introduce" />
   </resultMap>
 
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from user
+    where user_name = #{name,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

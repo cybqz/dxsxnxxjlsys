@@ -1,5 +1,6 @@
 package com.cyb.blogserver.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -10,7 +11,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 
 public class MyUtils {
 	
-	public static String formatDate(String format, Date date) {
+	public static String format(String format, Date date) {
 		
 		if(StringUtils.isBlank(format)) {
 			format = "yyyyMMDDHHmmss";
@@ -20,6 +21,23 @@ public class MyUtils {
 		}
 		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 		return dateFormat.format(date);
+	}
+
+	public static Date parse(String format, Date date) {
+		Date result = null;
+		try {
+			if(StringUtils.isBlank(format)) {
+				format = "yyyyMMDDHHmmss";
+			}
+			if(date == null) {
+				date = new Date();
+			}
+			SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+			result = dateFormat.parse(dateFormat.format(date));
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	/**
@@ -45,5 +63,11 @@ public class MyUtils {
 			return fullName.substring(fullName.lastIndexOf("."), fullName.length());
 		}
 		return null;
+	}
+
+	public static void main(String[] args) {
+		for(int i = 0; i < 10; i++){
+			System.out.println(getPrimaryKey());
+		}
 	}
 }
