@@ -22,4 +22,10 @@
     order by 'order' asc
   </select>
 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from parames
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

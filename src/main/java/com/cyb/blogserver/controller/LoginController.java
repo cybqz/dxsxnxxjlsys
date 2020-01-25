@@ -27,6 +27,7 @@ public class LoginController {
 	@RequestMapping(value="/login")
 	@ResponseBody
 	public Tips login (User user) {
+
 		return loginServices.login(user);
 	}
 

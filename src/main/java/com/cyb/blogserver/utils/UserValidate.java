@@ -7,11 +7,13 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import com.cyb.blogserver.domain.User;
 import com.cyb.blogserver.common.Tips;
-import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserValidate {
 
-	@Resource
+	@Autowired
 	private UserServices userSerivces;
 	
 	/**

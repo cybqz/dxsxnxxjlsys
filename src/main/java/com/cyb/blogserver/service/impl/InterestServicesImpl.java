@@ -25,6 +25,8 @@ import java.util.Set;
 
 @Service(value="interestServices")
 public class InterestServicesImpl implements InterestServices {
+
+	private static int MAX_USER_INTEREST_COUNT = 5;
 	
 	@Resource
 	private InterestMapper interestMapper;
@@ -62,5 +64,35 @@ public class InterestServicesImpl implements InterestServices {
 	@Override
 	public List<Interest> selectSelective(Interest record) {
 		return interestMapper.selectSelective(record);
+	}
+
+	/**
+	 * 编辑用户兴趣
+	 * @param id 用户ID
+	 * @param interestList 兴趣ID
+	 * @return
+	 */
+	@Override
+	public boolean editUserInterest(String id, List<String> interestList) {
+
+		if(null != interestList && interestList.size() > 0 && interestList.size() <= MAX_USER_INTEREST_COUNT){
+
+			//删除旧的用户兴趣
+			Interest interestParamme = new Interest(null, id, null, null);
+			List<Interest> list = interestMapper.selectSelective(interestParamme);
+			if(null != list || list.size() > 0){
+				for(Interest interest : list){
+					interestMapper.deleteByPrimaryKey(interest.getId());
+				}
+			}
+
+			for(int i = 0; i < interestList.size(); i++){
+				Interest interest = new Interest(MyUtils.getPrimaryKey(), id, interestList.get(i), new Date());
+				interestMapper.insert(interest);
+			}
+
+			return true;
+		}
+		return false;
 	}
 }

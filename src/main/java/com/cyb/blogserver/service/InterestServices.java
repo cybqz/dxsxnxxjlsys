@@ -22,4 +22,12 @@ public interface InterestServices {
     int updateByPrimaryKey(Interest record);
 
     List<Interest> selectSelective(Interest record);
+
+    /**
+     * 编辑用户兴趣
+     * @param id 用户ID
+     * @param interestList 兴趣ID
+     * @return
+     */
+    boolean editUserInterest(String id, List<String> interestList);
 }
