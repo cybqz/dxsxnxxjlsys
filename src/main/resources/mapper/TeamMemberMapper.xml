@@ -54,7 +54,7 @@
     </trim>
   </insert>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete * from team_member where id = #{id,jdbcType=VARCHAR}
+    delete from team_member where id = #{id,jdbcType=VARCHAR}
   </delete>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">

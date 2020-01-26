@@ -1,7 +1,9 @@
 package com.cyb.blogserver.service.impl;
 
 import com.cyb.blogserver.dao.TeamMapper;
+import com.cyb.blogserver.dao.TeamMemberMapper;
 import com.cyb.blogserver.domain.Team;
+import com.cyb.blogserver.domain.TeamMember;
 import com.cyb.blogserver.service.TeamServices;
 import com.cyb.blogserver.utils.MyUtils;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class TeamServicesImpl implements TeamServices {
 	@Resource
 	private TeamMapper teamMapper;
 
+	@Resource
+	private TeamMemberMapper teamMemberMapper;
+
 	@Override
 	public int deleteByPrimaryKey(String id) {
 		return teamMapper.deleteByPrimaryKey(id);
@@ -29,14 +34,20 @@ public class TeamServicesImpl implements TeamServices {
 		Team teamParam = new Team(null, record.getUserId(), null, null);
 		List<Team> list = teamMapper.selectSelective(teamParam);
 		if(list.size() >= MAX_USER_TEAM_COUNT){
-			return 0;
+			return -1;
 		}else{
 			String name = record.getName();
 			name += (list.size() + 1) + "对";
 			record.setId(MyUtils.getPrimaryKey());
 			record.setCreateDate(new Date());
 			record.setName(name);
-			return teamMapper.insert(record);
+			int addTeam = teamMapper.insert(record);
+			if(addTeam > 0){
+				TeamMember teamMember = new TeamMember(MyUtils.getPrimaryKey(), record.getId(), record.getUserId(), 1, new Date());
+				teamMemberMapper.insert(teamMember);
+				return addTeam;
+			}
+			return 0;
 		}
 	}
 

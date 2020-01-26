@@ -14,6 +14,14 @@
     <result column="introduce" jdbcType="VARCHAR" property="introduce" />
   </resultMap>
 
+  <select id="insert" parameterType="com.cyb.blogserver.domain.User">
+    insert into user (id, name, user_name, password, phone, email, sex, address, image, introduce)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},
+           #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR},
+           #{image,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}
+           )
+  </select>
+
   <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select *
     from user

@@ -15,7 +15,7 @@ import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.service.UserServices;
 
 @Controller
-@RequestMapping(value="/registerController")
+@RequestMapping(value="/register")
 public class RegisterController {
 	
 	@Autowired
