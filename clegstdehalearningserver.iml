@@ -133,5 +133,6 @@
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-web:1.2.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-spring:1.2.4" level="project" />
     <orderEntry type="library" name="Maven: net.gplatform:Sdk4J:2.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.zxing:core:3.3.0" level="project" />
   </component>
 </module>
