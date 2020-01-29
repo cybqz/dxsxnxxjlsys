@@ -1,7 +1,9 @@
 package com.cyb.blogserver.dao;
 
 import com.cyb.blogserver.domain.AccumulatePoints;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface AccumulatePointsMapper {
 
     int deleteByPrimaryKey(String id);
@@ -15,4 +17,6 @@ public interface AccumulatePointsMapper {
     int updateByPrimaryKey(AccumulatePoints record);
 
     AccumulatePoints selectByPrimaryKey(String id);
+
+    AccumulatePoints selectOneSelective(AccumulatePoints record);
 }

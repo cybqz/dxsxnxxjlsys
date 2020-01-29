@@ -7,9 +7,12 @@ import javax.annotation.Resource;
 
 import com.cyb.authority.domain.CybAuthorityUser;
 import com.cyb.authority.utils.EncryptionDecrypt;
+import com.cyb.blogserver.common.Constant;
 import com.cyb.blogserver.common.Tips;
+import com.cyb.blogserver.dao.AccumulatePointsMapper;
 import com.cyb.blogserver.dao.SigninMapper;
 import com.cyb.blogserver.domain.Signin;
+import com.cyb.blogserver.service.AccumulatePointsServices;
 import com.cyb.blogserver.utils.MyUtils;
 import com.cyb.blogserver.utils.UserValidate;
 import org.apache.shiro.SecurityUtils;
@@ -24,8 +27,16 @@ public class UserServicesImpl implements UserServices {
 	
 	@Resource
 	private UserMapper userMapper;
+
 	@Resource
 	private SigninMapper signinMapper;
+
+	@Resource
+	private UserValidate userValidate;
+
+	@Resource
+	private AccumulatePointsServices accumulatePointsServices;
+
 
 	@Override
 	public int deleteByPrimaryKey(String id) {
@@ -88,9 +99,8 @@ public class UserServicesImpl implements UserServices {
 	@Override
 	public Tips signin() {
 		Tips tips = new Tips("false", false);
-		UserValidate validate = new UserValidate();
-		User user = validate.isLoginNoAuthenticated();
-		if(user == null) {
+		User user = userValidate.isLoginNoAuthenticated();
+		if(user != null) {
 			Date now = new Date();
 			Signin signinParam = new Signin(null, user.getId(), MyUtils.parse("yyyyMMDD", now));
 			Signin signin = signinMapper.selectOneByUserDateTime(signinParam);
@@ -99,6 +109,9 @@ public class UserServicesImpl implements UserServices {
 				signinParam.setDatetime(now);
 				signinParam.setId(MyUtils.getPrimaryKey());
 				signinMapper.insert(signinParam);
+
+				//增加积分
+				accumulatePointsServices.addPoints(user.getId(), Constant.PARAMES_NAME_SIGNIN);
 				tips = new Tips("签到成功！", true);
 			}else{
 				tips = new Tips("今天已签到！", true);

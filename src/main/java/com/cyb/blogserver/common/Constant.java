@@ -29,6 +29,10 @@ public class Constant {
 
 	public static String PARAMES_INTEREST = "INTEREST";
 
+	public static String PARAMES_NAME_SIGNIN = "SIGNIN";
+
+	public static String PARAMES_GROUP_POINTS = "POINTS";
+
 	static{
 	}
 }

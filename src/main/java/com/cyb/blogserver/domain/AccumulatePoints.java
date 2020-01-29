@@ -11,14 +11,14 @@ public class AccumulatePoints {
 
     private Integer points;
 
-    private Date createDate;
+    private Date updateDate;
 
-    public AccumulatePoints(String id, String userId, String parameId, Integer points, Date createDate) {
+    public AccumulatePoints(String id, String userId, String parameId, Integer points, Date updateDate) {
         this.id = id;
         this.userId = userId;
         this.parameId = parameId;
         this.points = points;
-        this.createDate = createDate;
+        this.updateDate = updateDate;
     }
 
     public String getId() {
@@ -53,11 +53,11 @@ public class AccumulatePoints {
         this.points = points;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

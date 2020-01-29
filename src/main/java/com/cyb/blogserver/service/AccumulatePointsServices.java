@@ -16,4 +16,12 @@ public interface AccumulatePointsServices {
     int updateByPrimaryKey(AccumulatePoints record);
 
     AccumulatePoints selectByPrimaryKey(String id);
+
+    /**
+     * 增加积分
+     * @param userId
+     * @param type
+     * @return
+     */
+    int addPoints(String userId, String type);
 }
