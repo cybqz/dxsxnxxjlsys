@@ -1,6 +1,8 @@
 package com.cyb.talk.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import com.cyb.talk.R;
 import com.cyb.talk.common.Constant;
 import com.cyb.talk.ui.home.HomeFragment;
 import com.cyb.talk.util.HttpUtil;
+import com.cyb.talk.util.SharedHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +30,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
@@ -37,6 +41,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private HashMap<String, String> paramsMap;
     private Button button;
     private TextView textLogin;
+    private SharedHelper sharedHelper;
+    private Context context;
 
 
     @Override
@@ -51,6 +57,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         text_userName = view.findViewById(R.id.text_userName);
         text_password = view.findViewById(R.id.text_password);
 
+        context = getActivity().getApplicationContext();
+
+        sharedHelper = new SharedHelper(context);
+
         tip(LoginViewModel.DEFAULT);
 
         System.out.println("----------------------LoginFragment");
@@ -58,7 +68,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
+        //登陆成功，跳转到主页
+        Map<String, String> data = sharedHelper.readLogin();
+        if(null != data){
+
+            Intent intent=new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+        }
+    }
 
     /**
      * 单击-登陆
@@ -84,6 +105,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
                             if(!requestPostMap.isNull("validate")){
+
+                                sharedHelper.saveLogin(paramsMap.get("userName"), paramsMap.get("password"));
 
                                 //登陆成功，跳转到主页
                                 if(requestPostMap.getString("validate").equals("true")){
