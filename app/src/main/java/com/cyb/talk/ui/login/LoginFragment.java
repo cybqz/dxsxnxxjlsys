@@ -103,13 +103,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     if(!thread.isAlive()){
                         if(null != requestPostMap){
 
-
                             if(!requestPostMap.isNull("validate")){
-
-                                sharedHelper.saveLogin(paramsMap.get("userName"), paramsMap.get("password"));
 
                                 //登陆成功，跳转到主页
                                 if(requestPostMap.getString("validate").equals("true")){
+
+                                    sharedHelper.saveLogin(paramsMap.get("userName"), paramsMap.get("password"));
+
                                     Intent intent=new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);
                                 }else{
