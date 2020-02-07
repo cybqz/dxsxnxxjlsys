@@ -33,7 +33,7 @@ public class ForumFragment extends Fragment {
         forumViewModel = ViewModelProviders.of(this).get(ForumViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
         textView = root.findViewById(R.id.text_home);
-        forumViewModel.getText().observe(this, new Observer<String>() {
+        forumViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
