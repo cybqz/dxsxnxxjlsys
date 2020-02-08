@@ -145,7 +145,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private void tip(String value){
         LoginViewModel loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
-        loginViewModel.getText(value).observe(this, new Observer<String>() {
+        loginViewModel.getText(value).observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
 

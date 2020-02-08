@@ -2,6 +2,8 @@ package com.cyb.talk.ui.forum;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,12 @@ import com.cyb.talk.R;
 import com.cyb.talk.common.Constant;
 import com.cyb.talk.ui.login.LoginFragment;
 import com.cyb.talk.util.HttpUtil;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class ForumFragment extends Fragment {
 
@@ -31,8 +38,8 @@ public class ForumFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         forumViewModel = ViewModelProviders.of(this).get(ForumViewModel.class);
-        root = inflater.inflate(R.layout.fragment_home, container, false);
-        textView = root.findViewById(R.id.text_home);
+        root = inflater.inflate(R.layout.fragment_forum, container, false);
+        textView = root.findViewById(R.id.text_forum);
         forumViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -40,7 +47,22 @@ public class ForumFragment extends Fragment {
             }
         });
 
-        System.out.println("----------------------HomeFragment");
+        RefreshLayout mRefreshLayout = root.findViewById(R.id.refreshLayout);
+        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                System.out.println("onLoadmoreListener");
+            }
+        });
+
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                System.out.println("onRefreshListener");
+            }
+        });
+
+        System.out.println("----------------------ForumFragment");
         return root;
     }
 
@@ -57,19 +79,18 @@ public class ForumFragment extends Fragment {
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        System.out.println("----------------------HomeFragment startActivity");
+        System.out.println("----------------------ForumFragment startActivity");
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        System.out.println("----------------------HomeFragment onActivityCreated");
+        System.out.println("----------------------ForumFragment onActivityCreated");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        System.out.println("----------------------HomeFragment onStart");
+        System.out.println("----------------------ForumFragment onStart");
     }
-
 }
