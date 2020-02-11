@@ -7,6 +7,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.cyb.talk.MainActivity;
 import com.cyb.talk.R;
+import com.cyb.talk.adapter.ForumUserListAdapter;
 import com.cyb.talk.common.Constant;
 import com.cyb.talk.ui.login.LoginFragment;
 import com.cyb.talk.util.HttpUtil;
@@ -23,16 +25,23 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ForumFragment extends Fragment {
 
     private static  String TAG = MainActivity.class.getCanonicalName();
     private LoginFragment loginFragment;
     private JSONObject requestPostMap = new JSONObject();
+    private List<Map<String,Object>> images=new ArrayList<>();
     private View root;
+    private View footView;
+    private ListView listView;
     private TextView textView;
     private ForumViewModel forumViewModel;
+    private ForumUserListAdapter forumUserListAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,18 +56,38 @@ public class ForumFragment extends Fragment {
             }
         });
 
-        RefreshLayout mRefreshLayout = root.findViewById(R.id.refreshLayout);
-        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+        listView = root.findViewById(R.id.list_view_forum);
+        //footView = inflater.inflate(R.layout.fragment_loading, container, false);
+        forumUserListAdapter = new ForumUserListAdapter(getContext(), images);
+        listView.setAdapter(forumUserListAdapter);
+
+
+        final RefreshLayout refreshLayout = root.findViewById(R.id.refreshLayout);
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 System.out.println("onLoadmoreListener");
+
+                refreshLayout.setLoadmoreFinished(true);
+                System.out.println("onLoadmoreListener--------End");
+                refreshLayout.finishRefresh();
             }
         });
 
-        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                System.out.println("onRefreshListener");
+                //listView.addFooterView(footView);
+                images.clear();
+                for(int i = 1; i <5; i++){
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("name","name-"+i);
+                    map.put("pic",Constant.DEFAULT_USER_IMAGE_BOY);
+                    images.add(map);
+                }
+                forumUserListAdapter.notifyDataSetChanged();
+                System.out.println("onRefreshListener--------End");
+                refreshLayout.finishRefresh();
             }
         });
 

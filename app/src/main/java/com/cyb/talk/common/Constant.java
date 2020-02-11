@@ -8,4 +8,6 @@ public class Constant {
     public static final String LOGIN_URL = BASE_URL + "login/login";
 
     public static final String LOGINED_USER_URL = BASE_URL + "user/getUser";
+
+    public static final String DEFAULT_USER_IMAGE_BOY = BASE_URL + "image/headportrait/boy.png";
 }
