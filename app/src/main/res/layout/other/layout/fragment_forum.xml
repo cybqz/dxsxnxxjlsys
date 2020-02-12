@@ -9,8 +9,7 @@
             android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#444444"
-            app:srlPrimaryColor="#444444"
+            app:srlPrimaryColor="@android:color/white"
             app:srlAccentColor="@android:color/white"
             app:srlEnablePreviewInEditMode="true">
         <!--srlAccentColor srlPrimaryColor 将会改变 Header 和 Footer 的主题颜色-->
@@ -18,19 +17,14 @@
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-        />
-        <TextView
-                android:id="@+id/text_forum"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="20sp"
+                android:layout_marginTop="30dp"
         />
 
         <ListView
                 android:id="@+id/list_view_forum"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
         </ListView>
 
         <!--<com.scwang.smartrefresh.layout.footer.ClassicsFooter

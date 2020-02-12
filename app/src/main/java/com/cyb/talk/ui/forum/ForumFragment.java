@@ -7,8 +7,10 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -39,28 +41,28 @@ public class ForumFragment extends Fragment {
     private View root;
     private View footView;
     private ListView listView;
-    private TextView textView;
     private ForumViewModel forumViewModel;
     private ForumUserListAdapter forumUserListAdapter;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
         forumViewModel = ViewModelProviders.of(this).get(ForumViewModel.class);
         root = inflater.inflate(R.layout.fragment_forum, container, false);
-        textView = root.findViewById(R.id.text_forum);
-        forumViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
 
         listView = root.findViewById(R.id.list_view_forum);
         //footView = inflater.inflate(R.layout.fragment_loading, container, false);
         forumUserListAdapter = new ForumUserListAdapter(getContext(), images);
         listView.setAdapter(forumUserListAdapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Map<String, Object> image = images.get(position);
+                Toast.makeText(getContext(),image.get("name").toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
 
         final RefreshLayout refreshLayout = root.findViewById(R.id.refreshLayout);
         refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
