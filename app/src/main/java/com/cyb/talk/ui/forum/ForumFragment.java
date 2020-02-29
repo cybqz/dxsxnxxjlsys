@@ -1,26 +1,20 @@
 package com.cyb.talk.ui.forum;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import com.cyb.talk.MainActivity;
 import com.cyb.talk.R;
 import com.cyb.talk.adapter.ForumUserListAdapter;
 import com.cyb.talk.common.Constant;
-import com.cyb.talk.ui.login.LoginFragment;
+import com.cyb.talk.ui.talk.TalkFragment;
 import com.cyb.talk.util.HttpUtil;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -35,11 +29,9 @@ import java.util.Map;
 public class ForumFragment extends Fragment {
 
     private static  String TAG = MainActivity.class.getCanonicalName();
-    private LoginFragment loginFragment;
     private JSONObject requestPostMap = new JSONObject();
     private List<Map<String,Object>> images=new ArrayList<>();
     private View root;
-    private View footView;
     private ListView listView;
     private ForumViewModel forumViewModel;
     private ForumUserListAdapter forumUserListAdapter;
@@ -60,7 +52,8 @@ public class ForumFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Map<String, Object> image = images.get(position);
-                Toast.makeText(getContext(),image.get("name").toString(),Toast.LENGTH_SHORT).show();
+                String name = image.get("name").toString();
+                switchFragment(name);
             }
         });
 
@@ -97,8 +90,6 @@ public class ForumFragment extends Fragment {
         return root;
     }
 
-
-
     Runnable postRun = new Runnable() {
 
         @Override
@@ -107,21 +98,15 @@ public class ForumFragment extends Fragment {
         }
     };
 
-    @Override
-    public void startActivity(Intent intent) {
-        super.startActivity(intent);
-        System.out.println("----------------------ForumFragment startActivity");
+    //正确的做法
+    private void switchFragment(String name) {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        TalkFragment talkFragment = new TalkFragment();
+        Bundle bundle=new Bundle();
+        bundle.putString("name", name);
+        talkFragment.setArguments(bundle);
+        transaction.replace(R.id.nav_host_fragment, talkFragment);
+        transaction.commit();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        System.out.println("----------------------ForumFragment onActivityCreated");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        System.out.println("----------------------ForumFragment onStart");
-    }
 }

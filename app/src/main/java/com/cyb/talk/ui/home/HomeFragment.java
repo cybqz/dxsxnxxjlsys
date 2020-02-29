@@ -56,34 +56,4 @@ public class HomeFragment extends Fragment {
         }
     };
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        System.out.println("----------------------onHiddenChanged " + hidden);
-    }
-
-    @Override
-    public void startActivity(Intent intent) {
-        super.startActivity(intent);
-        System.out.println("----------------------HomeFragment startActivity");
-    }
-
-    @Override
-    public void onAttachFragment(Fragment childFragment) {
-        super.onAttachFragment(childFragment);
-        System.out.println("----------------------HomeFragment onAttachFragment");
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        System.out.println("----------------------HomeFragment onActivityCreated");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        System.out.println("----------------------HomeFragment onStart");
-    }
-
 }
