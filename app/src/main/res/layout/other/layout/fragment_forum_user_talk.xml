@@ -7,11 +7,11 @@
         android:layout_height="match_parent">
 
     <TextView
-            android:id="@+id/text_talk"
+            android:id="@+id/text_talk_obj"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="60dp"
             android:layout_marginEnd="8dp"
             android:textAlignment="center"
             android:textSize="30sp"
@@ -20,13 +20,36 @@
             app:layout_constraintTop_toTopOf="parent"
     />
 
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/refreshLayoutUserTalk"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srlPrimaryColor="@android:color/white"
+            app:srlAccentColor="@android:color/white"
+            app:srlEnablePreviewInEditMode="true">
+
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+        />
+
+        <ListView
+                android:id="@+id/list_view_forum_talk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="160dp">
+        </ListView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
     <Button
             android:id="@+id/button_send_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="发送"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="370dp"
+            android:layout_marginTop="570dp"
             android:layout_marginEnd="8dp"
             android:textAlignment="center"
             android:textSize="15sp"

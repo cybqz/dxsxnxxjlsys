@@ -22,7 +22,6 @@ android {
             res.srcDirs=[
                     'src/main/res/layout/common',
                     'src/main/res/layout/login',
-                    'src/main/res/layout/talk',
                     'src/main/res/layout/other',
                     'src/main/res/layout',
                     'src/main/res'

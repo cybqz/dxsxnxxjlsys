@@ -6,7 +6,7 @@
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/refreshLayout"
+            android:id="@+id/refreshLayoutForum"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:srlPrimaryColor="@android:color/white"
@@ -21,7 +21,7 @@
         />
 
         <ListView
-                android:id="@+id/list_view_forum"
+                android:id="@+id/list_view_forum_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp">

@@ -19,7 +19,7 @@
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res/layout/common" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res/layout/common;file://$MODULE_DIR$/src/main/res/layout/login;file://$MODULE_DIR$/src/main/res/layout/talk;file://$MODULE_DIR$/src/main/res/layout/other;file://$MODULE_DIR$/src/main/res/layout;file://$MODULE_DIR$/src/main/res;file://$MODULE_DIR$/build/generated/res/resValues/debug" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res/layout/common;file://$MODULE_DIR$/src/main/res/layout/login;file://$MODULE_DIR$/src/main/res/layout/other;file://$MODULE_DIR$/src/main/res/layout;file://$MODULE_DIR$/src/main/res;file://$MODULE_DIR$/build/generated/res/resValues/debug" />
         <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
       </configuration>
@@ -66,7 +66,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/testDebug/shaders" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res/layout/common" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res/layout/login" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/res/layout/talk" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res/layout/other" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res/layout" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res" type="java-resource" />

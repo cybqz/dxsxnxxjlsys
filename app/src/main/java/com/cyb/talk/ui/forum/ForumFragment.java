@@ -30,9 +30,9 @@ public class ForumFragment extends Fragment {
 
     private static  String TAG = MainActivity.class.getCanonicalName();
     private JSONObject requestPostMap = new JSONObject();
-    private List<Map<String,Object>> images=new ArrayList<>();
+    private List<Map<String,Object>> userList=new ArrayList<>();
     private View root;
-    private ListView listView;
+    private ListView userListView;
     private ForumViewModel forumViewModel;
     private ForumUserListAdapter forumUserListAdapter;
 
@@ -42,22 +42,22 @@ public class ForumFragment extends Fragment {
         forumViewModel = ViewModelProviders.of(this).get(ForumViewModel.class);
         root = inflater.inflate(R.layout.fragment_forum, container, false);
 
-        listView = root.findViewById(R.id.list_view_forum);
+        userListView = root.findViewById(R.id.list_view_forum_user);
         //footView = inflater.inflate(R.layout.fragment_loading, container, false);
-        forumUserListAdapter = new ForumUserListAdapter(getContext(), images);
-        listView.setAdapter(forumUserListAdapter);
+        forumUserListAdapter = new ForumUserListAdapter(getContext(), userList);
+        userListView.setAdapter(forumUserListAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        userListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Map<String, Object> image = images.get(position);
+                Map<String, Object> image = userList.get(position);
                 String name = image.get("name").toString();
                 switchFragment(name);
             }
         });
 
-        final RefreshLayout refreshLayout = root.findViewById(R.id.refreshLayout);
+        final RefreshLayout refreshLayout = root.findViewById(R.id.refreshLayoutForum);
         refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
@@ -73,21 +73,26 @@ public class ForumFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 //listView.addFooterView(footView);
-                images.clear();
-                for(int i = 1; i <5; i++){
-                    Map<String, Object> map = new HashMap<String, Object>();
-                    map.put("name","name-"+i);
-                    map.put("pic",Constant.DEFAULT_USER_IMAGE_BOY);
-                    images.add(map);
-                }
-                forumUserListAdapter.notifyDataSetChanged();
+                reload(10);
                 System.out.println("onRefreshListener--------End");
                 refreshLayout.finishRefresh();
             }
         });
 
+        reload(5);
         System.out.println("----------------------ForumFragment");
         return root;
+    }
+
+    private void reload(int count){
+        userList.clear();
+        for(int i = 1; i < count; i++){
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("name","name-"+i);
+            map.put("pic",Constant.DEFAULT_USER_IMAGE_BOY);
+            userList.add(map);
+        }
+        forumUserListAdapter.notifyDataSetChanged();
     }
 
     Runnable postRun = new Runnable() {
