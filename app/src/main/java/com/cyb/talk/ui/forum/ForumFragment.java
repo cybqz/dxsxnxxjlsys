@@ -64,8 +64,8 @@ public class ForumFragment extends Fragment {
                 System.out.println("onLoadmoreListener");
 
                 refreshLayout.setLoadmoreFinished(true);
-                System.out.println("onLoadmoreListener--------End");
                 refreshLayout.finishRefresh();
+                System.out.println("onLoadmoreListener--------End");
             }
         });
 

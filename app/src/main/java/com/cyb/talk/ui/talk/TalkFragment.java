@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class TalkFragment extends Fragment implements View.OnClickListener {
 
-    private List<Map<String,Object>> userTalkList=new ArrayList<>();
+    private List<Map<String,String>> userTalkList=new ArrayList<>();
     private ForumUserTalkListAdapter forumUserTalkListAdapter;
     private ListView talkListView;
     private Button buttonSendMsg;
@@ -79,9 +79,14 @@ public class TalkFragment extends Fragment implements View.OnClickListener {
     private void reload(int count){
         userTalkList.clear();
         for(int i = 1; i < count; i++){
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("name","name-"+i);
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("msg","msg-"+i);
             map.put("pic", Constant.DEFAULT_USER_IMAGE_BOY);
+            if(i % 2 == 0){
+                map.put("type", "0");
+            }else{
+                map.put("type", "1");
+            }
             userTalkList.add(map);
         }
         forumUserTalkListAdapter.notifyDataSetChanged();
