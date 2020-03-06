@@ -21,10 +21,6 @@ public interface UserServices {
 
     int updateByPrimaryKey(User record);
 
-	Set<String> queryRolesByName(String userName);
-
-	Set<String> queryPermissionByName(String userName);
-
     User selectByUserName(String username);
 
     /**

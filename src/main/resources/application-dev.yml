@@ -1,7 +1,4 @@
 debug: true
-resources:
-  static-locations:
-    - classpath:/webapp/
 
 server:
    port: 9090
@@ -42,6 +39,9 @@ spring:
         unauthorized-url: /logout
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+  mybatis:
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:
   level:

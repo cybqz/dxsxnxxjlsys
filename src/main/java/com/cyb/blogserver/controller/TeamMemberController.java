@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *队员控制层
  */
 @Controller
-@RequestMapping(value="/teamMember")
+@RequestMapping(value="/teammember")
 public class TeamMemberController {
 
 	@Autowired

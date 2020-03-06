@@ -26,7 +26,9 @@ import com.cyb.blogserver.utils.UserValidate;
 @Controller
 @RequestMapping(value="/user")
 public class UserController {
-	
+
+	@Autowired
+	private UserValidate userValidate;
 	@Autowired
 	private UserServices userSerivces;
 	@Autowired
@@ -39,9 +41,8 @@ public class UserController {
 	@RequestMapping(value="/update")
 	@ResponseBody
 	public Tips update (User user) {
-		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
-		User loginedUser = validate.isLoginAuthenticated();
+		User loginedUser = userValidate.isLoginAuthenticated();
 		if(loginedUser != null) {
 			if(StringUtils.isBlank(user.getName())) {
 				tips.setMsg("用户名不能为空！");
@@ -70,9 +71,8 @@ public class UserController {
 	@RequestMapping(value="/updateIntroduce")
 	@ResponseBody
 	public Tips updateIntroduce (User user) {
-		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
-		User loginedUser = validate.isLoginAuthenticated();
+		User loginedUser = userValidate.isLoginAuthenticated();
 		if(loginedUser != null) {
 			if(StringUtils.isBlank(user.getIntroduce())) {
 				tips.setMsg("用户简介不能为空！");
@@ -92,9 +92,8 @@ public class UserController {
 	@RequestMapping(value="/updateImage")
 	@ResponseBody
 	public Tips updateImage (@RequestParam(value = "file", required = true) MultipartFile pictureFile) {
-		UserValidate validate = new UserValidate();
 		Tips tips = new Tips("false", false);
-		User user = validate.isLoginNoAuthenticated();
+		User user = userValidate.isLoginNoAuthenticated();
 		if(user == null) {
             try {
             	if(pictureFile != null) {
@@ -120,8 +119,7 @@ public class UserController {
 	@RequestMapping(value="/getUser")
 	@ResponseBody
 	public UserRolePermissionVO getUser () {
-		UserValidate validate = new UserValidate();
-		User user = validate.isLoginAuthenticated();
+		User user = userValidate.isLoginAuthenticated();
 		if(user != null) {
 			UserRolePermissionVO userRolePermissionVO = UserRolePermissionVO.toUserRolePermissionVO(user);
 			List<UserRole> userRoles = userRoleServices.selectByUserId(user.getId());

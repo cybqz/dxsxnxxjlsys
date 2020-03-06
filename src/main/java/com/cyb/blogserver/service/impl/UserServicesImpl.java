@@ -82,16 +82,6 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	@Override
-    public Set<String> queryRolesByName(String userName) {
-		return userMapper.queryRolesByName(userName);
-	}
-	
-	@Override
-	public Set<String> queryPermissionByName(String userName) {
-		return userMapper.queryPermissionByName(userName);
-	}
-
-	@Override
 	public User selectByUserName(String username) {
 		return userMapper.selectByUserName(username);
 	}

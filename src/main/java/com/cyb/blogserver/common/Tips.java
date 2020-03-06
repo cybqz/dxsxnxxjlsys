@@ -18,6 +18,11 @@ public class Tips {
 	private boolean validate;
 
 	/**
+	 * 分页信息
+	 */
+	private Pagenation pagenation;
+
+	/**
 	 * 返回数据
 	 */
 	private Object data;
@@ -64,6 +69,14 @@ public class Tips {
 
 	public void setValidate(boolean validate) {
 		this.validate = validate;
+	}
+
+	public Pagenation getPagenation() {
+		return pagenation;
+	}
+
+	public void setPagenation(Pagenation pagenation) {
+		this.pagenation = pagenation;
 	}
 
 	public Object getData() {
