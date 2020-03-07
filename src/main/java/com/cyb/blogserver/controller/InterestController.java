@@ -1,5 +1,6 @@
 package com.cyb.blogserver.controller;
 
+import com.cyb.blogserver.common.BaseController;
 import com.cyb.blogserver.common.Constant;
 import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.domain.Interest;
@@ -21,13 +22,10 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value="/interest")
-public class InterestController {
+public class InterestController extends BaseController {
 
 	@Autowired
 	private InterestServices interestServices;
-
-	@Autowired
-	private UserValidate userValidate;
 
 	@Autowired
 	private ParamesServices paramesServices;
@@ -40,7 +38,7 @@ public class InterestController {
 	@ResponseBody
 	public Tips getUserInterestAll () {
 		Tips tips = new Tips("false", false);
-		User user = userValidate.isLoginAuthenticated();
+		super.validLogined();
 		if(null != user) {
 			Interest interestParam = new Interest(null, user.getId(), null, null);
 			List<Interest> list = interestServices.selectSelective(interestParam);
@@ -64,7 +62,7 @@ public class InterestController {
 	@ResponseBody
 	public Tips editUserInterest (@RequestParam(value = "interestList", required = true) List<String> interestList) {
 		Tips tips = new Tips("保存兴趣失败！", false);
-		User user = userValidate.isLoginAuthenticated();
+		super.validLogined();
 		if(null != user) {
 			boolean result = interestServices.editUserInterest(user.getId(), interestList);
 			if(result){

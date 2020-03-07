@@ -3,6 +3,8 @@ package com.cyb.blogserver.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import com.cyb.blogserver.common.BaseController;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,14 +23,11 @@ import com.cyb.blogserver.service.PermissionServices;
 import com.cyb.blogserver.service.RolePermissionServices;
 import com.cyb.blogserver.service.UserRoleServices;
 import com.cyb.blogserver.service.UserServices;
-import com.cyb.blogserver.utils.UserValidate;
 
 @Controller
 @RequestMapping(value="/user")
-public class UserController {
+public class UserController extends BaseController {
 
-	@Autowired
-	private UserValidate userValidate;
 	@Autowired
 	private UserServices userSerivces;
 	@Autowired
@@ -40,24 +39,24 @@ public class UserController {
 	
 	@RequestMapping(value="/update")
 	@ResponseBody
-	public Tips update (User user) {
+	public Tips update (User param) {
 		Tips tips = new Tips("false", false);
-		User loginedUser = userValidate.isLoginAuthenticated();
-		if(loginedUser != null) {
-			if(StringUtils.isBlank(user.getName())) {
+		super.validLogined();
+		if(user != null) {
+			if(StringUtils.isBlank(param.getName())) {
 				tips.setMsg("用户名不能为空！");
-			}else if(StringUtils.isBlank(user.getUserName())) {
+			}else if(StringUtils.isBlank(param.getUserName())) {
 				tips.setMsg("姓名不能为空！");
-			}else if(StringUtils.isBlank(user.getEmail())) {
+			}else if(StringUtils.isBlank(param.getEmail())) {
 				tips.setMsg("邮箱地址不能为空！");
-			}else if(StringUtils.isBlank(user.getPhone())) {
+			}else if(StringUtils.isBlank(param.getPhone())) {
 				tips.setMsg("联系方式不能为空！");
 			}else {
-				loginedUser.setName(user.getName());
-				loginedUser.setEmail(user.getEmail());
-				loginedUser.setPhone(user.getPhone());
-				loginedUser.setUserName(user.getUserName());
-				int count = userSerivces.updateByPrimaryKey(loginedUser);
+				user.setName(param.getName());
+				user.setEmail(param.getEmail());
+				user.setPhone(param.getPhone());
+				user.setUserName(param.getUserName());
+				int count = userSerivces.updateByPrimaryKey(user);
 				if(count > 0) {
 					tips = new Tips("修改成功！", true);
 				}else {
@@ -70,15 +69,15 @@ public class UserController {
 	
 	@RequestMapping(value="/updateIntroduce")
 	@ResponseBody
-	public Tips updateIntroduce (User user) {
+	public Tips updateIntroduce (User param) {
 		Tips tips = new Tips("false", false);
-		User loginedUser = userValidate.isLoginAuthenticated();
-		if(loginedUser != null) {
-			if(StringUtils.isBlank(user.getIntroduce())) {
+		super.validLogined();
+		if(user != null) {
+			if(StringUtils.isBlank(param.getIntroduce())) {
 				tips.setMsg("用户简介不能为空！");
 			}else {
-				loginedUser.setIntroduce(user.getIntroduce());
-				int count = userSerivces.updateByPrimaryKey(loginedUser);
+				user.setIntroduce(param.getIntroduce());
+				int count = userSerivces.updateByPrimaryKey(user);
 				if(count > 0) {
 					tips = new Tips("修改成功！", true);
 				}else {
@@ -93,7 +92,7 @@ public class UserController {
 	@ResponseBody
 	public Tips updateImage (@RequestParam(value = "file", required = true) MultipartFile pictureFile) {
 		Tips tips = new Tips("false", false);
-		User user = userValidate.isLoginNoAuthenticated();
+		super.validLogined();
 		if(user == null) {
             try {
             	if(pictureFile != null) {
@@ -119,7 +118,7 @@ public class UserController {
 	@RequestMapping(value="/getUser")
 	@ResponseBody
 	public UserRolePermissionVO getUser () {
-		User user = userValidate.isLoginAuthenticated();
+		super.validLogined();
 		if(user != null) {
 			UserRolePermissionVO userRolePermissionVO = UserRolePermissionVO.toUserRolePermissionVO(user);
 			List<UserRole> userRoles = userRoleServices.selectByUserId(user.getId());

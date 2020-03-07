@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface ShareObjectMapper {
-    int countByExample(ShareObject shareObject);
+    int countByShareObject(ShareObject shareObject);
 
     int insert(ShareObject record);
 

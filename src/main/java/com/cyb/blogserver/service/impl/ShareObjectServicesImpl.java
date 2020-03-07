@@ -38,6 +38,8 @@ public class ShareObjectServicesImpl implements ShareObjectServices {
 
     @Override
     public List<ShareObject> selectSelective(ShareObject record, Pagenation pagenation) {
+        int count = shareObjectMapper.countByShareObject(record);
+        pagenation.setDataCount(count);
         return shareObjectMapper.selectSelective(record, pagenation);
     }
 }

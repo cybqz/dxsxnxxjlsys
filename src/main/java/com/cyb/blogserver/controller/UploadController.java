@@ -1,5 +1,6 @@
 package com.cyb.blogserver.controller;
 
+import com.cyb.blogserver.common.BaseController;
 import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.utils.MyUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +18,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping(value="/upload")
-public class UploadController {
+public class UploadController extends BaseController {
 
 	private static String IMG_PATH;
 

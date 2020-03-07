@@ -1,5 +1,6 @@
 package com.cyb.blogserver.controller;
 
+import com.cyb.blogserver.common.BaseController;
 import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.domain.Team;
 import com.cyb.blogserver.domain.User;
@@ -18,10 +19,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value="/team")
-public class TeamController {
-
-	@Autowired
-	private UserValidate userValidate;
+public class TeamController extends BaseController {
 
 	@Autowired
 	private TeamServices teamServices;
@@ -30,7 +28,7 @@ public class TeamController {
 	@ResponseBody
 	public Tips add () {
 		Tips tips = new Tips("添加组队失败！", true, false);
-		User user = userValidate.isLoginAuthenticated();
+		super.validLogined();
 		if(null != user) {
 			Team team = new Team(null, user.getId(), user.getUserName(), null);
 			int result = teamServices.insert(team);
@@ -45,7 +43,7 @@ public class TeamController {
 	@ResponseBody
 	public Tips delete (String id) {
 		Tips tips = new Tips("删除组队失败！", true, false);
-		User user = userValidate.isLoginAuthenticated();
+		super.validLogined();
 		if(null != user) {
 			int result = teamServices.deleteByPrimaryKey(id);
 			if(result > 0){

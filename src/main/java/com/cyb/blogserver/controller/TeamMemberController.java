@@ -1,5 +1,6 @@
 package com.cyb.blogserver.controller;
 
+import com.cyb.blogserver.common.BaseController;
 import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.domain.Team;
 import com.cyb.blogserver.domain.TeamMember;
@@ -17,10 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping(value="/teammember")
-public class TeamMemberController {
-
-	@Autowired
-	private UserValidate userValidate;
+public class TeamMemberController extends BaseController {
 
 	@Autowired
 	private TeamMemberServices teamMemberServices;
@@ -29,7 +27,7 @@ public class TeamMemberController {
 	@ResponseBody
 	public Tips add (TeamMember teamMember) {
 		Tips tips = new Tips("添加队员失败！", true, false);
-		User user = userValidate.isLoginAuthenticated();
+		super.validLogined();
 		if(null != user) {
 
 			int result = teamMemberServices.insert(teamMember);
@@ -44,7 +42,7 @@ public class TeamMemberController {
 	@ResponseBody
 	public Tips delete (TeamMember teamMember) {
 		Tips tips = new Tips("删除队员失败！", true, false);
-		User user = userValidate.isLoginAuthenticated();
+		super.validLogined();
 		if(null != user) {
 			int result = teamMemberServices.deleteByPrimaryKey(null);
 			if(result > 0){

@@ -1,7 +1,7 @@
-debug: true
+debug: false
 
 server:
-   port: 9090
+   port: 9099
 spring:
   application:
     name: clegstdehalearningserver
@@ -39,8 +39,7 @@ spring:
         unauthorized-url: /logout
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  mybatis:
-    configuration:
+  configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:

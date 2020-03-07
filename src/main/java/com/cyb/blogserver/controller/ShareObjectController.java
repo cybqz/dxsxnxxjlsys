@@ -1,11 +1,10 @@
 package com.cyb.blogserver.controller;
 
+import com.cyb.blogserver.common.BaseController;
 import com.cyb.blogserver.common.Pagenation;
 import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.domain.ShareObject;
-import com.cyb.blogserver.domain.User;
 import com.cyb.blogserver.service.ShareObjectServices;
-import com.cyb.blogserver.utils.UserValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +17,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value="/shareobject")
-public class ShareObjectController {
-
-	@Autowired
-	private UserValidate userValidate;
+public class ShareObjectController extends BaseController {
 
 	@Autowired
 	private ShareObjectServices shareObjectServices;
@@ -30,7 +26,7 @@ public class ShareObjectController {
 	@ResponseBody
 	public Tips add (ShareObject shareObject) {
 		Tips tips = new Tips("添加失败！", true, false);
-		User user = userValidate.isLoginNoAuthenticated();
+		super.validLogined();
 		if(null != user) {
 			shareObject.setUserId(user.getId());
 			int add = shareObjectServices.insert(shareObject);
@@ -45,7 +41,7 @@ public class ShareObjectController {
 	@ResponseBody
 	public Tips delete (String id) {
 		Tips tips = new Tips("删除组队失败！", true, false);
-		User user = userValidate.isLoginAuthenticated();
+		super.validLogined();
 		if(null != user) {
 
 		}
@@ -56,7 +52,7 @@ public class ShareObjectController {
 	@ResponseBody
 	public Tips page (ShareObject usedBook, Pagenation pagenation) {
 		Tips tips = new Tips("查询失败！", true, false);
-		User user = userValidate.isLoginAuthenticated();
+		super.validLogined();
 		if(null != user) {
 			List<ShareObject> list = shareObjectServices.selectSelective(usedBook, pagenation);
 			tips = new Tips("查询成功！", true, false);
@@ -65,6 +61,5 @@ public class ShareObjectController {
 		}
 		return tips;
 	}
-
 
 }

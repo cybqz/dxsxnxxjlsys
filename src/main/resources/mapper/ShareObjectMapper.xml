@@ -121,10 +121,10 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.cyb.blogserver.domain.ShareObject" resultType="java.lang.Integer" >
+  <select id="countByShareObject" parameterType="com.cyb.blogserver.domain.ShareObject" resultType="java.lang.Integer" >
     select count(*) from share_object
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
+    <if test="title != null and title != ''">
+      and 'title' = #{title,jdbcType=VARCHAR}
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
