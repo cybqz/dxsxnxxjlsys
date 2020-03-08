@@ -17,6 +17,8 @@ public interface AccumulatePointsServices {
 
     AccumulatePoints selectByPrimaryKey(String id);
 
+    AccumulatePoints selectOneSelective(AccumulatePoints record);
+
     /**
      * 增加积分
      * @param userId

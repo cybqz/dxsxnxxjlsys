@@ -22,6 +22,12 @@
            )
   </select>
 
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
   <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select *
     from user

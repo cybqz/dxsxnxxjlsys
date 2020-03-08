@@ -44,6 +44,11 @@ public class AccumulatePointsServicesImpl implements AccumulatePointsServices {
 		return accumulatePointsMapper.selectByPrimaryKey(id);
 	}
 
+	@Override
+	public AccumulatePoints selectOneSelective(AccumulatePoints record) {
+		return accumulatePointsMapper.selectOneSelective(record);
+	}
+
 	/**
 	 * 增加积分
 	 * @param userId

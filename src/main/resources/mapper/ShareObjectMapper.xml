@@ -132,9 +132,11 @@
   </update>
 
   <select id="countByShareObject" parameterType="com.cyb.blogserver.domain.ShareObject" resultType="java.lang.Integer" >
-    select count(*) from share_object
+    select count(*)
+    from share_object
+    where 1 = 1
     <if test="title != null and title != ''">
-      and 'title' = #{title,jdbcType=VARCHAR}
+      and title = #{title,jdbcType=VARCHAR}
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -145,10 +147,10 @@
     select * from share_object
     where 1 = 1
     <if test="shareObject.title != null and shareObject.title != ''">
-      and 'title' like concat('%',#{shareObject.title,jdbcType=VARCHAR},'%')
+      and title like concat('%',#{shareObject.title,jdbcType=VARCHAR},'%')
     </if>
     <if test="shareObject.flag != null and shareObject.flag != ''">
-      and 'flag' = #{shareObject.title,jdbcType=VARCHAR}
+      and flag = #{shareObject.title,jdbcType=VARCHAR}
     </if>
     order by hot desc
     <if test="pagenation != null and pagenation.pageIndex != null or pagenation.pageSize != null">
@@ -160,10 +162,10 @@
     select * from share_object
     where 1 = 1
     <if test="shareObject.title != null and shareObject.title != ''">
-      and 'title' like concat('%',#{shareObject.title,jdbcType=VARCHAR},'%')
+      and title like concat('%',#{shareObject.title,jdbcType=VARCHAR},'%')
     </if>
     <if test="shareObject.flag != null and shareObject.flag != ''">
-      and 'flag' = #{shareObject.flag,jdbcType=VARCHAR}
+      and flag = #{shareObject.flag,jdbcType=VARCHAR}
     </if>
     order by create_date_time desc
     <if test="pagenation != null and pagenation.pageIndex != null and pagenation.pageSize != null">
