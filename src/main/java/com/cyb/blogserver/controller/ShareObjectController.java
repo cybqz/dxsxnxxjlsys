@@ -62,4 +62,18 @@ public class ShareObjectController extends BaseController {
 		return tips;
 	}
 
+	@RequestMapping(value="/hotsearch")
+	@ResponseBody
+	public Tips hotsearch (ShareObject usedBook, Pagenation pagenation) {
+		Tips tips = new Tips("查询失败！", true, false);
+		super.validLogined();
+		if(null != user) {
+			List<ShareObject> list = shareObjectServices.hotsearch(usedBook, pagenation);
+			tips = new Tips("查询成功！", true, false);
+			tips.setData(list);
+			tips.setPagenation(pagenation);
+		}
+		return tips;
+	}
+
 }

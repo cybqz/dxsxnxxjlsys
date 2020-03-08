@@ -1,7 +1,10 @@
 package com.cyb.blogserver.domain;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class UserRolePermissionVO extends User{
     
 	private List<RolePermissionVO> userRoles;

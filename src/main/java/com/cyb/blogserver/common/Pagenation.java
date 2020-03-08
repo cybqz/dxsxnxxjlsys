@@ -4,7 +4,7 @@ public class Pagenation {
 
 	private Integer pageSize = 5;
 	
-	private Integer pageIndex = 1;
+	private Integer pageIndex = 0;
 	
 	private int pageCount;
 	
@@ -42,8 +42,8 @@ public class Pagenation {
 	}
 
 	public void setPageIndex(Integer pageIndex) {
-		if(pageIndex <= 1) {
-			pageIndex = 1;
+		if(pageIndex <= 0) {
+			pageIndex = 0;
 		}
 		this.pageIndex = pageIndex;
 	}

@@ -13,5 +13,7 @@ public interface ShareObjectServices {
 
     ShareObject selectByPrimaryKey(String id);
 
+    List<ShareObject> hotsearch(ShareObject record, Pagenation pagenation);
+
     List<ShareObject> selectSelective(ShareObject record, Pagenation pagenation);
 }

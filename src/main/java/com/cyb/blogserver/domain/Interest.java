@@ -1,7 +1,10 @@
 package com.cyb.blogserver.domain;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class Interest {
 
     private String id;
@@ -21,43 +24,4 @@ public class Interest {
         this.createDate = createDate;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getParameId() {
-        return parameId;
-    }
-
-    public void setParameId(String parameId) {
-        this.parameId = parameId;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Parames getParames() {
-        return parames;
-    }
-
-    public void setParames(Parames parames) {
-        this.parames = parames;
-    }
 }
