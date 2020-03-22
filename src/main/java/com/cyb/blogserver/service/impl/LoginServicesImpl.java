@@ -8,8 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.cyb.authority.service.CybAuthorityLoginService;
+import com.cyb.blogserver.common.Constant;
 import com.cyb.blogserver.dao.SigninMapper;
 import com.cyb.blogserver.domain.Signin;
+import com.cyb.blogserver.service.AccumulatePointsServices;
+import com.cyb.blogserver.service.UserServices;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -33,11 +36,21 @@ public class LoginServicesImpl implements LoginServices {
 	@Resource
 	private CybAuthorityLoginService authorityLoginService;
 
+	@Resource
+	private AccumulatePointsServices accumulatePointsServices;
+
+	@Resource
+	private UserServices userServices;
+
 	@Override
 	public Tips login(User user) {
 		Tips tips = new Tips("false", false);
 		boolean loginSuccess = authorityLoginService.doLogin(user.getUserName(), user.getPassword());
 		if(loginSuccess){
+			User result = userServices.selectByUserName(user.getUserName());
+			if(null != result){
+				accumulatePointsServices.addPoints(result.getId(), Constant.PARAMES_NAME_SIGNIN);
+			}
 			tips = new Tips("登录成功！", true, user);
 		}
 		return tips;

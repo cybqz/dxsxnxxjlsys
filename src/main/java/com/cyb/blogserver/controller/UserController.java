@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import com.cyb.blogserver.domain.User;
 import com.cyb.blogserver.domain.UserRole;
-import com.cyb.blogserver.domain.UserRolePermissionVO;
+import com.cyb.blogserver.vo.UserRolePermissionVO;
 import com.cyb.blogserver.domain.Permission;
 import com.cyb.blogserver.domain.RolePermission;
-import com.cyb.blogserver.domain.RolePermissionVO;
+import com.cyb.blogserver.vo.RolePermissionVO;
 import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.service.PermissionServices;
 import com.cyb.blogserver.service.RolePermissionServices;
@@ -40,9 +40,9 @@ public class UserController extends BaseController {
 	@RequestMapping(value="/update")
 	@ResponseBody
 	public Tips update (User param) {
-		Tips tips = new Tips("false", false);
+
 		super.validLogined();
-		if(user != null) {
+		if(isLogined) {
 			if(StringUtils.isBlank(param.getName())) {
 				tips.setMsg("用户名不能为空！");
 			}else if(StringUtils.isBlank(param.getUserName())) {
@@ -70,9 +70,8 @@ public class UserController extends BaseController {
 	@RequestMapping(value="/updateIntroduce")
 	@ResponseBody
 	public Tips updateIntroduce (User param) {
-		Tips tips = new Tips("false", false);
 		super.validLogined();
-		if(user != null) {
+		if(isLogined) {
 			if(StringUtils.isBlank(param.getIntroduce())) {
 				tips.setMsg("用户简介不能为空！");
 			}else {
@@ -91,9 +90,8 @@ public class UserController extends BaseController {
 	@RequestMapping(value="/updateImage")
 	@ResponseBody
 	public Tips updateImage (@RequestParam(value = "file", required = true) MultipartFile pictureFile) {
-		Tips tips = new Tips("false", false);
 		super.validLogined();
-		if(user == null) {
+		if(isLogined) {
             try {
             	if(pictureFile != null) {
             		// 图片新名字
@@ -119,7 +117,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public UserRolePermissionVO getUser () {
 		super.validLogined();
-		if(user != null) {
+		if(isLogined) {
 			UserRolePermissionVO userRolePermissionVO = UserRolePermissionVO.toUserRolePermissionVO(user);
 			List<UserRole> userRoles = userRoleServices.selectByUserId(user.getId());
 			if(userRoles != null && userRoles.size() > 0) {

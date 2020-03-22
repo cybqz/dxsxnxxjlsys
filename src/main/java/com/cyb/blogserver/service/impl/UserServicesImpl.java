@@ -56,7 +56,8 @@ public class UserServicesImpl implements UserServices {
 			image += "boy.png";
 		}
 		record.setImage(image);
-		return userMapper.insert(record);
+		userMapper.insert(record);
+		return 1;
 	}
 
 	@Override

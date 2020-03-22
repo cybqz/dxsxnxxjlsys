@@ -1,8 +1,11 @@
-package com.cyb.blogserver.domain;
+package com.cyb.blogserver.vo;
+
+import com.cyb.blogserver.domain.Permission;
+import com.cyb.blogserver.domain.UserRole;
 
 import java.util.List;
 
-public class RolePermissionVO extends UserRole{
+public class RolePermissionVO extends UserRole {
     
 	private List<Permission> permissions;
 

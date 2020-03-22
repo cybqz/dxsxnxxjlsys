@@ -3,12 +3,14 @@ package com.cyb.blogserver.controller;
 import com.cyb.blogserver.common.BaseController;
 import com.cyb.blogserver.common.Pagenation;
 import com.cyb.blogserver.common.Tips;
-import com.cyb.blogserver.domain.ForumMessageVO;
+import com.cyb.blogserver.vo.ForumMessageVO;
 import com.cyb.blogserver.domain.User;
 import com.cyb.blogserver.service.UserServices;
 import com.cyb.blogserver.utils.MyUtils;
 import com.cyb.forum.domain.ForumMessage;
+import com.cyb.forum.domain.ForumPraise;
 import com.cyb.forum.service.ForumMessageService;
+import com.cyb.forum.service.ForumPraiseService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,16 @@ public class ForumMessageController extends BaseController {
     private ForumMessageService forumMessageService;
 
     @Autowired
+    private ForumPraiseService forumPraiseService;
+
+    @Autowired
     private UserServices userServices;
 
     @RequestMapping(value="/add")
     @ResponseBody
     public Tips add (ForumMessage forumMessage) {
-        Tips tips = new Tips("发布失败", true, false);
         super.validLogined();
-        if(user != null){
+        if(isLogined){
 
             if(StringUtils.isNotEmpty(forumMessage.getContent())){
                 forumMessage.setId(MyUtils.getPrimaryKey());
@@ -59,9 +63,8 @@ public class ForumMessageController extends BaseController {
     @RequestMapping(value="/page")
     @ResponseBody
     public Tips page (ForumMessage forumMessage, Pagenation pagenation) {
-        Tips tips = new Tips("查询失败", true, false);
         super.validLogined();
-        if(user != null){
+        if(isLogined){
             tips = new Tips("查询成功", true, true);
             List<ForumMessage> listVO = null;
             int count = forumMessageService.countByForumMessage(forumMessage);
@@ -77,10 +80,16 @@ public class ForumMessageController extends BaseController {
                         vo.setName(user.getUserName());
                         vo.setUserImg(user.getImage());
                     }
+                    ForumPraise praise = new ForumPraise();
+                    praise.setUserId(user.getId());
+                    praise.setMessageId(message.getId());
+                    List<ForumPraise> parseList = forumPraiseService.selectSelective(praise);
+                    if(parseList != null && !parseList.isEmpty()){
+                        vo.setPraise(true);
+                    }
                     listVO.add(vo);
                 }
             }
-
             pagenation.setDataCount(count);
             tips.setPagenation(pagenation);
             tips.setData(listVO);

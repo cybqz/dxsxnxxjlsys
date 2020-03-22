@@ -21,5 +21,7 @@ public interface ParamesMapper {
 
     int updateByPrimaryKey(Parames record);
 
+    Parames selectOneByName(String name);
+
     List<Parames> selectByParames(Parames record);
 }

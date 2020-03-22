@@ -3,15 +3,20 @@ package com.cyb.blogserver.service.impl;
 import com.cyb.blogserver.common.Constant;
 import com.cyb.blogserver.dao.AccumulatePointsMapper;
 import com.cyb.blogserver.dao.ParamesMapper;
+import com.cyb.blogserver.dao.UserMapper;
 import com.cyb.blogserver.domain.AccumulatePoints;
+import com.cyb.blogserver.vo.AccumulatePointsVO;
 import com.cyb.blogserver.domain.Parames;
+import com.cyb.blogserver.domain.User;
 import com.cyb.blogserver.service.AccumulatePointsServices;
 import com.cyb.blogserver.utils.MyUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service(value="accumulatePointsServices")
 public class AccumulatePointsServicesImpl implements AccumulatePointsServices {
@@ -23,6 +28,9 @@ public class AccumulatePointsServicesImpl implements AccumulatePointsServices {
 
 	@Resource
 	private ParamesMapper paramesMapper;
+
+	@Resource
+	private UserMapper userMapper;
 
 	@Override
 	public int deleteByPrimaryKey(String id) {
@@ -46,7 +54,7 @@ public class AccumulatePointsServicesImpl implements AccumulatePointsServices {
 
 	@Override
 	public AccumulatePoints selectOneSelective(AccumulatePoints record) {
-		return accumulatePointsMapper.selectOneSelective(record);
+		return accumulatePointsMapper.selectOneSelective(record, null, null);
 	}
 
 	/**
@@ -61,8 +69,14 @@ public class AccumulatePointsServicesImpl implements AccumulatePointsServices {
 
 		if(type.equals(Constant.PARAMES_NAME_SIGNIN)){
 			Date now = new Date();
-			accumulatePointsParam.setUpdateDate(MyUtils.parse("yyyyMMDD", now));
-			AccumulatePoints accumulatePoints = accumulatePointsMapper.selectOneSelective(accumulatePointsParam);
+			Date startDate = MyUtils.parse("yyyyMMDD", now);
+			Date endDate = MyUtils.parse("yyyyMMDD", now);
+			endDate.setHours(23);
+			endDate.setMinutes(59);
+			endDate.setSeconds(59);
+			Parames parames = paramesMapper.selectOneByName(Constant.PARAMES_NAME_SIGNIN);
+			accumulatePointsParam.setParameId(parames.getId());
+			AccumulatePoints accumulatePoints = accumulatePointsMapper.selectOneSelective(accumulatePointsParam, startDate, endDate);
 			if(null == accumulatePoints){
 				Parames paramesParam = new Parames(null, Constant.PARAMES_NAME_SIGNIN, null, Constant.PARAMES_GROUP_POINTS);
 				List<Parames> paramesList = paramesMapper.selectByParames(paramesParam);
@@ -85,5 +99,40 @@ public class AccumulatePointsServicesImpl implements AccumulatePointsServices {
 	@Override
 	public int updateByPrimaryKey(AccumulatePoints record) {
 		return accumulatePointsMapper.updateByPrimaryKey(record);
+	}
+
+	@Override
+	public List<AccumulatePointsVO> selectSystemTopTen() {
+
+		List<Map<String,Object>> list = accumulatePointsMapper.selectTopList(10, null);
+		List<AccumulatePointsVO> resultList = setUserName(list);
+		return resultList;
+	}
+
+	@Override
+	public List<AccumulatePointsVO> selectFriendsTopTen(String userId) {
+
+		List<Map<String,Object>> list = accumulatePointsMapper.selectTopList(10, null);
+		List<AccumulatePointsVO> resultList = setUserName(list);
+		return resultList;
+	}
+
+	private List<AccumulatePointsVO> setUserName(List<Map<String,Object>> list){
+		List<AccumulatePointsVO> resultList = null;
+		if(null != list && !list.isEmpty()){
+			resultList = new ArrayList<>(list.size());
+			for(Map<String,Object> map : list){
+				String userId = String.valueOf(map.get("userId"));
+				AccumulatePointsVO vo = new AccumulatePointsVO();
+
+				User user = userMapper.selectByPrimaryKey(userId);
+				if(null != user){
+					vo.setName(user.getUserName());
+				}
+				vo.setPoints(Integer.valueOf(String.valueOf(map.get("points"))));
+				resultList.add(vo);
+			}
+		}
+		return resultList;
 	}
 }

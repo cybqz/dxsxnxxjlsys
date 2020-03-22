@@ -4,16 +4,14 @@ import com.cyb.blogserver.common.BaseController;
 import com.cyb.blogserver.common.Constant;
 import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.domain.AccumulatePoints;
+import com.cyb.blogserver.vo.AccumulatePointsVO;
 import com.cyb.blogserver.service.AccumulatePointsServices;
-import com.cyb.blogserver.utils.MyUtils;
-import com.cyb.forum.domain.ForumDiscuss;
-import com.cyb.forum.service.ForumDiscussService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping(value="/accumulatepoints")
@@ -25,21 +23,21 @@ public class AccumulatePointsController extends BaseController {
     @RequestMapping(value="/add")
     @ResponseBody
     public Tips add (AccumulatePoints accumulatePoints) {
-        Tips tips = new Tips("积分新增失败", true, false);
         super.validLogined();
-        if(user != null){
+        if(isLogined){
+            tips.setMsg("积分新增失败");
             accumulatePointsServices.addPoints(user.getId(), Constant.PARAMES_NAME_SIGNIN);
             tips = new Tips("积分新增成功", true, true);
         }
         return tips;
     }
 
-    @RequestMapping(value="/selectAccumulatePoints")
+    @RequestMapping(value="/select")
     @ResponseBody
     public Tips selectAccumulatePoints () {
-        Tips tips = new Tips("查询积分失败", true, false);
         super.validLogined();
-        if(user != null){
+        if(isLogined){
+            tips.setMsg("查询积分失败");
             AccumulatePoints params = new AccumulatePoints(null, user.getId(), null, null, null);
             AccumulatePoints accumulatePoints = accumulatePointsServices.selectOneSelective(params);
             tips = new Tips("查询积分成功", true, true);
@@ -47,4 +45,41 @@ public class AccumulatePointsController extends BaseController {
         }
         return tips;
     }
+
+    /**
+     * 查询全网前10
+     * @return
+     */
+    @RequestMapping(value="/selectSystemTopTen")
+    @ResponseBody
+    public Tips selectSystemTopTen () {
+        super.validLogined();
+        if(isLogined){
+            tips.setMsg("查询积分失败");
+            List<AccumulatePointsVO> accumulatePoints = accumulatePointsServices.selectSystemTopTen();
+            tips = new Tips("查询积分成功", true, true);
+            tips.setData(accumulatePoints);
+        }
+        return tips;
+    }
+
+    /**
+     * 查询好友前10
+     * @return
+     */
+    @RequestMapping(value="/selectFriendsTopTen")
+    @ResponseBody
+    public Tips selectFriendsTopTen () {
+        super.validLogined();
+        if(isLogined){
+            tips.setMsg("查询积分失败");
+            AccumulatePoints params = new AccumulatePoints(null, user.getId(), null, null, null);
+            List<AccumulatePointsVO> accumulatePoints = accumulatePointsServices.selectFriendsTopTen(user.getId());
+            tips = new Tips("查询积分成功", true, true);
+            tips.setData(accumulatePoints);
+        }
+        return tips;
+    }
+
+
 }

@@ -56,7 +56,7 @@
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
 
-        <table tableName="share_object" domainObjectName="shareObject" enableCountByExample="true" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+        <table tableName="user_friend" domainObjectName="userFriend" enableCountByExample="true" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
         <!-- <table tableName="mmall_product" domainObjectName="Product" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
              <columnOverride column="detail" jdbcType="VARCHAR" />
              <columnOverride column="sub_images" jdbcType="VARCHAR" />

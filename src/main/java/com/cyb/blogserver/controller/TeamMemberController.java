@@ -26,10 +26,9 @@ public class TeamMemberController extends BaseController {
 	@RequestMapping(value="/add")
 	@ResponseBody
 	public Tips add (TeamMember teamMember) {
-		Tips tips = new Tips("添加队员失败！", true, false);
 		super.validLogined();
-		if(null != user) {
-
+		if(isLogined) {
+			tips.setMsg("添加队员失败");
 			int result = teamMemberServices.insert(teamMember);
 			if(result > 0){
 				tips = new Tips("添加队员成功！", true, true);
@@ -41,9 +40,9 @@ public class TeamMemberController extends BaseController {
 	@RequestMapping(value="/delete")
 	@ResponseBody
 	public Tips delete (TeamMember teamMember) {
-		Tips tips = new Tips("删除队员失败！", true, false);
 		super.validLogined();
-		if(null != user) {
+		if(isLogined) {
+			tips.setMsg("删除队员失败");
 			int result = teamMemberServices.deleteByPrimaryKey(null);
 			if(result > 0){
 				tips = new Tips("删除队员成功！", true, true);

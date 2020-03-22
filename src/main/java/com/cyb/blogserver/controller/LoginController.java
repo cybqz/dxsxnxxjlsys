@@ -1,6 +1,7 @@
 package com.cyb.blogserver.controller;
 
 
+import com.cyb.blogserver.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,7 @@ import com.cyb.blogserver.service.LoginServices;
  */
 @Controller
 @RequestMapping(value="/login")
-public class LoginController {
+public class LoginController extends BaseController {
 	
 	@Autowired
 	private LoginServices loginServices;
@@ -27,6 +28,11 @@ public class LoginController {
 	@RequestMapping(value="/login")
 	@ResponseBody
 	public Tips login (User user) {
+		super.validLogined();
+		if(isLogined){
+			tips.setMsg("不能重复登陆");
+			return tips;
+		}
 		return loginServices.login(user);
 	}
 
@@ -38,6 +44,10 @@ public class LoginController {
 	@RequestMapping(value="/logout")
 	@ResponseBody
 	public Tips logout (User user) {
+		super.validLogined();
+		if(!isLogined){
+			return tips;
+		}
 		return loginServices.logout(user);
 	}
 }

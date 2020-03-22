@@ -14,11 +14,20 @@ public class BaseController {
 
     public User user;
 
+    protected boolean isLogined = false;
+
+    protected Tips tips = null;
+
     /**
      * 验证用户是否登陆
      */
     public void validLogined(){
 
+        tips = new Tips("success", true, true);
         user = userValidate.isLoginAuthenticated();
+        isLogined = null != user;
+        if(!isLogined){
+            tips = new Tips("请先登陆", true, false);
+        }
     }
 }

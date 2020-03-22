@@ -68,7 +68,7 @@ public class MatrixToImageWriter {
         InputStream inputStream = null;
         try {
             //这里放的是需要放入二维码的信息
-            inputStream = MatrixToImageWriter.creatImage("http://192.168.1.6:9090/teamMember/add?teamId=7d1a75ab-9c5b-4a77-804a-546e753a3c5f&userId=16a5fbdc-fd87-4824-b03e-6a137051bb87");
+            inputStream = MatrixToImageWriter.creatImage("http://192.168.124.6:9090/teammember/add?teamId=7d1a75ab-9c5b-4a77-804a-546e753a3c5f&userId=16a5fbdc-fd87-4824-b03e-6a137051bb87");
             byte[] bytes = new byte[inputStream.available()];
             inputStream.read(bytes);
             File file = new File("F:\\qrcode\\001.jpg");

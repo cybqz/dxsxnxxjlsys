@@ -37,9 +37,8 @@ public class InterestController extends BaseController {
 	@RequestMapping(value="/getUserInterestAll")
 	@ResponseBody
 	public Tips getUserInterestAll () {
-		Tips tips = new Tips("false", false);
 		super.validLogined();
-		if(null != user) {
+		if(isLogined) {
 			Interest interestParam = new Interest(null, user.getId(), null, null);
 			List<Interest> list = interestServices.selectSelective(interestParam);
 			if(null != list && list.size() > 0){
@@ -61,9 +60,8 @@ public class InterestController extends BaseController {
 	@RequestMapping(value="/editUserInterest")
 	@ResponseBody
 	public Tips editUserInterest (@RequestParam(value = "interestList", required = true) List<String> interestList) {
-		Tips tips = new Tips("保存兴趣失败！", false);
 		super.validLogined();
-		if(null != user) {
+		if(isLogined) {
 			boolean result = interestServices.editUserInterest(user.getId(), interestList);
 			if(result){
 				tips = new Tips("保存兴趣成功！", true);

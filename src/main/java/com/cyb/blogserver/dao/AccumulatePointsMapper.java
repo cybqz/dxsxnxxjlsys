@@ -2,6 +2,11 @@ package com.cyb.blogserver.dao;
 
 import com.cyb.blogserver.domain.AccumulatePoints;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AccumulatePointsMapper {
@@ -18,5 +23,7 @@ public interface AccumulatePointsMapper {
 
     AccumulatePoints selectByPrimaryKey(String id);
 
-    AccumulatePoints selectOneSelective(AccumulatePoints record);
+    AccumulatePoints selectOneSelective(@Param("accumulatePoints") AccumulatePoints accumulatePoints,@Param("startDate") Date startDate,@Param("endDate") Date endDate);
+
+    List<Map<String,Object>> selectTopList(@Param("size")Integer size, @Param("userList") List<String> userList);
 }

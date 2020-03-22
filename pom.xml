@@ -85,13 +85,13 @@
 
 
         <dependency>
-            <groupId>cyb-authority-spring-boot-stater</groupId>
-            <artifactId>cyb-authority</artifactId>
+            <groupId>cyb-spring-boot-stater-authority</groupId>
+            <artifactId>authority</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>cyb-forum-spring-boot-stater</groupId>
-            <artifactId>cyb-forum</artifactId>
+            <groupId>cyb-spring-boot-stater-forum</groupId>
+            <artifactId>forum</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

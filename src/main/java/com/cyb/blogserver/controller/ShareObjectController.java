@@ -25,9 +25,8 @@ public class ShareObjectController extends BaseController {
 	@RequestMapping(value="/add")
 	@ResponseBody
 	public Tips add (ShareObject shareObject) {
-		Tips tips = new Tips("添加失败！", true, false);
 		super.validLogined();
-		if(null != user) {
+		if(isLogined) {
 			shareObject.setUserId(user.getId());
 			int add = shareObjectServices.insert(shareObject);
 			if(add > 0){
@@ -40,9 +39,8 @@ public class ShareObjectController extends BaseController {
 	@RequestMapping(value="/delete")
 	@ResponseBody
 	public Tips delete (String id) {
-		Tips tips = new Tips("删除组队失败！", true, false);
 		super.validLogined();
-		if(null != user) {
+		if(isLogined) {
 
 		}
 		return tips;
@@ -51,9 +49,8 @@ public class ShareObjectController extends BaseController {
 	@RequestMapping(value="/page")
 	@ResponseBody
 	public Tips page (ShareObject usedBook, Pagenation pagenation) {
-		Tips tips = new Tips("查询失败！", true, false);
 		super.validLogined();
-		if(null != user) {
+		if(isLogined) {
 			List<ShareObject> list = shareObjectServices.selectSelective(usedBook, pagenation);
 			tips = new Tips("查询成功！", true, false);
 			tips.setData(list);
@@ -65,9 +62,8 @@ public class ShareObjectController extends BaseController {
 	@RequestMapping(value="/hotsearch")
 	@ResponseBody
 	public Tips hotsearch (ShareObject usedBook, Pagenation pagenation) {
-		Tips tips = new Tips("查询失败！", true, false);
 		super.validLogined();
-		if(null != user) {
+		if(isLogined) {
 			List<ShareObject> list = shareObjectServices.hotsearch(usedBook, pagenation);
 			tips = new Tips("查询成功！", true, false);
 			tips.setData(list);

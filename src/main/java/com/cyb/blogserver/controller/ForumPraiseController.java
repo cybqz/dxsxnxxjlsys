@@ -25,9 +25,8 @@ public class ForumPraiseController extends BaseController {
     @RequestMapping(value="/praise")
     @ResponseBody
     public Tips praise (ForumPraise forumPraise) {
-        Tips tips = new Tips("点赞失败", true, false);
         super.validLogined();
-        if(user != null){
+        if(isLogined){
             forumPraise.setId(MyUtils.getPrimaryKey());
             forumPraise.setUserId(user.getId());
             forumPraise.setCreateDateTime(new Date());
@@ -43,8 +42,11 @@ public class ForumPraiseController extends BaseController {
     @RequestMapping(value="/detail")
     @ResponseBody
     public Tips detail (String id) {
-        Tips tips = new Tips("点赞失败", true, false);
-        forumPraiseService.selectByPrimaryKey(id);
+        super.validLogined();
+        if(isLogined){
+            ForumPraise forumPraise = forumPraiseService.selectByPrimaryKey(id);
+            tips = new Tips("success", true, forumPraise);
+        }
         return tips;
     }
 }

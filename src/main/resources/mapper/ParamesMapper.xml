@@ -32,4 +32,10 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
+  <select id="selectOneByName" resultMap="BaseResultMap">
+    select *
+    from parames
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

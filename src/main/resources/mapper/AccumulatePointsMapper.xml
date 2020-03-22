@@ -54,24 +54,35 @@
     </trim>
   </insert>
 
-  <select id="selectOneSelective" resultMap="BaseResultMap" parameterType="com.cyb.blogserver.domain.AccumulatePoints">
+  <select id="selectOneSelective" resultMap="BaseResultMap">
     select *
     from accumulate_points
     where 1 = 1
-    <if test="id != null" >
-      and id = #{id,jdbcType=VARCHAR}
+    <if test="accumulatePoints.id != null" >
+      and id = #{accumulatePoints.id,jdbcType=VARCHAR}
     </if>
-    <if test="userId != null" >
-      and user_id = #{userId,jdbcType=VARCHAR}
+    <if test="accumulatePoints.userId != null" >
+      and user_id = #{accumulatePoints.userId,jdbcType=VARCHAR}
     </if>
-    <if test="parameId != null" >
-      and parame_id = #{parameId,jdbcType=VARCHAR}
+    <if test="accumulatePoints.parameId != null" >
+      and parame_id = #{accumulatePoints.parameId,jdbcType=VARCHAR}
     </if>
-    <if test="points != null" >
-      and points = #{points,jdbcType=INTEGER}
+    <if test="accumulatePoints.points != null" >
+      and points = #{accumulatePoints.points,jdbcType=INTEGER}
     </if>
-    <if test="updateDate != null" >
-      and update_date = #{updateDate,jdbcType=TIMESTAMP}
+    <if test="startDate != null" >
+      and update_date >= #{startDate,jdbcType=TIMESTAMP}
     </if>
+    <if test="endDate != null" >
+      and update_date &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="selectTopList" resultType="java.util.Map">
+    select user_id as userId, sum(points) as points
+    from accumulate_points
+    group by user_id
+    order by points desc
+    limit #{size,jdbcType=INTEGER}
   </select>
 </mapper>

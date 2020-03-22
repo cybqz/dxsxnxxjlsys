@@ -24,7 +24,7 @@ public class RegisterController {
 	@RequestMapping(value="/register")
 	@ResponseBody
 	public Tips register (User user, HttpSession session) {
-		Tips tips = new Tips("false", false);
+		Tips tips = new Tips("用户信息不能为空", false);
 		if(user != null) {
 			String username = user.getUserName();
 			int sex = user.getSex();
@@ -39,7 +39,7 @@ public class RegisterController {
 					user.setId(UUID.randomUUID().toString());
 					int count = userSerivces.insert(user, url);
 					if(count > 0) {
-						tips = new Tips("true", true);
+						tips = new Tips("注册成功", true);
 					}
 				}
 			}

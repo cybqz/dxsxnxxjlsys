@@ -1,20 +1,25 @@
 package com.cyb.blogserver.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 public class AccumulatePoints {
-    private String id;
+    public String id;
 
-    private String userId;
+    public String userId;
 
-    private String parameId;
+    public String parameId;
 
-    private Integer points;
+    public Integer points;
 
-    private Date updateDate;
+    public Date updateDate;
+
+    public AccumulatePoints() {
+    }
 
     public AccumulatePoints(String id, String userId, String parameId, Integer points, Date updateDate) {
         this.id = id;
