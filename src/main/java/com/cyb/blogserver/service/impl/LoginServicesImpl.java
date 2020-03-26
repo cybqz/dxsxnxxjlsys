@@ -1,34 +1,17 @@
 package com.cyb.blogserver.service.impl;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.UUID;
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import com.alibaba.fastjson.JSONObject;
 import com.cyb.authority.service.CybAuthorityLoginService;
 import com.cyb.blogserver.common.Constant;
-import com.cyb.blogserver.dao.SigninMapper;
-import com.cyb.blogserver.domain.Signin;
 import com.cyb.blogserver.service.AccumulatePointsServices;
 import com.cyb.blogserver.service.UserServices;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
-import com.cyb.blogserver.dao.UserMapper;
 import com.cyb.blogserver.domain.User;
 import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.service.LoginServices;
-import com.cyb.blogserver.service.ParamesServices;
-import com.qq.connect.QQConnectException;
-import com.qq.connect.api.OpenID;
-import com.qq.connect.api.qzone.UserInfo;
-import com.qq.connect.javabeans.AccessToken;
-import com.qq.connect.javabeans.qzone.UserInfoBean;
-import com.qq.connect.oauth.Oauth;
-import com.qq.connect.utils.QQConnectConfig;
 
 @Service(value="loginServices")
 public class LoginServicesImpl implements LoginServices {
@@ -45,20 +28,25 @@ public class LoginServicesImpl implements LoginServices {
 	@Override
 	public Tips login(User user) {
 		Tips tips = new Tips("false", false);
-		boolean loginSuccess = authorityLoginService.doLogin(user.getUserName(), user.getPassword());
-		if(loginSuccess){
-			User result = userServices.selectByUserName(user.getUserName());
+		JSONObject loginResult = authorityLoginService.doLogin(user.getUserName(), user.getPassword());
+		if(null != loginResult && loginResult.containsKey("authToken")){
+			JSONObject result = new JSONObject();
+			User resultUser = userServices.selectByUserName(user.getUserName());
 			if(null != result){
-				accumulatePointsServices.addPoints(result.getId(), Constant.PARAMES_NAME_SIGNIN);
+				accumulatePointsServices.addPoints(resultUser.getId(), Constant.PARAMES_NAME_SIGNIN);
 			}
-			tips = new Tips("登录成功！", true, user);
+
+			result.put("userId", resultUser.getId());
+			result.put("userName", user.getUserName());
+			result.put("authToken", loginResult.getString("authToken"));
+			tips = new Tips("登录成功！", true, result);
 		}
 		return tips;
 	}
 
 	@Override
 	public Tips logout(User user) {
-		Tips tips = new Tips("false", false);
+		Tips tips = new Tips("没有登陆，退出失败", false);
 		Subject subject = SecurityUtils.getSubject();
 		if(subject.isAuthenticated()) {
 			subject.logout();
