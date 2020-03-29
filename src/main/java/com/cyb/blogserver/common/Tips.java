@@ -1,5 +1,10 @@
 package com.cyb.blogserver.common;
 
+import lombok.Getter;
+
+import javax.servlet.http.HttpServletResponse;
+
+@Getter
 public class Tips {
 
 	/**
@@ -18,6 +23,11 @@ public class Tips {
 	private boolean validate;
 
 	/**
+	 * 结果代码
+	 */
+	private Integer code = HttpServletResponse.SC_BAD_REQUEST;
+
+	/**
 	 * 分页信息
 	 */
 	private Pagenation pagenation;
@@ -31,6 +41,9 @@ public class Tips {
 		super();
 		this.msg = msg;
 		this.validate = validate;
+		if(validate){
+			this.code = HttpServletResponse.SC_OK;
+		}
 	}
 	
 	public Tips(String msg, boolean validate, Object data) {
@@ -38,6 +51,9 @@ public class Tips {
 		this.msg = msg;
 		this.data = data;
 		this.validate = validate;
+		if(validate){
+			this.code = HttpServletResponse.SC_OK;
+		}
 	}
 	
 	public Tips(String msg, boolean show, boolean validate) {
@@ -45,42 +61,40 @@ public class Tips {
 		this.msg = msg;
 		this.show = show;
 		this.validate = validate;
+		if(validate){
+			this.code = HttpServletResponse.SC_OK;
+		}
 	}
 
-	public String getMsg() {
-		return msg;
+	public Tips(String msg, Integer code, boolean show, boolean validate) {
+		super();
+		this.msg = msg;
+		this.code = code;
+		this.show = show;
+		this.validate = validate;
 	}
 
 	public void setMsg(String msg) {
 		this.msg = msg;
-	}
-	
-	public boolean isShow() {
-		return show;
 	}
 
 	public void setShow(boolean show) {
 		this.show = show;
 	}
 
-	public boolean isValidate() {
-		return validate;
-	}
-
 	public void setValidate(boolean validate) {
 		this.validate = validate;
+		if(this.validate){
+			this.code = HttpServletResponse.SC_OK;
+		}
 	}
 
-	public Pagenation getPagenation() {
-		return pagenation;
+	public void setCode(Integer code) {
+		this.code = code;
 	}
 
 	public void setPagenation(Pagenation pagenation) {
 		this.pagenation = pagenation;
-	}
-
-	public Object getData() {
-		return data;
 	}
 
 	public void setData(Object data) {

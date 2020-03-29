@@ -28,7 +28,7 @@ public class ForumPraiseController extends BaseController {
         super.validLogined();
         if(isLogined){
             forumPraise.setId(MyUtils.getPrimaryKey());
-            forumPraise.setUserId(user.getId());
+            forumPraise.setUserId(currentLoginedUser.getId());
             forumPraise.setCreateDateTime(new Date());
             R r = forumPraiseService.insert(forumPraise);
             tips.setMsg(r.getMsg());

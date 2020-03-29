@@ -5,7 +5,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="value" jdbcType="VARCHAR" property="value" />
-    <result column="group" jdbcType="VARCHAR" property="value" />
+    <result column="group" jdbcType="VARCHAR" property="group" />
     <result column="order" jdbcType="INTEGER" property="order" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>

@@ -39,7 +39,7 @@ public class InterestController extends BaseController {
 	public Tips getUserInterestAll () {
 		super.validLogined();
 		if(isLogined) {
-			Interest interestParam = new Interest(null, user.getId(), null, null);
+			Interest interestParam = new Interest(null, currentLoginedUser.getId(), null, null);
 			List<Interest> list = interestServices.selectSelective(interestParam);
 			if(null != list && list.size() > 0){
 				for(Interest interest : list){
@@ -62,7 +62,7 @@ public class InterestController extends BaseController {
 	public Tips editUserInterest (@RequestParam(value = "interestList", required = true) List<String> interestList) {
 		super.validLogined();
 		if(isLogined) {
-			boolean result = interestServices.editUserInterest(user.getId(), interestList);
+			boolean result = interestServices.editUserInterest(currentLoginedUser.getId(), interestList);
 			if(result){
 				tips = new Tips("保存兴趣成功！", true);
 			}

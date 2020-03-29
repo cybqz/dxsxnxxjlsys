@@ -44,10 +44,7 @@
     </where>
   </sql>
   <insert id="insert" parameterType="com.cyb.blogserver.domain.ShareObject" >
-    insert into share_object (id, user_id, title, 
-      flag, discribe, img_src, 
-      price, shared, author_name, hot
-      create_date_time)
+    insert into share_object (id, user_id, title, flag, discribe, img_src, price, shared, author_name, hot, create_date_time)
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
       #{flag,jdbcType=VARCHAR}, #{discribe,jdbcType=VARCHAR}, #{imgSrc,jdbcType=VARCHAR}, 
       #{price,jdbcType=DECIMAL}, #{shared,jdbcType=INTEGER}, #{authorName,jdbcType=VARCHAR}, 

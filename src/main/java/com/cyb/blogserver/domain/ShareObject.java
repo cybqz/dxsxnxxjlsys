@@ -1,5 +1,6 @@
 package com.cyb.blogserver.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -26,6 +27,7 @@ public class ShareObject {
 
     private Integer hot;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createDateTime;
 
 }

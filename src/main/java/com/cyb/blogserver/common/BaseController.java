@@ -12,7 +12,7 @@ public class BaseController {
     @Autowired
     private UserValidate userValidate;
 
-    public User user;
+    public User currentLoginedUser;
 
     protected boolean isLogined = false;
 
@@ -24,8 +24,8 @@ public class BaseController {
     public void validLogined(){
 
         tips = new Tips("success", true, true);
-        user = userValidate.isLoginAuthenticated();
-        isLogined = null != user;
+        currentLoginedUser = userValidate.isLoginAuthenticated();
+        isLogined = null != currentLoginedUser;
         if(!isLogined){
             tips = new Tips("请先登陆", true, false);
         }

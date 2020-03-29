@@ -43,7 +43,7 @@ public class ForumMessageController extends BaseController {
 
             if(StringUtils.isNotEmpty(forumMessage.getContent())){
                 forumMessage.setId(MyUtils.getPrimaryKey());
-                forumMessage.setUserId(user.getId());
+                forumMessage.setUserId(currentLoginedUser.getId());
                 forumMessage.setCollectCount(0);
                 forumMessage.setDiscussCount(0);
                 forumMessage.setForwardCount(0);
@@ -66,34 +66,61 @@ public class ForumMessageController extends BaseController {
         super.validLogined();
         if(isLogined){
             tips = new Tips("查询成功", true, true);
-            List<ForumMessage> listVO = null;
+            List<ForumMessageVO> listVO = null;
             int count = forumMessageService.countByForumMessage(forumMessage);
             List<ForumMessage> list =  forumMessageService.selectSelective(forumMessage, pagenation.getPageIndex(), pagenation.getPageSize());
             if(null != list && !list.isEmpty()){
 
                 listVO = new ArrayList<>(list.size());
-                for(ForumMessage message : list){
-                    ForumMessageVO vo = new ForumMessageVO();
-                    BeanUtils.copyProperties(message, vo);
-                    User user = userServices.selectByPrimaryKey(message.getUserId());
-                    if(null != user){
-                        vo.setName(user.getUserName());
-                        vo.setUserImg(user.getImage());
-                    }
-                    ForumPraise praise = new ForumPraise();
-                    praise.setUserId(user.getId());
-                    praise.setMessageId(message.getId());
-                    List<ForumPraise> parseList = forumPraiseService.selectSelective(praise);
-                    if(parseList != null && !parseList.isEmpty()){
-                        vo.setPraise(true);
-                    }
-                    listVO.add(vo);
-                }
+                setVO(list, listVO);
             }
             pagenation.setDataCount(count);
             tips.setPagenation(pagenation);
             tips.setData(listVO);
         }
         return tips;
+    }
+
+    @RequestMapping(value="/mypage")
+    @ResponseBody
+    public Tips mypage (ForumMessage forumMessage, Pagenation pagenation) {
+        super.validLogined();
+        if(isLogined){
+            tips = new Tips("查询成功", true, true);
+            List<ForumMessageVO> listVO = null;
+            forumMessage.setUserId(currentLoginedUser.getId());
+            int count = forumMessageService.countByForumMessage(forumMessage);
+            List<ForumMessage> list =  forumMessageService.selectSelective(forumMessage, pagenation.getPageIndex(), pagenation.getPageSize());
+            if(null != list && !list.isEmpty()){
+
+                listVO = new ArrayList<>(list.size());
+                setVO(list, listVO);
+            }
+            pagenation.setDataCount(count);
+            tips.setPagenation(pagenation);
+            tips.setData(listVO);
+        }
+        return tips;
+    }
+
+    private void setVO(List<ForumMessage> list, List<ForumMessageVO> listVO){
+
+        for(ForumMessage message : list){
+            ForumMessageVO vo = new ForumMessageVO();
+            BeanUtils.copyProperties(message, vo);
+            User user = userServices.selectByPrimaryKey(message.getUserId());
+            if(null != user){
+                vo.setName(user.getUserName());
+                vo.setUserImg(user.getImage());
+            }
+            ForumPraise praise = new ForumPraise();
+            praise.setUserId(currentLoginedUser.getId());
+            praise.setMessageId(message.getId());
+            List<ForumPraise> parseList = forumPraiseService.selectSelective(praise);
+            if(parseList != null && !parseList.isEmpty()){
+                vo.setPraise(true);
+            }
+            listVO.add(vo);
+        }
     }
 }

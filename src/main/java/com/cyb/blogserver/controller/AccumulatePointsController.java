@@ -26,7 +26,7 @@ public class AccumulatePointsController extends BaseController {
         super.validLogined();
         if(isLogined){
             tips.setMsg("积分新增失败");
-            accumulatePointsServices.addPoints(user.getId(), Constant.PARAMES_NAME_SIGNIN);
+            accumulatePointsServices.addPoints(currentLoginedUser.getId(), Constant.PARAMES_NAME_SIGNIN);
             tips = new Tips("积分新增成功", true, true);
         }
         return tips;
@@ -38,7 +38,7 @@ public class AccumulatePointsController extends BaseController {
         super.validLogined();
         if(isLogined){
             tips.setMsg("查询积分失败");
-            AccumulatePoints params = new AccumulatePoints(null, user.getId(), null, null, null);
+            AccumulatePoints params = new AccumulatePoints(null, currentLoginedUser.getId(), null, null, null);
             AccumulatePoints accumulatePoints = accumulatePointsServices.selectOneSelective(params);
             tips = new Tips("查询积分成功", true, true);
             tips.setData(accumulatePoints);
@@ -73,8 +73,8 @@ public class AccumulatePointsController extends BaseController {
         super.validLogined();
         if(isLogined){
             tips.setMsg("查询积分失败");
-            AccumulatePoints params = new AccumulatePoints(null, user.getId(), null, null, null);
-            List<AccumulatePointsVO> accumulatePoints = accumulatePointsServices.selectFriendsTopTen(user.getId());
+            AccumulatePoints params = new AccumulatePoints(null, currentLoginedUser.getId(), null, null, null);
+            List<AccumulatePointsVO> accumulatePoints = accumulatePointsServices.selectFriendsTopTen(currentLoginedUser.getId());
             tips = new Tips("查询积分成功", true, true);
             tips.setData(accumulatePoints);
         }

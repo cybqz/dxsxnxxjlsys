@@ -1,7 +1,10 @@
 debug: false
 
+web:
+  upload-path: F:/log/
+
 server:
-   port: 9099
+   port: 9090
 spring:
   application:
     name: clegstdehalearningserver
@@ -32,6 +35,8 @@ spring:
     multipart:
       max-request-size: 10MB
       max-file-size: 2MB
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/, classpath:/static/, classpath:/public/, file:${web:upload-path}
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

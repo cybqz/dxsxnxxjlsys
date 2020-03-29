@@ -18,11 +18,4 @@ public class ClegStdEhaLearningApplication{
 
         SpringApplication.run(ClegStdEhaLearningApplication.class, args);
     }
-
-    /*@Override
-     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-         registry.addResourceHandler("/**")
-                 .addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/");
-         super.addResourceHandlers(registry);
-     }*/
 }

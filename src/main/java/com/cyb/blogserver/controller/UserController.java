@@ -52,11 +52,11 @@ public class UserController extends BaseController {
 			}else if(StringUtils.isBlank(param.getPhone())) {
 				tips.setMsg("联系方式不能为空！");
 			}else {
-				user.setName(param.getName());
-				user.setEmail(param.getEmail());
-				user.setPhone(param.getPhone());
-				user.setUserName(param.getUserName());
-				int count = userSerivces.updateByPrimaryKey(user);
+				currentLoginedUser.setName(param.getName());
+				currentLoginedUser.setEmail(param.getEmail());
+				currentLoginedUser.setPhone(param.getPhone());
+				currentLoginedUser.setUserName(param.getUserName());
+				int count = userSerivces.updateByPrimaryKey(currentLoginedUser);
 				if(count > 0) {
 					tips = new Tips("修改成功！", true);
 				}else {
@@ -75,8 +75,8 @@ public class UserController extends BaseController {
 			if(StringUtils.isBlank(param.getIntroduce())) {
 				tips.setMsg("用户简介不能为空！");
 			}else {
-				user.setIntroduce(param.getIntroduce());
-				int count = userSerivces.updateByPrimaryKey(user);
+				currentLoginedUser.setIntroduce(param.getIntroduce());
+				int count = userSerivces.updateByPrimaryKey(currentLoginedUser);
 				if(count > 0) {
 					tips = new Tips("修改成功！", true);
 				}else {
@@ -118,8 +118,8 @@ public class UserController extends BaseController {
 	public UserRolePermissionVO getUser () {
 		super.validLogined();
 		if(isLogined) {
-			UserRolePermissionVO userRolePermissionVO = UserRolePermissionVO.toUserRolePermissionVO(user);
-			List<UserRole> userRoles = userRoleServices.selectByUserId(user.getId());
+			UserRolePermissionVO userRolePermissionVO = UserRolePermissionVO.toUserRolePermissionVO(currentLoginedUser);
+			List<UserRole> userRoles = userRoleServices.selectByUserId(currentLoginedUser.getId());
 			if(userRoles != null && userRoles.size() > 0) {
 				List<RolePermissionVO> rolePermissionVOs = new ArrayList<RolePermissionVO>();
 				for(UserRole userRole : userRoles) {

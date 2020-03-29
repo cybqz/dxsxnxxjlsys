@@ -27,7 +27,7 @@ public class ShareObjectController extends BaseController {
 	public Tips add (ShareObject shareObject) {
 		super.validLogined();
 		if(isLogined) {
-			shareObject.setUserId(user.getId());
+			shareObject.setUserId(currentLoginedUser.getId());
 			int add = shareObjectServices.insert(shareObject);
 			if(add > 0){
 				tips = new Tips("添加成功！", true, true);
@@ -52,7 +52,7 @@ public class ShareObjectController extends BaseController {
 		super.validLogined();
 		if(isLogined) {
 			List<ShareObject> list = shareObjectServices.selectSelective(usedBook, pagenation);
-			tips = new Tips("查询成功！", true, false);
+			tips = new Tips("查询成功！", true, true);
 			tips.setData(list);
 			tips.setPagenation(pagenation);
 		}
@@ -65,7 +65,7 @@ public class ShareObjectController extends BaseController {
 		super.validLogined();
 		if(isLogined) {
 			List<ShareObject> list = shareObjectServices.hotsearch(usedBook, pagenation);
-			tips = new Tips("查询成功！", true, false);
+			tips = new Tips("查询成功！", true, true);
 			tips.setData(list);
 			tips.setPagenation(pagenation);
 		}
