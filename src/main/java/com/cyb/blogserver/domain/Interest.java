@@ -15,7 +15,7 @@ public class Interest {
 
     private Date createDate;
 
-    private Parames parames;
+    private String value;
 
     public Interest(String id, String userId, String parameId, Date createDate) {
         this.id = id;

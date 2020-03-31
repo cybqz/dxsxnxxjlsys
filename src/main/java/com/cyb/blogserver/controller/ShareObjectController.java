@@ -59,6 +59,20 @@ public class ShareObjectController extends BaseController {
 		return tips;
 	}
 
+	@RequestMapping(value="/mypage")
+	@ResponseBody
+	public Tips myPage (ShareObject usedBook, Pagenation pagenation) {
+		super.validLogined();
+		if(isLogined) {
+			usedBook.setUserId(currentLoginedUser.getId());
+			List<ShareObject> list = shareObjectServices.selectSelective(usedBook, pagenation);
+			tips = new Tips("查询成功！", true, true);
+			tips.setData(list);
+			tips.setPagenation(pagenation);
+		}
+		return tips;
+	}
+
 	@RequestMapping(value="/hotsearch")
 	@ResponseBody
 	public Tips hotsearch (ShareObject usedBook, Pagenation pagenation) {

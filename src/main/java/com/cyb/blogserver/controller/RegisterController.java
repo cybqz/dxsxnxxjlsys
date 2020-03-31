@@ -31,9 +31,6 @@ public class RegisterController {
 	private UserServices userSerivces;
 
 	@Autowired
-	private ParamesServices paramesServices;
-
-	@Autowired
 	private InterestServices interestServices;
 	
 	@RequestMapping(value="/register")
@@ -43,12 +40,10 @@ public class RegisterController {
 		if(userCreate != null) {
 			String username = userCreate.getUserName();
 			int sex = userCreate.getSex();
-			R validateInterest = validateInterest(userCreate.getInterestList());
-			if(!validateInterest.isSuccess()){
-				tips.setMsg(validateInterest.getMsg());
-			}else{
-				if(StringUtils.isNotBlank(username) && StringUtils.isNotBlank(userCreate.getPassword()) &&
-						(sex == 0 || sex == 1)) {
+			if(StringUtils.isNotBlank(username) && StringUtils.isNotBlank(userCreate.getPassword()) &&
+					(sex == 0 || sex == 1)) {
+				R r = interestServices.validateInterest(userCreate.getInterestList());
+				if(r.isSuccess()){
 					//检查用户名是否存在
 					User userTemp = userSerivces.selectByUserName(username);
 					if(null != userTemp) {
@@ -61,30 +56,16 @@ public class RegisterController {
 						user.setId(userId);
 						int count = userSerivces.insert(user, url);
 						if(count > 0) {
-							List<String> list = userCreate.getInterestList();
-							for(String parameId : list){
-								Interest interest = new Interest(MyUtils.getPrimaryKey(), userId, parameId, new Date());
-								interestServices.insert(interest);
-							}
+							interestServices.editUserInterest(userId, userCreate.getInterestList());
 							tips = new Tips("注册成功", true);
 						}
 					}
+				}else{
+					tips.setMsg(r.getMsg());
+					tips.setValidate(r.isSuccess());
 				}
 			}
 		}
 		return tips;
-	}
-
-	private R validateInterest(List<String> list){
-		if(list != null && !list.isEmpty()){
-			for(String parameId : list){
-				Parames parames = paramesServices.selectByPrimaryKey(parameId);
-				if(parames == null){
-					return R.fail("选择的兴趣不存在");
-				}
-			}
-			return R.success("success");
-		}
-		return R.fail("未选择兴趣标签");
 	}
 }

@@ -164,6 +164,9 @@
     <if test="shareObject.flag != null and shareObject.flag != ''">
       and flag = #{shareObject.flag,jdbcType=VARCHAR}
     </if>
+    <if test="shareObject.userId != null and shareObject.userId != ''">
+      and user_id = #{shareObject.userId,jdbcType=VARCHAR}
+    </if>
     order by create_date_time desc
     <if test="pagenation != null and pagenation.pageIndex != null and pagenation.pageSize != null">
       limit #{pagenation.pageIndex,jdbcType=INTEGER}, #{pagenation.pageSize,jdbcType=INTEGER}

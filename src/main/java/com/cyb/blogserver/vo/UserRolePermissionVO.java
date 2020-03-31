@@ -29,6 +29,7 @@ public class UserRolePermissionVO extends User {
 		vo.setAddress(user.getAddress());
 		vo.setPassword(user.getPassword());
 		vo.setUserName(user.getUserName());
+		vo.setIntroduce(user.getIntroduce());
 		return vo;
 	}
 }

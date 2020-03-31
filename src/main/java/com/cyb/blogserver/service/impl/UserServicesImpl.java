@@ -88,25 +88,22 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	@Override
-	public Tips signin() {
+	public Tips signin(User user) {
 		Tips tips = new Tips("false", false);
-		User user = userValidate.isLoginNoAuthenticated();
-		if(user != null) {
-			Date now = new Date();
-			Signin signinParam = new Signin(null, user.getId(), MyUtils.parse("yyyyMMDD", now));
-			Signin signin = signinMapper.selectOneByUserDateTime(signinParam);
-			if(null == signin){
-				//签到
-				signinParam.setDatetime(now);
-				signinParam.setId(MyUtils.getPrimaryKey());
-				signinMapper.insert(signinParam);
+		Date now = new Date();
+		Signin signinParam = new Signin(null, user.getId(), MyUtils.parse("yyyyMMDD", now));
+		Signin signin = signinMapper.selectOneByUserDateTime(signinParam);
+		if(null == signin){
+			//签到
+			signinParam.setDatetime(now);
+			signinParam.setId(MyUtils.getPrimaryKey());
+			signinMapper.insert(signinParam);
 
-				//增加积分
-				accumulatePointsServices.addPoints(user.getId(), Constant.PARAMES_NAME_SIGNIN);
-				tips = new Tips("签到成功！", true);
-			}else{
-				tips = new Tips("今天已签到！", true);
-			}
+			//增加积分
+			accumulatePointsServices.addPoints(user.getId(), Constant.PARAMES_NAME_SIGNIN);
+			tips = new Tips("签到成功！", true);
+		}else{
+			tips = new Tips("今天已签到！", true);
 		}
 		return tips;
 	}

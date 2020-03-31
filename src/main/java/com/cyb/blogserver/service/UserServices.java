@@ -27,5 +27,5 @@ public interface UserServices {
      * 签到
      * @return
      */
-    public Tips signin();
+    public Tips signin(User user);
 }

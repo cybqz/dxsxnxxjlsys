@@ -1,6 +1,7 @@
 package com.cyb.blogserver.common;
 
 import com.cyb.blogserver.domain.User;
+import com.cyb.blogserver.service.UserServices;
 import com.cyb.blogserver.utils.UserValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,6 +12,9 @@ public class BaseController {
 
     @Autowired
     private UserValidate userValidate;
+
+    @Autowired
+    private UserServices userServices;
 
     public User currentLoginedUser;
 
@@ -24,10 +28,12 @@ public class BaseController {
     public void validLogined(){
 
         tips = new Tips("success", true, true);
-        currentLoginedUser = userValidate.isLoginAuthenticated();
-        isLogined = null != currentLoginedUser;
+        User user = userValidate.isLoginAuthenticated();
+        isLogined = null != user;
         if(!isLogined){
             tips = new Tips("请先登陆", true, false);
+        }else{
+            currentLoginedUser = userServices.selectByUserName(user.getUserName());
         }
     }
 }

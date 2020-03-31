@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.cyb.blogserver.common.BaseController;
+import com.cyb.blogserver.domain.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,11 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import com.cyb.blogserver.domain.User;
-import com.cyb.blogserver.domain.UserRole;
 import com.cyb.blogserver.vo.UserRolePermissionVO;
-import com.cyb.blogserver.domain.Permission;
-import com.cyb.blogserver.domain.RolePermission;
 import com.cyb.blogserver.vo.RolePermissionVO;
 import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.service.PermissionServices;
@@ -39,41 +36,13 @@ public class UserController extends BaseController {
 	
 	@RequestMapping(value="/update")
 	@ResponseBody
-	public Tips update (User param) {
-
-		super.validLogined();
-		if(isLogined) {
-			if(StringUtils.isBlank(param.getName())) {
-				tips.setMsg("用户名不能为空！");
-			}else if(StringUtils.isBlank(param.getUserName())) {
-				tips.setMsg("姓名不能为空！");
-			}else if(StringUtils.isBlank(param.getEmail())) {
-				tips.setMsg("邮箱地址不能为空！");
-			}else if(StringUtils.isBlank(param.getPhone())) {
-				tips.setMsg("联系方式不能为空！");
-			}else {
-				currentLoginedUser.setName(param.getName());
-				currentLoginedUser.setEmail(param.getEmail());
-				currentLoginedUser.setPhone(param.getPhone());
-				currentLoginedUser.setUserName(param.getUserName());
-				int count = userSerivces.updateByPrimaryKey(currentLoginedUser);
-				if(count > 0) {
-					tips = new Tips("修改成功！", true);
-				}else {
-					tips.setMsg("修改失败！");
-				}
-			}
-		}
-		return tips;
-	}
-	
-	@RequestMapping(value="/updateIntroduce")
-	@ResponseBody
 	public Tips updateIntroduce (User param) {
 		super.validLogined();
 		if(isLogined) {
 			if(StringUtils.isBlank(param.getIntroduce())) {
 				tips.setMsg("用户简介不能为空！");
+			}else if(StringUtils.isBlank(param.getUserName())){
+				tips.setMsg("用户名称不能为空！");
 			}else {
 				currentLoginedUser.setIntroduce(param.getIntroduce());
 				int count = userSerivces.updateByPrimaryKey(currentLoginedUser);
@@ -145,16 +114,5 @@ public class UserController extends BaseController {
 			return userRolePermissionVO;
 		}
 		return null;
-	}
-
-
-	/**
-	 * 签到
-	 * @return
-	 */
-	@RequestMapping(value="/signin")
-	@ResponseBody
-	public Tips signin () {
-		return userSerivces.signin();
 	}
 }

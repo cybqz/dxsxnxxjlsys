@@ -27,7 +27,7 @@ public class LoginServicesImpl implements LoginServices {
 
 	@Override
 	public Tips login(User user) {
-		Tips tips = new Tips("false", false);
+		Tips tips = new Tips("登陆失败", false);
 		JSONObject loginResult = authorityLoginService.doLogin(user.getUserName(), user.getPassword());
 		if(null != loginResult && loginResult.containsKey("authToken")){
 			JSONObject result = new JSONObject();

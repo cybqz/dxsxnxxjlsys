@@ -30,7 +30,8 @@ public class UploadController extends BaseController {
 
 	private static String IMG_SUFFIX = "png,jpg";
 
-	@PostMapping(value = "/image", headers="content-type=multipart/form-data")
+	@PostMapping(value = "/image")
+	//@PostMapping(value = "/image", headers="content-type=multipart/form-data")
 	@ResponseBody
 	public Tips image(@RequestParam("file") MultipartFile file) {
 

@@ -5,15 +5,18 @@ import com.cyb.authority.utils.EncryptionDecrypt;
 import com.cyb.blogserver.common.Constant;
 import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.dao.InterestMapper;
+import com.cyb.blogserver.dao.ParamesMapper;
 import com.cyb.blogserver.dao.SigninMapper;
 import com.cyb.blogserver.dao.UserMapper;
 import com.cyb.blogserver.domain.Interest;
+import com.cyb.blogserver.domain.Parames;
 import com.cyb.blogserver.domain.Signin;
 import com.cyb.blogserver.domain.User;
 import com.cyb.blogserver.service.InterestServices;
 import com.cyb.blogserver.service.UserServices;
 import com.cyb.blogserver.utils.MyUtils;
 import com.cyb.blogserver.utils.UserValidate;
+import com.cyb.forum.common.R;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,9 @@ public class InterestServicesImpl implements InterestServices {
 	
 	@Resource
 	private InterestMapper interestMapper;
+
+	@Resource
+	private ParamesMapper paramesMapper;
 
 	@Override
 	public int deleteByPrimaryKey(String id) {
@@ -73,26 +79,46 @@ public class InterestServicesImpl implements InterestServices {
 	 * @return
 	 */
 	@Override
-	public boolean editUserInterest(String id, List<String> interestList) {
+	public R editUserInterest(String id, List<String> interestList) {
 
 		if(null != interestList && interestList.size() > 0 && interestList.size() <= MAX_USER_INTEREST_COUNT){
 
-			//删除旧的用户兴趣
-			Interest interestParamme = new Interest(null, id, null, null);
-			List<Interest> list = interestMapper.selectSelective(interestParamme);
-			if(null != list || list.size() > 0){
-				for(Interest interest : list){
-					interestMapper.deleteByPrimaryKey(interest.getId());
+			R validateInterest = validateInterest(interestList);
+			if(validateInterest.isSuccess()){
+
+				//删除旧的用户兴趣
+				Interest interestParamme = new Interest(null, id, null, null);
+				List<Interest> list = interestMapper.selectSelective(interestParamme);
+				if(null != list || list.size() > 0){
+					for(Interest interest : list){
+						interestMapper.deleteByPrimaryKey(interest.getId());
+					}
+				}
+
+				for(int i = 0; i < interestList.size(); i++){
+					Interest interest = new Interest(MyUtils.getPrimaryKey(), id, interestList.get(i), new Date());
+					interestMapper.insert(interest);
+				}
+
+				return R.success("兴趣编辑成功");
+			}else{
+				return validateInterest;
+			}
+		}
+		return R.fail("兴趣选择错误");
+	}
+
+	@Override
+	public R validateInterest(List<String> list){
+		if(list != null && !list.isEmpty()){
+			for(String parameId : list){
+				Parames parames = paramesMapper.selectByPrimaryKey(parameId);
+				if(parames == null){
+					return R.fail("选择的兴趣不存在");
 				}
 			}
-
-			for(int i = 0; i < interestList.size(); i++){
-				Interest interest = new Interest(MyUtils.getPrimaryKey(), id, interestList.get(i), new Date());
-				interestMapper.insert(interest);
-			}
-
-			return true;
+			return R.success("success");
 		}
-		return false;
+		return R.fail("未选择兴趣标签");
 	}
 }

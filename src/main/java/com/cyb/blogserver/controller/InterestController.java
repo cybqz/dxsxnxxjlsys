@@ -9,6 +9,7 @@ import com.cyb.blogserver.domain.User;
 import com.cyb.blogserver.service.InterestServices;
 import com.cyb.blogserver.service.ParamesServices;
 import com.cyb.blogserver.utils.UserValidate;
+import com.cyb.forum.common.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +45,7 @@ public class InterestController extends BaseController {
 			if(null != list && list.size() > 0){
 				for(Interest interest : list){
 					Parames parames = paramesServices.selectByPrimaryKey(interest.getParameId());
-					interest.setParames(parames);
+					interest.setValue(parames.getValue());
 				}
 			}
 			tips = new Tips("true", true, list);
@@ -62,9 +63,12 @@ public class InterestController extends BaseController {
 	public Tips editUserInterest (@RequestParam(value = "interestList", required = true) List<String> interestList) {
 		super.validLogined();
 		if(isLogined) {
-			boolean result = interestServices.editUserInterest(currentLoginedUser.getId(), interestList);
-			if(result){
-				tips = new Tips("保存兴趣成功！", true);
+			if(null == interestList || interestList.isEmpty()){
+				tips.setMsg("兴趣标签未选择");
+			}else{
+				R result = interestServices.editUserInterest(currentLoginedUser.getId(), interestList);
+				tips.setMsg(result.getMsg());
+				tips.setValidate(result.isSuccess());
 			}
 		}
 		return tips;
