@@ -157,7 +157,7 @@ export default {
   },
   mounted(){
     this.loadHotData();
-    this.loadNewData()
+    this.loadNewData();
   }
 }
 </script>

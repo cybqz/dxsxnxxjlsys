@@ -129,52 +129,16 @@ export default {
         {
           'party':'计算机学习',
           'num':'34'
-        },
-        {
-          'party':'计算机学习',
-          'num':'34'
-        },
-        {
-          'party':'计算机学习',
-          'num':'34'
-        },
-        {
-          'party':'计算机学习',
-          'num':'34'
         }
       ],
       hotList:[
-        
         {
           'src':require('@/assets/images/4.jpg'),
           'title':'三国志',
           "discrib":'三国志三国志三国志',
           'price':'赠送',
           "time":'2019-09-09 18:36:42'
-        },
-        {
-          'src':require('@/assets/images/5.jpg'),
-          'title':'考研套题全套',
-          "discrib":'考研套题全套考研套题全套考研套题全套',
-          'price':'面议',
-          "time":'2019-09-09 18:36:42'
-        },
-        {
-          'src':require('@/assets/images/1.jpg'),
-          'title':'考研笔记',
-          "discrib":'去买买的考研笔记去1买的考研笔去买买的2研笔去买买的考研笔3去买买的考研三十个字',
-          'price':'123',
-          "time":'2019-09-09 18:36:42'
-
-        },
-        {
-          'src':require('@/assets/images/2.jpg'),
-          'title':'三国志',
-          "discrib":'三国志三国志三国志',
-          'price':'赠送',
-          "time":'2019-09-09 18:36:42'
         }
-
       ],
       dataList:[
         {
@@ -185,34 +149,7 @@ export default {
           'zanNum':'2312',
           'zan':'Y',
           'pinglun':'45454'
-        },
-        {
-          'name':'你好呀小胖胖',
-          'time':'2019-09-09',
-          'text':'哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀',
-          'img':[require('@/assets/images/8.jpg'),require('@/assets/images/1.jpg')],
-          'zanNum':'2312',
-          'zan':'N',
-          'pinglun':'45454'
-        },
-        {
-          'name':'你好呀小胖胖',
-          'time':'2019-09-09',
-          'text':'哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀',
-          'img':[require('@/assets/images/7.jpg')],
-          'zanNum':'2312',
-          'zan':'Y',
-          'pinglun':'45454'
-        },
-        {
-          'name':'你好呀小胖胖',
-          'time':'2019-09-09',
-          'text':'哎呀呀呀哎呀呀呀哎呀呀呀哎呀呀呀',
-          'img':[require('@/assets/images/2.jpg'),require('@/assets/images/4.jpg')],
-          'zanNum':'2312',
-          'zan':'N',
-          'pinglun':'45454'
-        },
+        }
       ],
       topList:[],
       

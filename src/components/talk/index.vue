@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="containCenter pad15">
-          <div class="detailText">{{getText(item.content)}} <span v-if="item.content.length>100" class="blue"> 全文</span> </div>
+          <div class="detailText">{{getText(item.content)}} <span v-if="checkContent(item.content)" class="blue"> 全文</span> </div>
           
           <div class="detailImg">
             <!-- <div v-for="(src, index) in item.img" :key="index">
@@ -53,8 +53,8 @@
         </div>
         <div class="containBottom">
           <span  class="">
-            <img v-if="item.zan =='Y'" src="@/assets/images/zanY.png" >
-            <img v-else src="@/assets/images/zanN.png" >
+            <img v-if="item.praise" src="@/assets/images/zanY.png" >
+            <img v-else src="@/assets/images/zanN.png" @click="doPraise(item)" class="putHover">
             {{item.praiseCount}}
           </span>
         </div>
@@ -71,17 +71,7 @@ export default {
   data () {
     return {
       message:"",
-      dataList:[
-        {
-          'name':'你好呀小胖胖',
-          'time':'2019-09-09',
-          'text':'哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和啊哈哈啊哈啊哈和哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和',
-          'img':[require('@/assets/images/5.jpg'),require('@/assets/images/6.jpg'),require('@/assets/images/3.jpg')],
-          'zanNum':'2312',
-          'zan':'Y',
-          'pinglun':'45454'
-        }
-      ],
+      dataList:[],
      
     }
   },
@@ -95,25 +85,44 @@ export default {
           method:'post',
           url:'forummessabe/page',
           data:$this.qs.stringify({    //这里是发送给后台的数据
-            title:this.message
+            content:this.message
           })
-      }).then((res) =>{          //这里使用了ES6的语法
-        this.dataList = res.data.data
+      }).then((res) =>{ 
+        this.dataList = [];         //这里使用了ES6的语法
+        this.dataList = res.data.data;
       })
     },
     
     //过滤内容文字多余100字加省略号缩略
     getText(text){
-      if(text.length>100){
+      if(text && text.length>100){
         return text.substring(0,100)+'...';
       }else{
         return text;
       }
     },
+    //判断是否显示全文按钮
+    checkContent(text){
+      return (text && text.length>100);
+    },
     readAll(){
       this.$router.push({
         path: '/readAll',
       })
+    },
+    //点赞操作
+    doPraise(item){
+      if(item && item.id){
+        let $this = this
+        this.$axios({
+            method:'post',
+            url:'forumpraise/praise',
+            data:$this.qs.stringify({    //这里是发送给后台的数据
+              messageId:item.id
+            })
+        }).then((res) =>{          //这里使用了ES6的语法
+        })
+      }
     }
   },
   mounted(){

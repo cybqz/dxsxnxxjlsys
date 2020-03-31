@@ -101,9 +101,15 @@ export default {
   methods:{
     //退出登录
     quit(){
-      sessionStorage.clear();
-      this.$router.push({
-        path: '/',
+      this.$axios({
+          method:'post', url:'login/logout',
+      }).then((res) =>{
+        sessionStorage.clear();
+        let routerpath = this.$route.fullpath;
+        if(routerpath !== '/'){
+          console.log('push route ........');
+          this.$router.push({path: '/'})
+        }
       })
     },
     //切换导航
@@ -113,21 +119,26 @@ export default {
 				case 0:
           this.$router.push({
             path: '/',
+            name: 'home'
           })
 					break;
 				case 1:
 					this.$router.push({
-						path: '/share',
+            path: '/share',
+            name: 'share'
 					})
 					break;
 				case 2:
 					this.$router.push({
-						path: '/talk',
+            path: '/talk',
+            name: 'talk'
+            
 					})
 					break;
 				case 3:
 					this.$router.push({
-						path: '/team',
+            path: '/team',
+            name: 'team'
 					})
 					break;		
 				default:
@@ -135,9 +146,8 @@ export default {
 			}
 		
     }
-
-
-  }
+  },
+  mounted(){}
 }
 </script>
 
