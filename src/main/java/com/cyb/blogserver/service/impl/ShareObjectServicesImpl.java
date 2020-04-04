@@ -31,6 +31,11 @@ public class ShareObjectServicesImpl implements ShareObjectServices {
     }
 
     @Override
+    public int deleteByPrimaryKey(String id){
+        return shareObjectMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
     public ShareObject selectByPrimaryKey(String id) {
         return shareObjectMapper.selectByPrimaryKey(id);
     }

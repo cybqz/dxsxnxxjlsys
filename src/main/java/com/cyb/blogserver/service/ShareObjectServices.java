@@ -11,6 +11,8 @@ public interface ShareObjectServices {
 
     int insertSelective(ShareObject record);
 
+    int deleteByPrimaryKey(String id);
+
     ShareObject selectByPrimaryKey(String id);
 
     List<ShareObject> hotsearch(ShareObject record, Pagenation pagenation);

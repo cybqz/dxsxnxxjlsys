@@ -124,6 +124,10 @@
     </trim>
   </insert>
 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from share_object where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
   <update id="updateHotByPrimaryKey" parameterType="com.cyb.blogserver.domain.ShareObject">
     update share_object set hot = #{hot,jdbcType=INTEGER} where id = #{id,jdbcType=VARCHAR}
   </update>

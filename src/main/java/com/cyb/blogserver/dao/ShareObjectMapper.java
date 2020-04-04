@@ -14,6 +14,8 @@ public interface ShareObjectMapper {
 
     int insertSelective(ShareObject record);
 
+    int deleteByPrimaryKey(String id);
+
     int updateHotByPrimaryKey(ShareObject record);
 
     int countByShareObject(ShareObject shareObject);

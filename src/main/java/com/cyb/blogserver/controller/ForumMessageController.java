@@ -60,6 +60,31 @@ public class ForumMessageController extends BaseController {
         return tips;
     }
 
+    @RequestMapping(value="/delete")
+    @ResponseBody
+    public Tips delete (String id) {
+        super.validLogined();
+        if(isLogined) {
+            if(StringUtils.isNotEmpty(id)){
+                ForumMessage message = forumMessageService.selectByPrimaryKey(id);
+                if(message != null){
+                    if(message.getUserId().equals(currentLoginedUser.getId())){
+                        forumMessageService.deleteByPrimaryKey(id);
+                        tips.setValidate(true);
+                        tips.setMsg("删除成功");
+                    }else {
+                        tips.setMsg("删除权限不足");
+                    }
+                }else{
+                    tips.setMsg("对象不存在");
+                }
+            }else{
+                tips.setMsg("ID不能为空");
+            }
+        }
+        return tips;
+    }
+
     @RequestMapping(value="/page")
     @ResponseBody
     public Tips page (ForumMessage forumMessage, Pagenation pagenation) {

@@ -5,6 +5,7 @@ import com.cyb.blogserver.common.Pagenation;
 import com.cyb.blogserver.common.Tips;
 import com.cyb.blogserver.domain.ShareObject;
 import com.cyb.blogserver.service.ShareObjectServices;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class ShareObjectController extends BaseController {
 	public Tips add (ShareObject shareObject) {
 		super.validLogined();
 		if(isLogined) {
+			shareObject.setHot(0);
 			shareObject.setUserId(currentLoginedUser.getId());
 			int add = shareObjectServices.insert(shareObject);
 			if(add > 0){
@@ -41,7 +43,23 @@ public class ShareObjectController extends BaseController {
 	public Tips delete (String id) {
 		super.validLogined();
 		if(isLogined) {
+			if(StringUtils.isNotEmpty(id)){
 
+				ShareObject object = shareObjectServices.selectByPrimaryKey(id);
+				if(null != object){
+					if(object.getUserId().equals(currentLoginedUser.getId())){
+						shareObjectServices.deleteByPrimaryKey(id);
+						tips.setValidate(true);
+						tips.setMsg("删除成功");
+					}else {
+						tips.setMsg("删除权限不足");
+					}
+				}else{
+					tips.setMsg("对象不存在");
+				}
+			}else{
+				tips.setMsg("ID不能为空");
+			}
 		}
 		return tips;
 	}
