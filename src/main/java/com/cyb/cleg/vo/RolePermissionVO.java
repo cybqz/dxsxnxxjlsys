@@ -1,0 +1,28 @@
+package com.cyb.cleg.vo;
+
+import com.cyb.cleg.domain.Permission;
+import com.cyb.cleg.domain.UserRole;
+
+import java.util.List;
+
+public class RolePermissionVO extends UserRole {
+    
+	private List<Permission> permissions;
+
+	public List<Permission> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(List<Permission> permissions) {
+		this.permissions = permissions;
+	}
+
+	public static RolePermissionVO toRolePermissionVO(UserRole userRole) {
+		RolePermissionVO vo = new RolePermissionVO();
+		vo.setId(userRole.getId());
+		vo.setUserId(userRole.getUserId());
+		vo.setRoleId(userRole.getRoleId());
+		vo.setRemarks(userRole.getRemarks());
+		return vo;
+	}
+}

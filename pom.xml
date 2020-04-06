@@ -20,17 +20,12 @@
         <slf4j.version>1.7.24</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <junit.version>4.12</junit.version>
-        <shiro.version>1.2.4</shiro.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -66,6 +61,11 @@
         <dependency>
             <groupId>cyb-spring-boot-stater-forum</groupId>
             <artifactId>forum</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>cyb-spring-boot-stater-chat</groupId>
+            <artifactId>chat</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

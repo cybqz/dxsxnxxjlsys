@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cyb.blogserver.dao.AccumulatePointsMapper" >
-  <resultMap id="BaseResultMap" type="com.cyb.blogserver.domain.AccumulatePoints" >
+<mapper namespace="com.cyb.cleg.dao.AccumulatePointsMapper" >
+  <resultMap id="BaseResultMap" type="com.cyb.cleg.domain.AccumulatePoints" >
     <constructor >
       <arg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -10,13 +10,13 @@
       <arg column="update_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
-  <insert id="insert" parameterType="com.cyb.blogserver.domain.AccumulatePoints" >
+  <insert id="insert" parameterType="com.cyb.cleg.domain.AccumulatePoints" >
     insert into accumulate_points (id, user_id, parame_id, 
       points, update_date)
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{parameId,jdbcType=VARCHAR}, 
       #{points,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.cyb.blogserver.domain.AccumulatePoints" >
+  <insert id="insertSelective" parameterType="com.cyb.cleg.domain.AccumulatePoints" >
     insert into accumulate_points
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

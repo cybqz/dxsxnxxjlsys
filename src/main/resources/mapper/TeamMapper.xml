@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cyb.blogserver.dao.TeamMapper" >
-  <resultMap id="BaseResultMap" type="com.cyb.blogserver.domain.Team" >
+<mapper namespace="com.cyb.cleg.dao.TeamMapper" >
+  <resultMap id="BaseResultMap" type="com.cyb.cleg.domain.Team" >
     <constructor >
       <arg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -9,13 +9,13 @@
       <arg column="create_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
-  <insert id="insert" parameterType="com.cyb.blogserver.domain.Team" >
+  <insert id="insert" parameterType="com.cyb.cleg.domain.Team" >
     insert into team (id, user_id, name, 
       create_date)
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{createDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.cyb.blogserver.domain.Team" >
+  <insert id="insertSelective" parameterType="com.cyb.cleg.domain.Team" >
     insert into team
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -54,7 +54,7 @@
     select * from team where id = #{id,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.cyb.blogserver.domain.Team">
+  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.cyb.cleg.domain.Team">
     select * from team
     where 1 = 1
     <if test="userId != null and userId != ''">
