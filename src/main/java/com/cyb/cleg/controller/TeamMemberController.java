@@ -1,5 +1,6 @@
 package com.cyb.cleg.controller;
 
+import com.cyb.chat.service.CybTeamChatWSService;
 import com.cyb.cleg.common.BaseController;
 import com.cyb.cleg.common.Tips;
 import com.cyb.cleg.domain.TeamMember;
@@ -18,6 +19,9 @@ public class TeamMemberController extends BaseController {
 
 	@Autowired
 	private TeamMemberServices teamMemberServices;
+
+	@Autowired
+	private CybTeamChatWSService cybTeamChatWSService;
 	
 	@RequestMapping(value="/add")
 	@ResponseBody
@@ -25,8 +29,18 @@ public class TeamMemberController extends BaseController {
 		super.validLogined();
 		if(isLogined) {
 			tips.setMsg("添加队员失败");
+			teamMember.setUserId(currentLoginedUser.getId());
 			int result = teamMemberServices.insert(teamMember);
-			if(result > 0){
+			if(result == -3){
+				tips.setMsg("队伍编号不能为空");
+			}else if(result == -2){
+				tips.setMsg("用户编号不能为空");
+			}else if(result == -1){
+				tips.setMsg("队伍已满");
+			}else if(result == 0){
+				tips.setMsg("已经在队伍里了");
+			}else if(result > 0){
+				cybTeamChatWSService.addRegister(teamMember.getTeamId(), currentLoginedUser.getId(), currentLoginedUser.getUserName());
 				tips = new Tips("添加队员成功！", true, true);
 			}
 		}

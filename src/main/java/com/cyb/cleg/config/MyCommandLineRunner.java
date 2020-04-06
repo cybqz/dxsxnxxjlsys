@@ -69,7 +69,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
                         }
                     }
 
-                    R r = cybTeamChatWSService.register(team.getId(), userIdList, userNameList);
+                    R r = cybTeamChatWSService.initRegister(team.getId(), userIdList, userNameList);
                     log.info("register team " + team.getId() + " " + r.getMsg());
                 }
             }

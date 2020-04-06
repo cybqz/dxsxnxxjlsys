@@ -27,7 +27,11 @@ public class TeamMemberServicesImpl implements TeamMemberServices {
 	@Override
 	public int insert(TeamMember record) {
 
-		if(StringUtils.isEmpty(record.getTeamId()) || StringUtils.isEmpty(record.getUserId())){
+		if(StringUtils.isEmpty(record.getTeamId())){
+			return -3;
+		}
+
+		if(StringUtils.isEmpty(record.getUserId())){
 			return -2;
 		}
 

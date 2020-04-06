@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cyb.blogserver.dao.UserMapper">
-  <resultMap id="BaseResultMap" type="com.cyb.blogserver.domain.User">
+<mapper namespace="com.cyb.cleg.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.cyb.cleg.domain.User">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
@@ -14,13 +14,13 @@
     <result column="introduce" jdbcType="VARCHAR" property="introduce" />
   </resultMap>
 
-  <update id="updateByPrimaryKey" parameterType="com.cyb.blogserver.domain.User">
+  <update id="updateByPrimaryKey" parameterType="com.cyb.cleg.domain.User">
     update user
     set user_name = #{userName,jdbcType=VARCHAR}, introduce = #{introduce,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
-  <select id="insert" parameterType="com.cyb.blogserver.domain.User">
+  <select id="insert" parameterType="com.cyb.cleg.domain.User">
     insert into user (id, name, user_name, password, phone, email, sex, address, image, introduce)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},
            #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR},

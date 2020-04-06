@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cyb.blogserver.dao.InterestMapper" >
-  <resultMap id="BaseResultMap" type="com.cyb.blogserver.domain.Interest" >
+<mapper namespace="com.cyb.cleg.dao.InterestMapper" >
+  <resultMap id="BaseResultMap" type="com.cyb.cleg.domain.Interest" >
     <id column="id" jdbcType="VARCHAR" javaType="java.lang.String" property="id" />
     <result column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" property="userId" />
     <result column="parame_id" jdbcType="VARCHAR" javaType="java.lang.String" property="parameId" />
@@ -16,7 +16,7 @@
     from interest
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.cyb.blogserver.domain.Interest" >
+  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.cyb.cleg.domain.Interest" >
     select
     <include refid="Base_Column_List" />
     from interest
@@ -32,13 +32,13 @@
     delete from interest
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.cyb.blogserver.domain.Interest" >
+  <insert id="insert" parameterType="com.cyb.cleg.domain.Interest" >
     insert into interest (id, user_id, parame_id, create_date
       )
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{parameId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.cyb.blogserver.domain.Interest" >
+  <insert id="insertSelective" parameterType="com.cyb.cleg.domain.Interest" >
     insert into interest
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -69,7 +69,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cyb.blogserver.domain.Interest" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.cyb.cleg.domain.Interest" >
     update interest
     <set >
       <if test="userId != null" >
@@ -81,7 +81,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.cyb.blogserver.domain.Interest" >
+  <update id="updateByPrimaryKey" parameterType="com.cyb.cleg.domain.Interest" >
     update interest
     set user_id = #{userId,jdbcType=VARCHAR},
       parame_id = #{parameId,jdbcType=VARCHAR}
