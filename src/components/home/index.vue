@@ -66,22 +66,23 @@
         <span class="titleLine">|</span><span>猜你喜欢的分享</span>
       </div>
       <ul class="share pad15">
-          <li class="padTOP" v-for='(item,i) in hotList' :key='i' @click="toDetail(selectedShare)">
-            <div class="newTop">
-                <img :src="item.src">
+        <li class="padTOP" v-for='(item,i) in hotList' :key='i' @click="toDetail(selectedShare)">
+          <div class="newTop">
+              <img :src="item.src">
+          </div>
+          <div class="newBottom">
+            <div class="title">{{item.title}}</div>
+            <div class="discrib">{{item.discrib}}</div>
+            <div class="time"><span>{{item.time}}</span> 发布</div>
+            <div class="priceAndDetail">
+              <div class="price">价格：<span v-if="item.price !='面议'&& item.price !='赠送'" class="red">￥</span> <span class="red">{{item.price}}</span></div>
+              <div class="detail"><span class="blue">查看详情></span></div>
             </div>
-            <div class="newBottom">
-              <div class="title">{{item.title}}</div>
-              <div class="discrib">{{item.discrib}}</div>
-              <div class="time"><span>{{item.time}}</span> 发布</div>
-              <div class="priceAndDetail">
-                <div class="price">价格：<span v-if="item.price !='面议'&& item.price !='赠送'" class="red">￥</span> <span class="red">{{item.price}}</span></div>
-                <div class="detail"><span class="blue">查看详情></span></div>
-              </div>
-            </div>
-          </li>
-        </ul>
+          </div>
+        </li>
+      </ul>
 
+    
     </div>
     <div v-if="isTab == 2" class="pad15">
       <div class="title green">

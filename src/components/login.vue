@@ -14,11 +14,13 @@
         <input class="rightText" type="text" maxlength='15' placeholder="请输入密码" v-model="password">
       </div>
       <div class="btnWrap">
-        <div class="title putHover">
-          注册？
-        </div>
         <div class="btn putHover" @click="login">
           登录
+        </div>
+      </div>
+      <div class="btnWrap">
+        <div class="btn orange putHover" @click="register">
+          注册
         </div>
       </div>
       
@@ -39,6 +41,11 @@ export default {
   components:{
   },
   methods:{
+    register(){
+      this.$router.push({
+        path: '/register',
+      })
+    },
     login(){
       //http://192.168.124.6:9090/login/login?userName=gfj&password=123
       if(!this.userName){
@@ -85,11 +92,12 @@ export default {
 </script>
 
 <style scoped lang='less'>
-
+&.orange{
+  background: orange;
+}
 .popLogin{
     width: 100%;
     height: 100%;
-    background: b;
     padding-top: 60px;
     display: flex;
     justify-content: center;
@@ -134,6 +142,9 @@ export default {
    line-height: 30px;
    text-align: center;
    background:#00a6ff;
+   &.orange{
+    background: orange;
+  }
  }
 }
 </style>

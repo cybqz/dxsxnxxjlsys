@@ -9,8 +9,8 @@ import axios from 'axios' // 1、在这里引入axios
 import qs from 'qs' //解决参数无法传递
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-axios.defaults.baseURL = 'http://114.115.134.1:9090/';
-//axios.defaults.baseURL = 'http://192.168.124.6:9090/';
+// axios.defaults.baseURL = 'http://114.115.134.1:9090/';
+axios.defaults.baseURL = 'http://192.168.124.6:9099/';
 axios.defaults.withCredentials = true // 允许携带token ,这个是解决跨域产生的相关问题
 axios.defaults.timeout = 6000
 
@@ -52,9 +52,9 @@ axios.interceptors.response.use(
 
     //消息提示
     if(response.data.validate){
-      Vue.prototype.$Message.success(response.data.msg);
+      // Vue.prototype.$Message.success(response.data.msg);
     }else{
-      Vue.prototype.$Message.error(response.data.msg);
+      // Vue.prototype.$Message.error(response.data.msg);
     }
     return response
   },

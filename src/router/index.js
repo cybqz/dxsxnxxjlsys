@@ -63,9 +63,22 @@ const router =  new Router({
       },
     },
     {
+      path: '/my',
+      name: 'my',
+      component: (resove) => require(['@/components/my/index'], resove),
+      meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      },
+    },
+    {
       path: '/login',
       name: 'login',
       component: (resove) => require(['@/components/login'], resove),
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: (resove) => require(['@/components/register'], resove),
     },
   ]
 })

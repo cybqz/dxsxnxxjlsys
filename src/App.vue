@@ -33,36 +33,61 @@
 					</div>
           <div class="name putHover">
               {{name}}
-              <img src="@/assets/images/class.png" >
           </div>
           <div class="describe ">
             <span class="title">简介:</span>
-            {{describe}}
-            <img src="@/assets/images/edit.png" >
+            {{discribe?discribe:'还没有自我简介，赶快去设置中设置吧~'}}
           </div>
 				</div>
         <div class="intresting">
           <div class="title">标签:</div>
           <div class="card">
-            <span v-for="(item,i) in cardList" :key="i">{{item}}</span>
+            <span v-for="(item,i) in cardList" :key="i">{{item.value}}</span>
           </div>
         </div>
         
         <ul class="chooseTab">
           <li>
-            <div><img src="@/assets/images/sign.png" ></div>
-            <div class="padTOP"><span>签到</span></div>
+            <div><img class="putHover" @click="sign" src="@/assets/images/sign.png" ></div>
+            <div class="padTOP putHover" @click="sign"><span>签到</span></div>
           </li>
           <li>
-            <div><img src="@/assets/images/points.png" ></div>
-            <div class="padTOP"><span>积分</span></div>
+            <div><img class="putHover" @click="lookPoints" src="@/assets/images/points.png" ></div>
+            <div class="padTOP putHover" @click="lookPoints"><span >积分</span></div>
           </li>
           <li>
-            <div><img src="@/assets/images/set.png" ></div>
-            <div class="padTOP"><span>设置</span></div>
+            <div><img class="putHover" @click="set" src="@/assets/images/set.png" ></div>
+            <div class="padTOP putHover" @click="set"><span>设置</span></div>
           </li>
         </ul>
       </div>
+      <Modal v-model="pointsShow">
+        <p>当前积分{{points}}分!当前等级{{Math.ceil(points/100)}}级</p>
+      </Modal>
+      <Modal v-model="signShow">
+        <p style="font-size:16px;" v-if="isSign">
+          签到成功!
+        </p>
+        <p style="font-size:16px;" v-else>
+          今天已经签过啦!  明天再来吧~
+        </p>
+      </Modal>
+      <Modal v-model="setModel" width="400" :closable="false" :mask-closable="false">
+        <div class="appModel">
+          <div class="setWrap">
+            <span class="setTitle">用户名：</span>
+            <input class="rightText" type="text" maxlength='8' placeholder="请添加用户名，最多8个字" v-model="setname">
+          </div>
+          <div class="setWrap">
+            <span class="setTitle">简  介：</span>
+            <input class="rightText" type="text" maxlength='20' placeholder="请添加简介，最多20个字" v-model="setdiscribe">
+          </div>
+        </div>
+        <div class="setBtn appModel" slot="footer">
+          <span @click="setCancel" class="popcancel setTitle putHover">取消</span>
+          <span @click="setConfirm" class="popconfirm setTitle putHover">确定</span>
+        </div>
+    </Modal>
     </div>
     <div v-if="!isLogined">
       <router-view/>
@@ -78,13 +103,18 @@ export default {
   data () {
     return {
       isLogined:false,
-      barList:['首页推荐','共享社区','论坛社区','组队学习'],
+      barList:['首页推荐','共享社区','论坛社区','组队学习','我的'],
       isActive:'0',
-      name:'哈哈哈大胖子',
-      describe:'点击添加个人介绍，让大家更加了解你~',
-      cardList:[
-        '文艺青年','美食','文艺青年','美食','文艺青年','美食',
-      ]
+      name:'',
+      discribe:'',
+      cardList:[],
+      points:'1000',
+      pointsShow:false,
+      setModel:false,
+      setname:'',
+      setdiscribe:'',
+      signShow:false,
+      isSign:false,
     }
   },
   created(){
@@ -99,6 +129,113 @@ export default {
     }
   },
   methods:{
+    //获取标签
+    loadSign(){
+      let $this = this
+      this.$axios({
+          method:'post',
+          url:'interest/getUserInterestAll',
+          data:{}
+      }).then((res) =>{          //这里使用了ES6的语法
+          this.cardList = res.data.data;
+      })
+    },
+    //获取我的数据
+    loadData(){
+      let $this = this
+      this.$axios({
+          method:'post',
+          url:'user/getUser',
+          data:{}
+      }).then((res) =>{          //这里使用了ES6的语法
+      console.log(res)
+          this.name = res.data.userName;
+          this.discribe = res.data.introduce;
+          this.image = res.data.image
+      })
+
+    },
+    //积分查看
+    lookPoints(){
+      this.pointsShow = true;
+    },
+    //点前到
+    sign(){
+      let $this = this
+      this.$axios({
+          method:'post',
+          url:'signin/validatesignin',
+          data:{}
+      }).then((response) =>{   //这里使用了ES6的语法
+          if(response.data.code =='200'){
+            this.signShow = true
+            if(!response.data.data){
+              this.isSign = false;
+              return
+            }else{
+              let $this = this
+              this.$axios({
+                  method:'post',
+                  url:'signin/signin',
+                  data:{}
+              }).then((response) =>{   //这里使用了ES6的语法
+                  this.isSign = true;
+              })
+            }
+            
+          }
+      })
+    },
+    //点设置
+    set(){
+      this.setModel = true;
+      this.setname = this.name;
+      this.setdiscribe = this.discribe;
+    },
+    //取消设置
+    setCancel(){
+      this.setModel = false;
+      this.setname = '';
+      this.setdiscribe = '';
+    },
+    //确认设置
+    setConfirm(){
+      if(!this.setname){
+        this.$Message.error(
+          {
+            content: '用户名不能为空',
+            duration: 2000
+          }
+        );
+        
+        return;
+      }
+      if(!this.setdiscribe){
+        this.$Message.error(
+          {
+            content: '简介不能为空',
+            duration: 2000
+          }
+        );
+      
+        return
+      }
+      let $this = this
+      this.$axios({
+          method:'post',
+          url:'user/update',
+          data:$this.qs.stringify({    //这里是发送给后台的数据
+                introduce:this.setdiscribe,
+                userName:this.setname
+          })
+      }).then((response) =>{          //这里使用了ES6的语法
+          if(response.data.code =='200'){
+           this.$Message.success(response.data.msg);
+            this.setModel = false;
+            this.$router.go(0);
+          }
+      })
+    },
     //退出登录
     quit(){
       this.$axios({
@@ -140,14 +277,23 @@ export default {
             path: '/team',
             name: 'team'
 					})
-					break;		
+          break;	
+        case 4:
+					this.$router.push({
+            path: '/my',
+            name: 'my'
+					})
+					break;  	
 				default:
 					break;
 			}
 		
     }
   },
-  mounted(){}
+  mounted(){
+    this.loadData();
+    this.loadSign()
+  }
 }
 </script>
 
@@ -332,6 +478,41 @@ ul,ol {
     }
   }
 }
-
+.appModel{
+  .setWrap,&.setBtn{
+    width: 100%;
+    height: 30PX;
+    margin: 50px auto;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    justify-content: center;
+    .setTitle{
+      display: inline-block;
+      width: 80px;
+      padding: 10px;
+      text-align: center;
+      border-radius: 4px;
+      &.popcancel{
+        margin:0 40px;
+        border: 1px solid #26a2ff;
+        color: orange;
+      }
+      &.popconfirm{
+        margin:0 40px;
+        border: 1px solid orange;
+        color: white;
+        background: orange;
+      }
+    }
+    .rightText{
+      flex: 1;
+      border:gainsboro 1px solid;
+      border-radius: 4px;
+      padding: 15px 10px;
+    }
+  }
+}
 
 </style>
