@@ -36,4 +36,21 @@ public class BaseController {
             currentLoginedUser = userServices.selectByUserName(user.getUserName());
         }
     }
+
+    /**
+     * 验证用户是否登陆
+     */
+    public void validateAll(String role, String permission){
+
+        tips = new Tips("success", true, true);
+        User user = userValidate.validateAll(tips, role, permission);
+        if(tips.isValidate()){
+            isLogined = null != user;
+            if(!isLogined){
+                tips = new Tips("请先登陆", true, false);
+            }else{
+                currentLoginedUser = userServices.selectByUserName(user.getUserName());
+            }
+        }
+    }
 }

@@ -1,6 +1,5 @@
 package com.cyb.cleg.controller;
 
-
 import com.cyb.cleg.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +33,22 @@ public class LoginController extends BaseController {
 			return tips;
 		}
 		return loginServices.login(user);
+	}
+
+	/**
+	 * 管理员登陆
+	 * @param user
+	 * @return Tips
+	 */
+	@RequestMapping(value="/adminlogin")
+	@ResponseBody
+	public Tips adminLogin (User user) {
+		super.validLogined();
+		if(isLogined){
+			tips.setMsg("不能重复登陆");
+			return tips;
+		}
+		return loginServices.adminLogin(user);
 	}
 
 	/**

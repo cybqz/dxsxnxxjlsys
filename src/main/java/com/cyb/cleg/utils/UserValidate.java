@@ -23,23 +23,11 @@ public class UserValidate {
 	public User isLoginAuthenticated() {
 
 		Subject subject = SecurityUtils.getSubject();
-		User user = null;
-
 		if(subject.isAuthenticated()) {
 			CybAuthorityUser cybAuthorityUser = (CybAuthorityUser) subject.getPrincipal();
 			return cybAuthorityUserToUser(cybAuthorityUser);
 		}
 		return null;
-	}
-	
-	/**
-	 * 获取当前已登录的用户信息
-	 * @return
-	 */
-	public User isLoginNoAuthenticated() {
-		Subject subject = SecurityUtils.getSubject();
-		CybAuthorityUser cybAuthorityUser = (CybAuthorityUser) subject.getPrincipal();
-		return cybAuthorityUserToUser(cybAuthorityUser);
 	}
 	
 	/**
@@ -55,8 +43,10 @@ public class UserValidate {
 		if(user != null) {
 			Subject subject = SecurityUtils.getSubject();
 			if(StringUtils.isNotBlank(role) && !subject.hasRole(role)) {
+				tips.setValidate(false);
 				tips.setMsg("您没有相关角色支持操作！");
 			}else if(StringUtils.isNotBlank(permission) && !subject.isPermitted(permission)) {
+				tips.setValidate(false);
 				tips.setMsg("您没有相关权限支持操作！");
 			}else {
 				tips.setValidate(true);

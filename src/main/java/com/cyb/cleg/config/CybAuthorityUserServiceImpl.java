@@ -21,14 +21,12 @@ public class CybAuthorityUserServiceImpl implements CybAuthorityUserService {
     @Override
     public Set<String> queryRolesByName(String userName){
         logger.info("start queryRolesByName");
-        Set<String> resultSet = new HashSet<String>();
         return userMapper.queryRolesByName(userName);
     }
 
     @Override
     public Set<String> queryPermissionByName(String userName){
         logger.info("start queryPermissionByName");
-        Set<String> resultSet = new HashSet<String>();
         return userMapper.queryPermissionByName(userName);
     }
 

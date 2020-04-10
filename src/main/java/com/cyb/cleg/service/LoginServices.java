@@ -17,6 +17,13 @@ public interface LoginServices {
 	public Tips login(User user);
 
 	/**
+	 * 管理员登陆
+	 * @param user
+	 * @return
+	 */
+	Tips adminLogin(User user);
+
+	/**
 	 * 登出
 	 * @param user
 	 * @return

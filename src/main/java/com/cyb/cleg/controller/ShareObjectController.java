@@ -1,6 +1,7 @@
 package com.cyb.cleg.controller;
 
 import com.cyb.cleg.common.BaseController;
+import com.cyb.cleg.common.Constant;
 import com.cyb.cleg.common.Pagenation;
 import com.cyb.cleg.common.Tips;
 import com.cyb.cleg.domain.ShareObject;
@@ -60,6 +61,41 @@ public class ShareObjectController extends BaseController {
 			}else{
 				tips.setMsg("ID不能为空");
 			}
+		}
+		return tips;
+	}
+
+	@RequestMapping(value="/admindelete")
+	@ResponseBody
+	public Tips adminDelete (String id) {
+		super.validateAll(Constant.ROLE_ADMIN, null);
+		if(isLogined) {
+			if(StringUtils.isNotEmpty(id)){
+
+				ShareObject object = shareObjectServices.selectByPrimaryKey(id);
+				if(null != object){
+					shareObjectServices.deleteByPrimaryKey(id);
+					tips.setValidate(true);
+					tips.setMsg("删除成功");
+				}else{
+					tips.setMsg("对象不存在");
+				}
+			}else{
+				tips.setMsg("ID不能为空");
+			}
+		}
+		return tips;
+	}
+
+	@RequestMapping(value="/adminpage")
+	@ResponseBody
+	public Tips adminPage (ShareObject usedBook, Pagenation pagenation) {
+		super.validateAll(Constant.ROLE_ADMIN, null);
+		if(isLogined) {
+			List<ShareObject> list = shareObjectServices.selectSelective(usedBook, pagenation);
+			tips = new Tips("查询成功！", true, true);
+			tips.setData(list);
+			tips.setPagenation(pagenation);
 		}
 		return tips;
 	}
