@@ -1,13 +1,13 @@
 package com.cyb.cleg.service.impl;
 
+import com.cyb.authority.domain.User;
 import com.cyb.cleg.common.Constant;
-import com.cyb.cleg.common.Tips;
 import com.cyb.cleg.dao.SigninMapper;
 import com.cyb.cleg.domain.Signin;
-import com.cyb.cleg.domain.User;
 import com.cyb.cleg.service.AccumulatePointsServices;
 import com.cyb.cleg.service.SigninServices;
 import com.cyb.cleg.utils.MyUtils;
+import com.cyb.common.tips.Tips;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -1,7 +1,7 @@
 package com.cyb.cleg.vo;
 
-import com.cyb.cleg.domain.Permission;
-import com.cyb.cleg.domain.UserRole;
+import com.cyb.authority.domain.Permission;
+import com.cyb.authority.domain.UserRole;
 
 import java.util.List;
 

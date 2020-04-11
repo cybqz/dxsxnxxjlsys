@@ -1,14 +1,14 @@
 package com.cyb.cleg.controller;
 
-import com.cyb.cleg.common.BaseController;
-import com.cyb.cleg.common.Pagenation;
-import com.cyb.cleg.common.Tips;
+import com.cyb.authority.base.BaseController;
 import com.cyb.cleg.domain.Team;
 import com.cyb.cleg.domain.TeamMember;
 import com.cyb.cleg.service.TeamMemberServices;
 import com.cyb.cleg.service.TeamServices;
 import com.cyb.cleg.utils.MatrixToImageWriter;
 import com.cyb.cleg.vo.TeamVO;
+import com.cyb.common.pagenation.Pagenation;
+import com.cyb.common.tips.Tips;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

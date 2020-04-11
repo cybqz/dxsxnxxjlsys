@@ -1,6 +1,6 @@
 package com.cyb.cleg.vo;
 
-import com.cyb.cleg.domain.User;
+import com.cyb.authority.domain.User;
 import lombok.Data;
 
 import java.util.List;

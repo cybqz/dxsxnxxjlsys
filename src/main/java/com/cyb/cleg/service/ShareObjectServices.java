@@ -1,7 +1,7 @@
 package com.cyb.cleg.service;
 
-import com.cyb.cleg.common.Pagenation;
 import com.cyb.cleg.domain.ShareObject;
+import com.cyb.common.pagenation.Pagenation;
 
 import java.util.List;
 

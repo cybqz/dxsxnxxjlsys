@@ -1,10 +1,9 @@
 package com.cyb.cleg.dao;
 
-import com.cyb.cleg.common.Pagenation;
 import com.cyb.cleg.domain.ShareObject;
+import com.cyb.common.pagenation.Pagenation;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 @Mapper

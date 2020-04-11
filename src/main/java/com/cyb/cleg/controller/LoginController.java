@@ -1,13 +1,17 @@
 package com.cyb.cleg.controller;
 
-import com.cyb.cleg.common.BaseController;
+import com.alibaba.fastjson.JSONObject;
+import com.cyb.authority.base.BaseController;
+import com.cyb.authority.domain.User;
+import com.cyb.authority.service.LoginService;
+import com.cyb.cleg.common.Constant;
+import com.cyb.cleg.service.AccumulatePointsServices;
+import com.cyb.common.tips.Tips;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.cyb.cleg.domain.User;
-import com.cyb.cleg.common.Tips;
-import com.cyb.cleg.service.LoginServices;
+import javax.annotation.Resource;
 
 /**
  * 用户登录控制层
@@ -17,7 +21,10 @@ import com.cyb.cleg.service.LoginServices;
 public class LoginController extends BaseController {
 	
 	@Autowired
-	private LoginServices loginServices;
+	private LoginService loginService;
+
+	@Autowired
+	private AccumulatePointsServices accumulatePointsServices;
 
 	/**
 	 * 登陆
@@ -32,7 +39,13 @@ public class LoginController extends BaseController {
 			tips.setMsg("不能重复登陆");
 			return tips;
 		}
-		return loginServices.login(user);
+
+		Tips tips = loginService.login(user);
+		if(tips.isValidate()){
+			JSONObject result = (JSONObject) tips.getData();
+			accumulatePointsServices.addPoints(result.getString("userId"), Constant.PARAMES_NAME_SIGNIN);
+		}
+		return tips;
 	}
 
 	/**
@@ -48,7 +61,7 @@ public class LoginController extends BaseController {
 			tips.setMsg("不能重复登陆");
 			return tips;
 		}
-		return loginServices.adminLogin(user);
+		return loginService.adminLogin(user, Constant.ROLE_ADMIN);
 	}
 
 	/**
@@ -63,6 +76,6 @@ public class LoginController extends BaseController {
 		if(!isLogined){
 			return tips;
 		}
-		return loginServices.logout(user);
+		return loginService.logout(user);
 	}
 }

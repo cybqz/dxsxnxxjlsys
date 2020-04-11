@@ -1,13 +1,13 @@
 package com.cyb.cleg.service.impl;
 
+import com.cyb.authority.dao.UserMapper;
+import com.cyb.authority.domain.User;
 import com.cyb.cleg.common.Constant;
 import com.cyb.cleg.dao.AccumulatePointsMapper;
 import com.cyb.cleg.dao.ParamesMapper;
-import com.cyb.cleg.dao.UserMapper;
 import com.cyb.cleg.domain.AccumulatePoints;
 import com.cyb.cleg.vo.AccumulatePointsVO;
 import com.cyb.cleg.domain.Parames;
-import com.cyb.cleg.domain.User;
 import com.cyb.cleg.service.AccumulatePointsServices;
 import com.cyb.cleg.utils.MyUtils;
 import org.springframework.stereotype.Service;

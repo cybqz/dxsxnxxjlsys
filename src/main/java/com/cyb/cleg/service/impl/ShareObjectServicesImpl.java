@@ -1,10 +1,10 @@
 package com.cyb.cleg.service.impl;
 
-import com.cyb.cleg.common.Pagenation;
 import com.cyb.cleg.dao.ShareObjectMapper;
 import com.cyb.cleg.domain.ShareObject;
 import com.cyb.cleg.service.ShareObjectServices;
 import com.cyb.cleg.utils.MyUtils;
+import com.cyb.common.pagenation.Pagenation;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;

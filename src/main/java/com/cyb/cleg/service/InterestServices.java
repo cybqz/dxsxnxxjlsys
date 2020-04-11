@@ -1,7 +1,7 @@
 package com.cyb.cleg.service;
 
 import com.cyb.cleg.domain.Interest;
-import com.cyb.common.R.R;
+import com.cyb.common.result.R;
 
 import java.util.List;
 

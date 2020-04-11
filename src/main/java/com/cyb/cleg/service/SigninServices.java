@@ -1,8 +1,8 @@
 package com.cyb.cleg.service;
 
-import com.cyb.cleg.common.Tips;
+import com.cyb.authority.domain.User;
 import com.cyb.cleg.domain.Signin;
-import com.cyb.cleg.domain.User;
+import com.cyb.common.tips.Tips;
 
 public interface SigninServices {
 

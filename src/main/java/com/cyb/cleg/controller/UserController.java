@@ -4,8 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.cyb.cleg.common.BaseController;
-import com.cyb.cleg.domain.*;
+import com.cyb.authority.base.BaseController;
+import com.cyb.authority.domain.Permission;
+import com.cyb.authority.domain.RolePermission;
+import com.cyb.authority.domain.User;
+import com.cyb.authority.domain.UserRole;
+import com.cyb.authority.service.PermissionService;
+import com.cyb.authority.service.RolePermissionService;
+import com.cyb.authority.service.UserRoleService;
+import com.cyb.authority.service.UserService;
+import com.cyb.common.tips.Tips;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,24 +23,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import com.cyb.cleg.vo.UserRolePermissionVO;
 import com.cyb.cleg.vo.RolePermissionVO;
-import com.cyb.cleg.common.Tips;
-import com.cyb.cleg.service.PermissionServices;
-import com.cyb.cleg.service.RolePermissionServices;
-import com.cyb.cleg.service.UserRoleServices;
-import com.cyb.cleg.service.UserServices;
 
 @Controller
 @RequestMapping(value="/user")
 public class UserController extends BaseController {
 
 	@Autowired
-	private UserServices userSerivces;
+	private UserService userSerivce;
 	@Autowired
-	private UserRoleServices userRoleServices;
+	private UserRoleService userRoleService;
 	@Autowired
-	private PermissionServices permissionServices;
+	private PermissionService permissionService;
 	@Autowired
-	private RolePermissionServices rolePermissionServices;
+	private RolePermissionService rolePermissionService;
 	
 	@RequestMapping(value="/update")
 	@ResponseBody
@@ -45,7 +48,7 @@ public class UserController extends BaseController {
 				tips.setMsg("用户名称不能为空！");
 			}else {
 				currentLoginedUser.setIntroduce(param.getIntroduce());
-				int count = userSerivces.updateByPrimaryKey(currentLoginedUser);
+				int count = userSerivce.updateByPrimaryKey(currentLoginedUser);
 				if(count > 0) {
 					tips = new Tips("修改成功！", true);
 				}else {
@@ -88,7 +91,7 @@ public class UserController extends BaseController {
 		super.validLogined();
 		if(isLogined) {
 			UserRolePermissionVO userRolePermissionVO = UserRolePermissionVO.toUserRolePermissionVO(currentLoginedUser);
-			List<UserRole> userRoles = userRoleServices.selectByUserId(currentLoginedUser.getId());
+			List<UserRole> userRoles = userRoleService.selectByUserId(currentLoginedUser.getId());
 			if(userRoles != null && userRoles.size() > 0) {
 				List<RolePermissionVO> rolePermissionVOs = new ArrayList<RolePermissionVO>();
 				for(UserRole userRole : userRoles) {
@@ -96,13 +99,13 @@ public class UserController extends BaseController {
 					RolePermissionVO rolePermissionVO = RolePermissionVO.toRolePermissionVO(userRole);
 					
 					//查询当前角色的权限
-					List<RolePermission> rolePermissions = rolePermissionServices.selectByRoleId(userRole.getRoleId());
+					List<RolePermission> rolePermissions = rolePermissionService.selectByRoleId(userRole.getRoleId());
 					if(rolePermissions != null && rolePermissions.size() > 0) {
 						List<Permission> permissions = new ArrayList<Permission>();
 						for(RolePermission rolePermission : rolePermissions) {
 							
 							//查询权限
-							Permission permission = permissionServices.selectByPrimaryKey(rolePermission.getPermissionId());
+							Permission permission = permissionService.selectByPrimaryKey(rolePermission.getPermissionId());
 							permissions.add(permission);
 						}
 						rolePermissionVO.setPermissions(permissions);

@@ -1,8 +1,10 @@
 package com.cyb.cleg.common;
 
+import com.cyb.authority.base.BaseController;
 import com.cyb.cleg.config.MyWebAppConfiguration;
 import com.cyb.cleg.utils.MyUtils;
-import com.cyb.common.R.R;
+import com.cyb.common.result.R;
+import com.cyb.common.tips.Tips;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

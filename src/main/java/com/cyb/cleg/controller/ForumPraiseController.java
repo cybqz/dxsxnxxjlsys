@@ -1,9 +1,9 @@
 package com.cyb.cleg.controller;
 
-import com.cyb.cleg.common.BaseController;
-import com.cyb.cleg.common.Tips;
+import com.cyb.authority.base.BaseController;
 import com.cyb.cleg.utils.MyUtils;
-import com.cyb.common.R.R;
+import com.cyb.common.result.R;
+import com.cyb.common.tips.Tips;
 import com.cyb.forum.domain.ForumPraise;
 import com.cyb.forum.service.ForumPraiseService;
 import org.springframework.beans.factory.annotation.Autowired;

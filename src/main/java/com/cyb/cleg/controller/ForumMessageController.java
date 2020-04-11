@@ -1,12 +1,12 @@
 package com.cyb.cleg.controller;
 
-import com.cyb.cleg.common.BaseController;
-import com.cyb.cleg.common.Pagenation;
-import com.cyb.cleg.common.Tips;
+import com.cyb.authority.base.BaseController;
+import com.cyb.authority.domain.User;
+import com.cyb.authority.service.UserService;
 import com.cyb.cleg.vo.ForumMessageVO;
-import com.cyb.cleg.domain.User;
-import com.cyb.cleg.service.UserServices;
 import com.cyb.cleg.utils.MyUtils;
+import com.cyb.common.pagenation.Pagenation;
+import com.cyb.common.tips.Tips;
 import com.cyb.forum.domain.ForumMessage;
 import com.cyb.forum.domain.ForumPraise;
 import com.cyb.forum.service.ForumMessageService;
@@ -33,7 +33,7 @@ public class ForumMessageController extends BaseController {
     private ForumPraiseService forumPraiseService;
 
     @Autowired
-    private UserServices userServices;
+    private UserService userService;
 
     @RequestMapping(value="/add")
     @ResponseBody
@@ -133,7 +133,7 @@ public class ForumMessageController extends BaseController {
         for(ForumMessage message : list){
             ForumMessageVO vo = new ForumMessageVO();
             BeanUtils.copyProperties(message, vo);
-            User user = userServices.selectByPrimaryKey(message.getUserId());
+            User user = userService.selectByPrimaryKey(message.getUserId());
             if(null != user){
                 vo.setName(user.getUserName());
                 vo.setUserImg(user.getImage());

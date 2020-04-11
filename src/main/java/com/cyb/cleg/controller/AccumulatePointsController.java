@@ -1,11 +1,11 @@
 package com.cyb.cleg.controller;
 
-import com.cyb.cleg.common.BaseController;
+import com.cyb.authority.base.BaseController;
 import com.cyb.cleg.common.Constant;
-import com.cyb.cleg.common.Tips;
 import com.cyb.cleg.domain.AccumulatePoints;
 import com.cyb.cleg.vo.AccumulatePointsVO;
 import com.cyb.cleg.service.AccumulatePointsServices;
+import com.cyb.common.tips.Tips;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,11 +1,11 @@
 package com.cyb.cleg.controller;
 
-import com.cyb.cleg.common.BaseController;
+import com.cyb.authority.base.BaseController;
 import com.cyb.cleg.common.Constant;
-import com.cyb.cleg.common.Pagenation;
-import com.cyb.cleg.common.Tips;
 import com.cyb.cleg.domain.ShareObject;
 import com.cyb.cleg.service.ShareObjectServices;
+import com.cyb.common.pagenation.Pagenation;
+import com.cyb.common.tips.Tips;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

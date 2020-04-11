@@ -6,7 +6,7 @@ import com.cyb.cleg.domain.Interest;
 import com.cyb.cleg.domain.Parames;
 import com.cyb.cleg.service.InterestServices;
 import com.cyb.cleg.utils.MyUtils;
-import com.cyb.common.R.R;
+import com.cyb.common.result.R;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

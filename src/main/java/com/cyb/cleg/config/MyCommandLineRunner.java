@@ -1,13 +1,13 @@
 package com.cyb.cleg.config;
 
+import com.cyb.authority.domain.User;
+import com.cyb.authority.service.UserService;
 import com.cyb.cleg.domain.Team;
 import com.cyb.cleg.domain.TeamMember;
-import com.cyb.cleg.domain.User;
 import com.cyb.cleg.service.TeamMemberServices;
 import com.cyb.cleg.service.TeamServices;
-import com.cyb.cleg.service.UserServices;
 import com.cyb.chat.service.CybTeamChatWSService;
-import com.cyb.common.R.R;
+import com.cyb.common.result.R;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
     private TeamServices teamServices;
 
     @Autowired
-    private UserServices userServices;
+    private UserService userService;
 
     @Autowired
     private TeamMemberServices teamMemberServices;
@@ -61,7 +61,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
                     for(TeamMember teamMember : teamMembers){
 
                         userIdList.add(teamMember.getUserId());
-                        User user = userServices.selectByPrimaryKey(teamMember.getUserId());
+                        User user = userService.selectByPrimaryKey(teamMember.getUserId());
                         if(user != null){
                             userNameList.add(user.getUserName());
                         }else {

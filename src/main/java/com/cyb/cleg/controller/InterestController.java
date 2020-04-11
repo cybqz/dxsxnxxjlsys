@@ -1,12 +1,12 @@
 package com.cyb.cleg.controller;
 
-import com.cyb.cleg.common.BaseController;
-import com.cyb.cleg.common.Tips;
+import com.cyb.authority.base.BaseController;
 import com.cyb.cleg.domain.Interest;
 import com.cyb.cleg.domain.Parames;
 import com.cyb.cleg.service.InterestServices;
 import com.cyb.cleg.service.ParamesServices;
-import com.cyb.common.R.R;
+import com.cyb.common.result.R;
+import com.cyb.common.tips.Tips;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
