@@ -3,6 +3,7 @@ package com.cyb.cleg.controller;
 import com.cyb.authority.base.BaseController;
 import com.cyb.authority.domain.User;
 import com.cyb.authority.service.UserService;
+import com.cyb.cleg.common.Constant;
 import com.cyb.cleg.vo.ForumMessageVO;
 import com.cyb.cleg.utils.MyUtils;
 import com.cyb.common.pagenation.Pagenation;
@@ -75,6 +76,27 @@ public class ForumMessageController extends BaseController {
                     }else {
                         tips.setMsg("删除权限不足");
                     }
+                }else{
+                    tips.setMsg("对象不存在");
+                }
+            }else{
+                tips.setMsg("ID不能为空");
+            }
+        }
+        return tips;
+    }
+
+    @RequestMapping(value="/admindelete")
+    @ResponseBody
+    public Tips adminDelete (String id) {
+        super.validateAll(Constant.ROLE_ADMIN, null);
+        if(isLogined) {
+            if(StringUtils.isNotEmpty(id)){
+                ForumMessage message = forumMessageService.selectByPrimaryKey(id);
+                if(message != null){
+                    forumMessageService.deleteByPrimaryKey(id);
+                    tips.setValidate(true);
+                    tips.setMsg("删除成功");
                 }else{
                     tips.setMsg("对象不存在");
                 }

@@ -5,14 +5,10 @@ import java.util.List;
 import java.util.UUID;
 
 import com.cyb.authority.base.BaseController;
-import com.cyb.authority.domain.Permission;
-import com.cyb.authority.domain.RolePermission;
-import com.cyb.authority.domain.User;
-import com.cyb.authority.domain.UserRole;
-import com.cyb.authority.service.PermissionService;
-import com.cyb.authority.service.RolePermissionService;
-import com.cyb.authority.service.UserRoleService;
-import com.cyb.authority.service.UserService;
+import com.cyb.authority.domain.*;
+import com.cyb.authority.service.*;
+import com.cyb.cleg.common.Constant;
+import com.cyb.cleg.vo.UserRoleVO;
 import com.cyb.common.tips.Tips;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +26,8 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private UserService userSerivce;
+	@Autowired
+	private RoleService roleService;
 	@Autowired
 	private UserRoleService userRoleService;
 	@Autowired
@@ -87,34 +85,21 @@ public class UserController extends BaseController {
 	
 	@RequestMapping(value="/getUser")
 	@ResponseBody
-	public UserRolePermissionVO getUser () {
+	public UserRoleVO getUser () {
 		super.validLogined();
 		if(isLogined) {
-			UserRolePermissionVO userRolePermissionVO = UserRolePermissionVO.toUserRolePermissionVO(currentLoginedUser);
+			UserRoleVO userRoleVO = UserRoleVO.toUserRolePermissionVO(currentLoginedUser);
 			List<UserRole> userRoles = userRoleService.selectByUserId(currentLoginedUser.getId());
 			if(userRoles != null && userRoles.size() > 0) {
-				List<RolePermissionVO> rolePermissionVOs = new ArrayList<RolePermissionVO>();
 				for(UserRole userRole : userRoles) {
-					
-					RolePermissionVO rolePermissionVO = RolePermissionVO.toRolePermissionVO(userRole);
-					
-					//查询当前角色的权限
-					List<RolePermission> rolePermissions = rolePermissionService.selectByRoleId(userRole.getRoleId());
-					if(rolePermissions != null && rolePermissions.size() > 0) {
-						List<Permission> permissions = new ArrayList<Permission>();
-						for(RolePermission rolePermission : rolePermissions) {
-							
-							//查询权限
-							Permission permission = permissionService.selectByPrimaryKey(rolePermission.getPermissionId());
-							permissions.add(permission);
-						}
-						rolePermissionVO.setPermissions(permissions);
+					Role role = roleService.selectByPrimaryKey(userRole.getRoleId());
+					if(null != role && role.getName().equals(Constant.ROLE_ADMIN)){
+						userRoleVO.setHasRoleAdmin(true);
+						return userRoleVO;
 					}
-					rolePermissionVOs.add(rolePermissionVO);
 				}
-				userRolePermissionVO.setUserRoles(rolePermissionVOs);
 			}
-			return userRolePermissionVO;
+			return userRoleVO;
 		}
 		return null;
 	}

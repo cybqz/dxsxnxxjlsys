@@ -7,8 +7,18 @@ import java.util.List;
 
 @Data
 public class UserRolePermissionVO extends User {
+
+	public boolean hasRoleAdmin = false;
     
 	private List<RolePermissionVO> userRoles;
+
+	public boolean isHasRoleAdmin() {
+		return hasRoleAdmin;
+	}
+
+	public void setHasRoleAdmin(boolean hasRoleAdmin) {
+		this.hasRoleAdmin = hasRoleAdmin;
+	}
 
 	public List<RolePermissionVO> getUserRoles() {
 		return userRoles;

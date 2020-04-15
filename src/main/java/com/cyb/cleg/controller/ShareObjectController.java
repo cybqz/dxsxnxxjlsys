@@ -87,19 +87,6 @@ public class ShareObjectController extends BaseController {
 		return tips;
 	}
 
-	@RequestMapping(value="/adminpage")
-	@ResponseBody
-	public Tips adminPage (ShareObject usedBook, Pagenation pagenation) {
-		super.validateAll(Constant.ROLE_ADMIN, null);
-		if(isLogined) {
-			List<ShareObject> list = shareObjectServices.selectSelective(usedBook, pagenation);
-			tips = new Tips("查询成功！", true, true);
-			tips.setData(list);
-			tips.setPagenation(pagenation);
-		}
-		return tips;
-	}
-
 	@RequestMapping(value="/page")
 	@ResponseBody
 	public Tips page (ShareObject usedBook, Pagenation pagenation) {

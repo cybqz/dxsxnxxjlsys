@@ -43,12 +43,11 @@ public class RegisterController {
 					if(null != userTemp) {
 						tips.setMsg("用户已存在！");
 					}else {
-						String url = session.getServletContext().getRealPath("/");
 						User user = new User();
 						BeanUtils.copyProperties(userCreate, user);
 						String userId = UUID.randomUUID().toString();
 						user.setId(userId);
-						int count = userSerivce.insert(user, url);
+						int count = userSerivce.insert(user, "image");
 						if(count > 0) {
 							interestServices.editUserInterest(userId, userCreate.getInterestList());
 							tips = new Tips("注册成功", true);
