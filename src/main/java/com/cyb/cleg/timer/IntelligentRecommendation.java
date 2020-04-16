@@ -2,8 +2,11 @@ package com.cyb.cleg.timer;
 
 import com.cyb.authority.dao.UserMapper;
 import com.cyb.authority.domain.User;
+import com.cyb.cleg.dao.ShareObjectMapper;
+import com.cyb.cleg.domain.ShareObject;
 import com.cyb.cleg.kmeans.Cluster;
 import com.cyb.cleg.kmeans.KMeansRun;
+import com.cyb.cleg.kmeans.Point;
 import com.cyb.forum.dao.ForumMessageMapper;
 import com.cyb.forum.domain.ForumMessage;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -22,7 +25,15 @@ import java.util.*;
 @EnableScheduling
 public class IntelligentRecommendation {
 
+    private static Integer CLUSTER_COUNT = 6;
+
+    private static Integer RESULT_SIZE = 5;
+
     private static final String PATTERN = "yyy-MM-dd HH:mm:ss";
+
+    public static Map<String, List<ForumMessage>> FORUM_MESSAGE_MAP = new HashMap<String, List<ForumMessage>>();
+
+    public static Map<String, List<ShareObject>> SHARE_OBJECT_MAP = new HashMap<String, List<ShareObject>>();
 
     @Resource
     private UserMapper userMapper;
@@ -30,7 +41,10 @@ public class IntelligentRecommendation {
     @Resource
     private ForumMessageMapper forumMessageMapper;
 
-    @Scheduled(initialDelay = 10000, fixedDelay = 60000)
+    @Resource
+    private ShareObjectMapper shareObjectMapper;
+
+    @Scheduled(initialDelay = 10000, fixedDelay = 600000)
     public void forumMessageTask(){
 
         System.out.println("论坛智能推荐开始执行\t" + DateFormatUtils.format(new Date(), PATTERN));
@@ -50,12 +64,58 @@ public class IntelligentRecommendation {
                             message.getCreateDateTime().getTime()});
                 }
 
-                KMeansRun kRun =new KMeansRun(3, dataSet);
+                KMeansRun kRun =new KMeansRun(CLUSTER_COUNT, dataSet);
 
                 Set<Cluster> clusterSet = kRun.run();
                 System.out.println("单次迭代运行次数："+kRun.getIterTimes());
                 for (Cluster cluster : clusterSet) {
-                    System.out.println(cluster);
+                    List<ForumMessage> resultList = new ArrayList<>(RESULT_SIZE);
+                    List<Point> points = cluster.getMembers();
+                    int size = points.size();
+                    List<Point> list = points.subList(0,size>RESULT_SIZE?RESULT_SIZE:size);
+                    for(Point point : list){
+                        resultList.add(forumMessageList.get(point.getId()));
+                    }
+                    FORUM_MESSAGE_MAP.put(user.getId(), resultList);
+                }
+            }
+        }
+    }
+
+    @Scheduled(initialDelay = 15000, fixedDelay = 600000)
+    public void shareObjectTask(){
+
+        System.out.println("二手共享智能推荐开始执行\t" + DateFormatUtils.format(new Date(), PATTERN));
+
+        List<ShareObject> shareObjectList = shareObjectMapper.selectSelective(new ShareObject(), null);
+        List<User> userList = userMapper.selectBySelective(new User());
+
+        if(!CollectionUtils.isEmpty(userList) && !CollectionUtils.isEmpty(shareObjectList)){
+
+            for(User user : userList){
+
+                ArrayList<float[]> dataSet = new ArrayList<float[]>();
+                for(ShareObject shareObject : shareObjectList){
+                    dataSet.add(new float[] {
+                            user.getUserName().length(),
+                            shareObject.getTitle().length(),
+                            shareObject.getCreateDateTime().getTime()});
+                }
+
+                KMeansRun kRun =new KMeansRun(CLUSTER_COUNT, dataSet);
+
+                Set<Cluster> clusterSet = kRun.run();
+                System.out.println("单次迭代运行次数："+kRun.getIterTimes());
+                for (Cluster cluster : clusterSet) {
+
+                    List<ShareObject> resultList = new ArrayList<>(RESULT_SIZE);
+                    List<Point> points = cluster.getMembers();
+                    int size = points.size();
+                    List<Point> list = points.subList(0,size>RESULT_SIZE?RESULT_SIZE:size);
+                    for(Point point : list){
+                        resultList.add(shareObjectList.get(point.getId()));
+                    }
+                    SHARE_OBJECT_MAP.put(user.getId(), resultList);
                 }
             }
         }

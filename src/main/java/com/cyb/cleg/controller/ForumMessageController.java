@@ -4,6 +4,7 @@ import com.cyb.authority.base.BaseController;
 import com.cyb.authority.domain.User;
 import com.cyb.authority.service.UserService;
 import com.cyb.cleg.common.Constant;
+import com.cyb.cleg.timer.IntelligentRecommendation;
 import com.cyb.cleg.vo.ForumMessageVO;
 import com.cyb.cleg.utils.MyUtils;
 import com.cyb.common.pagenation.Pagenation;
@@ -146,6 +147,16 @@ public class ForumMessageController extends BaseController {
             pagenation.setDataCount(count);
             tips.setPagenation(pagenation);
             tips.setData(listVO);
+        }
+        return tips;
+    }
+
+    @RequestMapping(value="/recommendation")
+    @ResponseBody
+    public Tips recommendation () {
+        super.validLogined();
+        if(isLogined){
+            tips.setData(IntelligentRecommendation.FORUM_MESSAGE_MAP.get(currentLoginedUser.getId()));
         }
         return tips;
     }

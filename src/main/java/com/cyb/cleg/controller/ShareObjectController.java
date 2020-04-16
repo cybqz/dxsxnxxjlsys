@@ -4,6 +4,7 @@ import com.cyb.authority.base.BaseController;
 import com.cyb.cleg.common.Constant;
 import com.cyb.cleg.domain.ShareObject;
 import com.cyb.cleg.service.ShareObjectServices;
+import com.cyb.cleg.timer.IntelligentRecommendation;
 import com.cyb.common.pagenation.Pagenation;
 import com.cyb.common.tips.Tips;
 import org.apache.commons.lang3.StringUtils;
@@ -123,6 +124,16 @@ public class ShareObjectController extends BaseController {
 			tips = new Tips("查询成功！", true, true);
 			tips.setData(list);
 			tips.setPagenation(pagenation);
+		}
+		return tips;
+	}
+
+	@RequestMapping(value="/recommendation")
+	@ResponseBody
+	public Tips recommendation () {
+		super.validLogined();
+		if(isLogined){
+			tips.setData(IntelligentRecommendation.SHARE_OBJECT_MAP.get(currentLoginedUser.getId()));
 		}
 		return tips;
 	}
