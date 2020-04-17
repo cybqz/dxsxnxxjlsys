@@ -27,7 +27,7 @@ public class IntelligentRecommendation {
 
     private static Integer CLUSTER_COUNT = 6;
 
-    private static Integer RESULT_SIZE = 5;
+    private static Integer RESULT_SIZE = 10;
 
     private static final String PATTERN = "yyy-MM-dd HH:mm:ss";
 
@@ -49,7 +49,7 @@ public class IntelligentRecommendation {
 
         System.out.println("论坛智能推荐开始执行\t" + DateFormatUtils.format(new Date(), PATTERN));
 
-        List<ForumMessage> forumMessageList = forumMessageMapper.selectSelective(new ForumMessage(), 1, 500);
+        List<ForumMessage> forumMessageList = forumMessageMapper.selectSelective(new ForumMessage(), null);
         List<User> userList = userMapper.selectBySelective(new User());
 
         if(!CollectionUtils.isEmpty(userList) && !CollectionUtils.isEmpty(forumMessageList)){

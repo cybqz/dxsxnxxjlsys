@@ -116,7 +116,7 @@ public class ForumMessageController extends BaseController {
             tips = new Tips("查询成功", true, true);
             List<ForumMessageVO> listVO = null;
             int count = forumMessageService.countByForumMessage(forumMessage);
-            List<ForumMessage> list =  forumMessageService.selectSelective(forumMessage, pagenation.getPageIndex(), pagenation.getPageSize());
+            List<ForumMessage> list =  forumMessageService.selectSelective(forumMessage, pagenation);
             if(null != list && !list.isEmpty()){
 
                 listVO = new ArrayList<>(list.size());
@@ -138,7 +138,7 @@ public class ForumMessageController extends BaseController {
             List<ForumMessageVO> listVO = null;
             forumMessage.setUserId(currentLoginedUser.getId());
             int count = forumMessageService.countByForumMessage(forumMessage);
-            List<ForumMessage> list =  forumMessageService.selectSelective(forumMessage, pagenation.getPageIndex(), pagenation.getPageSize());
+            List<ForumMessage> list =  forumMessageService.selectSelective(forumMessage, pagenation);
             if(null != list && !list.isEmpty()){
 
                 listVO = new ArrayList<>(list.size());
@@ -156,6 +156,13 @@ public class ForumMessageController extends BaseController {
     public Tips recommendation () {
         super.validLogined();
         if(isLogined){
+
+            List<ForumMessageVO> listVO = null;
+            List<ForumMessage> list =  IntelligentRecommendation.FORUM_MESSAGE_MAP.get(currentLoginedUser.getId());
+            if(null != list && !list.isEmpty()){
+                listVO = new ArrayList<>(list.size());
+                setVO(list, listVO);
+            }
             tips.setData(IntelligentRecommendation.FORUM_MESSAGE_MAP.get(currentLoginedUser.getId()));
         }
         return tips;
@@ -174,7 +181,7 @@ public class ForumMessageController extends BaseController {
             ForumPraise praise = new ForumPraise();
             praise.setUserId(currentLoginedUser.getId());
             praise.setMessageId(message.getId());
-            List<ForumPraise> parseList = forumPraiseService.selectSelective(praise);
+            List<ForumPraise> parseList = forumPraiseService.selectSelective(praise, null);
             if(parseList != null && !parseList.isEmpty()){
                 vo.setPraise(true);
             }
