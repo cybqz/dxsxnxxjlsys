@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * 签到控制层
+ */
 @Controller
 @RequestMapping(value="/signin")
 public class SigninController extends BaseController {
@@ -30,7 +33,7 @@ public class SigninController extends BaseController {
 	}
 
 	/**
-	 * 签到
+	 * 签到校验
 	 * @return
 	 */
 	@RequestMapping(value="/validatesignin")
