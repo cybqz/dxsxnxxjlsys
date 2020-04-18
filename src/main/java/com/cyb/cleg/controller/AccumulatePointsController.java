@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+/**
+ * 用户积分Controller
+ */
 @Controller
 @RequestMapping(value="/accumulatepoints")
 public class AccumulatePointsController extends BaseController {
@@ -38,10 +41,17 @@ public class AccumulatePointsController extends BaseController {
         super.validLogined();
         if(isLogined){
             tips.setMsg("查询积分失败");
+            Integer count = new Integer(0);
             AccumulatePoints params = new AccumulatePoints(null, currentLoginedUser.getId(), null, null, null);
-            AccumulatePoints accumulatePoints = accumulatePointsServices.selectOneSelective(params);
-            tips = new Tips("查询积分成功", true, true);
-            tips.setData(accumulatePoints);
+            List<AccumulatePoints> accumulatePointsList = accumulatePointsServices.selectSelective(params);
+            if(null != accumulatePointsList && accumulatePointsList.size() > 0){
+                for(AccumulatePoints accumulatePoints : accumulatePointsList){
+                    if(null != accumulatePoints.getPoints()){
+                        count += accumulatePoints.getPoints();
+                    }
+                }
+            }
+            tips = new Tips("查询积分成功", true, count);
         }
         return tips;
     }

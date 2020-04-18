@@ -23,7 +23,7 @@ public interface AccumulatePointsMapper {
 
     AccumulatePoints selectByPrimaryKey(String id);
 
-    AccumulatePoints selectOneSelective(@Param("accumulatePoints") AccumulatePoints accumulatePoints,@Param("startDate") Date startDate,@Param("endDate") Date endDate);
+    List<AccumulatePoints> selectSelective(@Param("accumulatePoints") AccumulatePoints accumulatePoints,@Param("startDate") Date startDate,@Param("endDate") Date endDate);
 
     List<Map<String,Object>> selectTopList(@Param("size")Integer size, @Param("userList") List<String> userList);
 }

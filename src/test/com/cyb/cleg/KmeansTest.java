@@ -30,7 +30,7 @@ public class KmeansTest {
     @Test
     public void test(){
 
-        initShareObjectData();
+        //initShareObjectData();
     }
 
     private void testForum(){

@@ -53,8 +53,8 @@ public class AccumulatePointsServicesImpl implements AccumulatePointsServices {
 	}
 
 	@Override
-	public AccumulatePoints selectOneSelective(AccumulatePoints record) {
-		return accumulatePointsMapper.selectOneSelective(record, null, null);
+	public List<AccumulatePoints> selectSelective(AccumulatePoints record) {
+		return accumulatePointsMapper.selectSelective(record, null, null);
 	}
 
 	/**
@@ -76,14 +76,14 @@ public class AccumulatePointsServicesImpl implements AccumulatePointsServices {
 			endDate.setSeconds(59);
 			Parames parames = paramesMapper.selectOneByName(Constant.PARAMES_NAME_SIGNIN);
 			accumulatePointsParam.setParameId(parames.getId());
-			AccumulatePoints accumulatePoints = accumulatePointsMapper.selectOneSelective(accumulatePointsParam, startDate, endDate);
-			if(null == accumulatePoints){
+			List<AccumulatePoints> accumulatePointsList = accumulatePointsMapper.selectSelective(accumulatePointsParam, startDate, endDate);
+			if(null == accumulatePointsList || accumulatePointsList.size() == 0){
 				Parames paramesParam = new Parames(null, Constant.PARAMES_NAME_SIGNIN, null, Constant.PARAMES_GROUP_POINTS);
 				List<Parames> paramesList = paramesMapper.selectByParames(paramesParam);
 				if(null != paramesList && paramesList.size() > 0){
 
 					String parameId = paramesList.get(0).getId();
-					accumulatePoints = new AccumulatePoints(MyUtils.getPrimaryKey(), userId, parameId, 10, new Date());
+					AccumulatePoints accumulatePoints = new AccumulatePoints(MyUtils.getPrimaryKey(), userId, parameId, 10, new Date());
 					accumulatePointsMapper.insert(accumulatePoints);
 				}
 			}

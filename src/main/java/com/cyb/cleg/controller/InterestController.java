@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+/**
+ * 兴趣Controller
+ */
 @Controller
 @RequestMapping(value="/interest")
 public class InterestController extends BaseController {
