@@ -55,9 +55,25 @@ const router =  new Router({
       },
     },
     {
+      path: '/addTalk',
+      name: 'addTalk',
+      component: (resove) => require(['@/components/talk/addTalk'], resove),
+      meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      },
+    },
+    {
       path: '/team',
       name: 'team',
       component: (resove) => require(['@/components/team/index'], resove),
+      meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      },
+    },
+    {
+      path: '/teamTalk',
+      name: 'teamTalk',
+      component: (resove) => require(['@/components/team/teamTalk'], resove),
       meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
       },

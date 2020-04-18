@@ -2,7 +2,10 @@
   <div>
     <div class="title  red">
         <span class="titleLine">|</span><span>{{detailTitle}}共享区</span>
-      </div>
+        <router-link class="add putHover" to="/addShare" >
+          <img class="add putHover" @click="addTeam()" src="@/assets/images/add.png" alt="">
+        </router-link>
+    </div>
     <div class="pad30">
       <ul  class="newShare">
         <li class="padTOP shadow" v-for='(item,i) in hotList' :key='i' @click="toDetail(item.title,decodeURI(item.imgSrc),item.id,item.discribe,item.price,item.authorName,item.createDateTime,selectedShare)">
@@ -38,6 +41,11 @@ export default {
   components:{
   },
   methods:{
+    addTeam(){
+      this.$router.push({
+        path: '/addShare',
+      })
+    },
     //初始化数据接口
     loadData(){
       // usedbook/page
@@ -78,6 +86,13 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.add{
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  width: 24px;
+  height: 24px;
+}
 .addIcon{
   padding-top: 0.1rem;
   img{
@@ -94,6 +109,7 @@ export default {
   font-size: 16px;
   height: 30px;
   line-height: 30px;
+  position: relative;
   .titleLine{
     margin:0  10px;
   }

@@ -6,8 +6,17 @@
         <img src="@/assets/images/logo.png" alt="">
         互学
       </div>
-      <div class="bar">
+      <div v-if="!hasRoleAdmin"  class="bar">
         <div v-for="(item,i) in barList" :key="i" 
+          :class="isActive == i?'isActive' : ''" 
+          @click="changeBar(i)"
+          class="barName putHover">
+          {{item}}
+        </div>
+        
+      </div>
+      <div v-if="hasRoleAdmin"  class="bar">
+        <div v-for="(item,i) in barListAdmin" :key="i" 
           :class="isActive == i?'isActive' : ''" 
           @click="changeBar(i)"
           class="barName putHover">
@@ -26,7 +35,7 @@
         <router-view/>
       </div>
       <!-- 用户卡片 -->
-      <div class="right shadow">
+      <div v-if="!hasRoleAdmin" class="right shadow">
         <div  class="user">
 					<div class="touxiang">
 							<img src="@/assets/images/touxiang1.png" >
@@ -104,6 +113,7 @@ export default {
     return {
       isLogined:false,
       barList:['首页推荐','共享社区','论坛社区','组队学习','我的'],
+      barListAdmin:['首页推荐','共享社区','论坛社区'],
       isActive:'0',
       name:'',
       discribe:'',
@@ -115,6 +125,7 @@ export default {
       setdiscribe:'',
       signShow:false,
       isSign:false,
+      hasRoleAdmin:false,
     }
   },
   created(){
@@ -245,7 +256,8 @@ export default {
         let routerpath = this.$route.fullpath;
         if(routerpath !== '/'){
           console.log('push route ........');
-          this.$router.push({path: '/'})
+          sessionStorage.clear()
+          window.location.reload()
         }
       })
     },
@@ -291,6 +303,7 @@ export default {
     }
   },
   mounted(){
+    this.hasRoleAdmin = sessionStorage.getItem("hasRoleAdmin");
     this.loadData();
     this.loadSign()
   }

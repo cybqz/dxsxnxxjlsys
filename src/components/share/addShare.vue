@@ -1,6 +1,5 @@
 <template>
   <div>
-   
     <div class="pad30">
      <div class="">
        <div class="addWrap">
@@ -15,95 +14,99 @@
          </div>
          <textarea class="rightText"  rows='4' placeholder="请添加二手信息描述" v-model="describe"/>
        </div>
-       <div class="addWrapRadio">
+       <div class="addWrap">
          <div class="title">
            价格：
          </div>
-         <div class="rightChange">
-            <mt-radio class="radioBOX"
-              v-model="priceType"
-              :options="options">
-            </mt-radio>
-           <div v-if="priceType == '3'" class="price">
-              <input class="rightText" type="number" placeholder="请输入自定义的价格" v-model="priceNum">
-           </div>
-         </div>
+         <input class="rightText" type="Number" placeholder="请输入自定义的价格" v-model="priceNum">
        </div>
        <div class="addWrapRadio">
          <div class="title">
            类型：
          </div>
          <div class="rightChange">
-            <mt-radio class="radioBOX"
-              v-model="type"
-              :options="options2">
-            </mt-radio>
+            <div v-for="(item,i) in options2" :key="i" @click="choose(i,item.choose)" class="radioBOX">
+              <span :class="(imgShow == i+1 && item.choose)?'choosed':''">{{item.label}}</span>
+              <img v-if="imgShow == i+1 && item.choose" src="@/assets/images/radioY.png" alt="">
+              <img v-else src="@/assets/images/radioN.png" alt="">
+              
+            </div>
          </div>
        </div>
        <ul>
          <li>
-            <input type="file" >
-            <a class="add"><p>点击上传</p></a>
+            <ImageUpload @getUpload='getUploadImg' :limit='limit'>
+            </ImageUpload>
           </li>
        </ul>
      </div>
     </div>
 
     <div class="btn">
-      <div class="btnText blue" @click="cancel()">取消</div>
-      <div class="btnText red" @click="confirm()">确认</div>
+      <div class="btnText blue putHover" @click="cancel()">取消</div>
+      <div class="btnText red putHover" @click="confirm()">确认</div>
     </div>
   </div>
 </template>
 
 <script>
+import ImageUpload from '@/components/other/ImageUpload'
 export default {
   name: 'shareList',
+  components:{
+    ImageUpload
+  },
   data () {
     return {
+      limit:1,
       title:'',
       describe:'',
       priceNum:"",
       type:'',
       priceType:'',
-      options : [
-        {
-          label: '赠送',
-          value: '1',
-        },
-        {
-          label: '面议',
-          value: '2'
-        },
-        {
-          label: '自定义',
-          value: '3'
-        }
-      ],
+      imgShow:1,
       options2:[
         {
           label: '书籍',
           value: '1',
+          choose:false
         },
         {
           label: '资料',
-          value: '2'
+          value: '2',
+          choose:false
         },
         {
           label: '笔记',
-          value: '3'
+          value: '3',
+          choose:false
         },
         {
           label: '文具',
-          value: '4'
+          value: '4',
+          choose:false
         }
-      ]
+      ],
+      UploadImg:''
       
     }
   },
-  components:{
-  },
+  
   methods:{
+    //图片上传组件向父组件方法
+    getUploadImg(data){
+      if(data){
+        this.UploadImg = data.join(',')
+      }
+        
+    },
+    //切换类型
+    choose(i){
+      this.imgShow =0;
+      this.options2[i].choose = true
+      this.imgShow = i+1;
+      
+    },
     //取消
     cancel(){
       this.$router.go(-1);//返回上一层
@@ -111,41 +114,36 @@ export default {
     //确定
     confirm(){
       if(!this.title){
-        Toast({
-          message: '请添加二手信息名称',
-          position: 'middle',
+        this.$Message.error({
+          content: '请添加二手信息名称',
           duration: 2000
         });
         return;
       }
       if(!this.describe){
-        Toast({
-          message: '请添加二手信息描述',
-          position: 'middle',
+        this.$Message.error({
+          content: '请添加二手信息描述',
           duration: 2000
         });
         return;
       }
-      if(!this.priceType){
-        Toast({
-          message: '请选择交易价格方式',
-          position: 'middle',
+      if(!this.priceNum){
+        this.$Message.error({
+          content: '请输入自定义的价格',
           duration: 2000
         });
         return;
       }
-      if(this.priceType == '3' && !this.priceNum){
-        Toast({
-          message: '请输入自定义的价格',
-          position: 'middle',
+      if(this.imgShow ==0){
+        this.$Message.error({
+          content: '请选择分享类型',
           duration: 2000
         });
         return;
       }
-      if(!this.type){
-        Toast({
-          message: '请选择分享类型',
-          position: 'middle',
+      if(!this.UploadImg){
+        this.$Message.error({
+          content: '请上传图片',
           duration: 2000
         });
         return;
@@ -157,12 +155,13 @@ export default {
           url:'/shareobject/add',
           data:$this.qs.stringify({    //这里是发送给后台的数据
               title:$this.title,
-              flag:$this.type,
+              flag:$this.imgShow,
               discribe:$this.describe,
-              price:$this.priceType == '3'?$this.priceNum:$this.priceType == '1'?'赠送':'面议'
+              price:$this.priceNum,
+              imgSrc:this.UploadImg
           })
       }).then((res) =>{          //这里使用了ES6的语法
-          // this.$router.go(-1);//返回上一层
+          this.$router.go(-1);//返回上一层
       })
        
     },
@@ -204,55 +203,69 @@ export default {
 
 <style scoped lang='less'>
 .pad30{
-  padding:  0 0.3rem;
+  padding:  0 15px;
 }
-.shadow{
-  box-shadow: inset 0 0 0.03rem 0 gainsboro;
-  border-radius: 0.1rem;
-}
+
 .addWrap{
-  padding: 0.6rem 0.3rem;
+  padding: 30px 15px;
   display: flex;
   align-items: flex-start;
   .title{
-    width: 1.5rem;
-    height: 0.8rem;
-    font-size: 0.32rem;
+    width: 120px;
+    height: 40px;
+    font-size: 16px;
     text-align: right;
-    margin-right:0.2rem;
+    margin-right:10px;
   }
   .rightText{
     flex: 1;
-    border:gainsboro 0.02rem solid;
-    border-radius: 0.06rem;
-    padding: 0.3rem 0.1rem;
+    border:gainsboro 1px solid;
+    border-radius: 4px;
+    padding: 15px 10px;
   }
 }
 .addWrapRadio{
-  padding: 0.6rem 0.3rem;
+  padding: 30px 15px;
   .title{
-    width: 1.5rem;
-    height: 0.8rem;
-    font-size: 0.32rem;
+    width: 120px;
+    height: 40px;
+    font-size: 16px;
     text-align: right;
   }
   .rightText{
     flex: 1;
-    border:gainsboro 0.02rem solid;
-    border-radius: 0.06rem;
-    padding: 0.3rem 0.1rem;
+    border:gainsboro 1px solid;
+    border-radius: 4px;
+    padding: 15px 10px;
   }
   .rightChange{
-    padding-left:0.3rem ;
+     display: flex;
+     padding-left:45px ;
     .radioBOX{
       flex: 1;
       display: flex;
+      font-size: 16px;
+      height: 40px;
+      align-items: center;
+      text-align: left;
+      padding: 0 40px;
+      span{
+        flex: 1;
+        text-align: left;
+        &.choosed{
+          color: orange;
+        }
+      }
+      img{
+        width: 16px;
+        height: 16px;
+      }
       
     }
   }
   .price{
     display: flex;
-    padding: 0.3rem;
+    padding: 15px;
   }
 }
 .btn{
@@ -261,22 +274,22 @@ export default {
  align-items: center;
  margin: 0.6rem 0;
  .btnText{
-   width: 2rem;
-   height: 0.8rem;
+   width: 120px;
+   height: 40px;
    color: white;
-   font-size: 0.32rem;
-   border-radius: 0.08rem;
-   margin: 0 0.6rem;
-   line-height: 0.8rem;
+   font-size: 16px;
+   border-radius: 4px;
+   margin: 0 30px;
+   line-height: 40px;
    text-align: center;
    &.red{
      background: orange;
-     border: 0.02rem solid orange;
+     border: 1px solid orange;
    }
    &.blue{
     background: white;
     color: #26a2ff;
-    border: 0.02rem solid gainsboro;
+    border: 1px solid gainsboro;
    }
  }
 }

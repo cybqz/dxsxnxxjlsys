@@ -19,6 +19,11 @@
         </div>
       </div>
       <div class="btnWrap">
+        <div class="btn putHover" @click="loginAdmin">
+          管理员登录
+        </div>
+      </div>
+      <div class="btnWrap">
         <div class="btn orange putHover" @click="register">
           注册
         </div>
@@ -46,23 +51,50 @@ export default {
         path: '/register',
       })
     },
-    login(){
-      //http://192.168.124.6:9090/login/login?userName=gfj&password=123
+    loginAdmin(){
       if(!this.userName){
-        // Toast({
-        //   message: '用户名不能为空',
-        //   position: 'top',
-        //   duration: 2000
-        // });
+        this.$Message.error(
+          {
+            content: '用户名不能为空',
+            duration: 2000
+          }
+        );
+        return;
+      }
+      if(!this.password){
+        this.$Message.error(
+          {
+            content: '密码不能为空',
+            duration: 2000
+          }
+        );
+        return;
+      }
+      let $this = this
+      this.$axios({
+          method:'post',
+          url:'login/adminlogin',
+          data:$this.qs.stringify({    //这里是发送给后台的数据
+                userName:this.userName,
+                password:this.password,
+          })
+      }).then((response) =>{       
+          sessionStorage.setItem("token",response.data.data.authToken);
+          sessionStorage.setItem("userName",response.data.data.userName);
+          sessionStorage.setItem("userId",response.data.data.userId);
+          sessionStorage.setItem("hasRoleAdmin",true);
+          $this.$router.push({
+            path: '/',
+          })
+          this.$router.go(0);
+      })
+    },
+    login(){
+      if(!this.userName){
         alert('用户名不能为空')
         return;
       }
       if(!this.password){
-        //  Toast({
-        //   message: '密码不能为空',
-        //   position: 'top',
-        //   duration: 2000
-        // });
         alert('密码不能为空')
         return
       }
@@ -77,6 +109,7 @@ export default {
       }).then((response) =>{       
           sessionStorage.setItem("token",response.data.data.authToken);
           sessionStorage.setItem("userName",response.data.data.userName);
+          sessionStorage.setItem("userId",response.data.data.userId);
           $this.$router.push({
             path: '/',
           })

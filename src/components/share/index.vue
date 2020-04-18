@@ -17,7 +17,7 @@
         <div class="padTOP"><span>资料</span></div>
       </li>
       <li @click="changeList(3)" class="putHover">
-        <div><img src="@/assets/images/note.png" ></div>
+        <div><img src="@/assets/images/note.png" m></div>
         <div class="padTOP"><span>笔记</span></div>
       </li>
       <li @click="changeList(4)" class="putHover">
@@ -33,20 +33,36 @@
       <div @click="changeTab(1)" :class="selectedShare == 1?'selectedShare':''" class="tab1">最热共享</div>
       <div class="line">|</div>
       <div @click="changeTab(2)" :class="selectedShare == 2?'selectedShare':''" class="tab2">最新共享</div>
+      
+       <router-link class="add putHover" to="/addShare" >
+        <img class="add putHover" @click="addTeam()" src="@/assets/images/add.png" alt="">
+      </router-link>
     </div>
     <div v-if="selectedShare ==1" class="shareWrap pad30">
       <ul  class="hotShare">
-        <li v-for='(item,i) in hotList' :key='i' @click="toDetail(item.title,decodeURI(item.imgSrc),item.id,item.discribe,item.price,item.authorName,item.createDateTime,selectedShare)">
+        <li v-for='(item,i) in hotList' :key='i' >
           <div class="hotleft">
               <img :src="$axios.defaults.baseURL+item.imgSrc">
           </div>
           <div class="hotright">
             <div class="title">{{item.title}}</div>
-            <div class="discrib">{{item.discribe}}</div>
+            <div  v-if="hasRoleAdmin" class="discrib">
+              <div class="discribeText">
+                {{item.discribe}}
+              </div>
+              <div class="delete putHover" @click="deleteShare(item.id)">
+                <img src="@/assets/images/delete.png">
+              </div>
+            </div>
+            <div v-if="!hasRoleAdmin" class="discrib">{{item.discribe}}</div>
             <div class="time"><span>{{item.createDateTime}}</span> 发布</div>
             <div class="hotbottom">
               <div class="price">价格：<span v-if="item.price !='面议'&& item.price !='赠送'" class="red">￥</span> <span class="red">{{item.price}}</span></div>
-              <div class="detail putHover"><span class="blue ">查看详情></span></div>
+              <div class="detail putHover">
+                <span class="blue " @click="toDetail(item.title,decodeURI(item.imgSrc),item.id,item.discribe,item.price,item.authorName,item.createDateTime,selectedShare)">
+                  查看详情>
+                </span>
+            </div>
             </div>
           </div>
         </li>
@@ -54,17 +70,29 @@
     </div>
     
     <ul v-if="selectedShare ==2" class="newShare">
-      <li class="padTOP" v-for='(item,i) in newList' :key='i' @click="toDetail(item.title,decodeURI(item.imgSrc),item.id,item.discribe,item.price,item.authorName,item.createDateTime,selectedShare)">
+      <li class="padTOP" v-for='(item,i) in newList' :key='i' >
         <div class="newTop">
             <img :src="$axios.defaults.baseURL+item.imgSrc">
         </div>
         <div class="newBottom">
           <div class="title">{{item.title}}</div>
-          <div class="discrib">{{item.discribe}}</div>
+          <div  v-if="hasRoleAdmin" class="discrib">
+            <div class="discribeText">
+              {{item.discribe}}
+            </div>
+            <div class="delete putHover" @click="deleteShare(item.id)">
+              <img src="@/assets/images/delete.png">
+            </div>
+          </div>
+          <div v-if="!hasRoleAdmin" class="discrib">{{item.discribe}}</div>
           <div class="time"><span>{{item.createDateTime}}</span> 发布</div>
           <div class="priceAndDetail">
             <div class="price">价格：<span v-if="item.price !='面议'&& item.price !='赠送'" class="red">￥</span> <span class="red">{{item.price}}</span></div>
-            <div class="detail putHover"><span class="blue">查看详情></span></div>
+            <div class="detail putHover">
+              <span class="blue" @click="toDetail(item.title,decodeURI(item.imgSrc),item.id,item.discribe,item.price,item.authorName,item.createDateTime,selectedShare)">
+                查看详情>
+              </span>
+            </div>
           </div>
         </div>
       </li>
@@ -83,9 +111,34 @@ export default {
      message:'',
       hotList:[],
       newList:[],
+      hasRoleAdmin:false,
     }
   },
   methods:{
+    //管理员删除分享
+    deleteShare(id){
+      let $this = this
+      this.$axios({
+          method:'post',
+          url:'/shareobject/admindelete',
+          data:$this.qs.stringify({    //这里是发送给后台的数据
+                id:id
+          })
+      }).then((response) =>{          //这里使用了ES6的语法
+          if(response.data.code =='200'){
+            this.$Message.success({
+              message: response.data.msg,
+            });
+            this.loadHotData();
+            this.loadNewData();     
+          }
+      })
+    },
+    addTeam(){
+      this.$router.push({
+        path: '/addShare',
+      })
+    },
      //切换Tab
     changeTab(num){
       this.selectedShare = num;
@@ -156,6 +209,7 @@ export default {
     }
   },
   mounted(){
+     this.hasRoleAdmin = sessionStorage.getItem("hasRoleAdmin");
     this.loadHotData();
     this.loadNewData();
   }
@@ -163,6 +217,13 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.add{
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  width: 24px;
+  height: 24px;
+}
 .line10{
   height: 10px;
   background: ghostwhite;
@@ -211,6 +272,7 @@ export default {
   }
 }
 .tabWrap{
+  position: relative;
   display: flex;
   align-items: center;
   height: 60px;
@@ -267,6 +329,22 @@ export default {
       font-size: 14px;
       text-align: left;
       color: #909090;
+      display: flex;
+      .discribeText{
+          flex: 1;
+        }
+        .delete{
+          width: 30px;
+          display: flex;
+          align-items: center;
+          padding: 10px;
+          img{
+            width: 20px !important;
+            height:20px !important;
+            border-radius: 0 !important;
+            margin-right: 0;
+          }
+        }
     }
     .time{
       text-align: left;
@@ -332,7 +410,24 @@ export default {
         font-size: 14px;
         text-align: left;
         color: #909090;
+        display: flex;
+        .discribeText{
+          flex: 1;
+        }
+        .delete{
+          width: 30px;
+          display: flex;
+          align-items: center;
+          padding: 10px;
+          img{
+            width: 20px !important;
+            height:20px !important;
+            border-radius: 0 !important;
+            margin-right: 0;
+          }
+        }
       }
+      
       .price,.time{
         text-align: left;
         height: 20px;

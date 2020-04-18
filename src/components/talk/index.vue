@@ -7,48 +7,32 @@
     </div>
     <div class="talk">
       <!-- 内容区 -->
+      <div style="position:relative;height:30px;">
+        <router-link class="add putHover" to="/addTalk" >
+        <img class="add putHover" @click="addTeam()" src="@/assets/images/add.png" alt="">
+      </router-link>
+      </div>
       <div v-for="(item,i) in dataList" :key='i'>
          <!-- 间隔线 -->
-          <div class="line10"></div>
+        <div  class="line10"></div>
         <div class="containTop pad15">
-          <img :src="$axios.defaults.baseURL+item.userImg">
+          <!-- <img :src="$axios.defaults.baseURL+item.userImg"> -->
+          <img src="@/assets/images/touxiang1.png" >
           <div class="textCenter">
             <div class="name">{{item.name}}</div>
             <div class="time">发布时间：{{item.createDateTime}}</div>
           </div>
+          <div class="delete" @click="deleteTalk(item.id)">
+            <img src="@/assets/images/delete.png">
+          </div>
         </div>
         <div class="containCenter pad15">
-          <div class="detailText">{{getText(item.content)}} <span v-if="checkContent(item.content)" class="blue"> 全文</span> </div>
+          <div class="detailText">{{getText(item.content)}} </div>
           
-          <div class="detailImg">
-            <!-- <div v-for="(src, index) in item.img" :key="index">
-              <img :src="src" >
-            </div> -->
-            <div class="detailImg" v-if='i%3 ==0'>
-          <div>
-            <img src="@/assets/images/5.jpg" >
-          </div>
-          <div>
-            <img src="@/assets/images/4.jpg" >
-          </div>
-          <div>
-            <img src="@/assets/images/6.jpg" >
-          </div>
-          
-        </div>
-        <div class="detailImg" v-if='i%3 ==2'>
-          <div>
-            <img src="@/assets/images/7.jpg" >
-          </div>
-          <div>
-            <img src="@/assets/images/8.jpg" >
-          </div>
-        </div>
-        <div class="detailImg" v-if='i%3 ==1'>
-          <div>
-            <img src="@/assets/images/5.jpg" >
-          </div>
-        </div>
+          <div class="detailImg" >
+            <div v-for="(img,i) in item.imgList" :key="i">
+              <img :src="$axios.defaults.baseURL+img" >
+            </div>
           </div>
         </div>
         <div class="containBottom">
@@ -72,10 +56,32 @@ export default {
     return {
       message:"",
       dataList:[],
-     
     }
   },
   methods:{
+    //管理员删除论坛
+    deleteTalk(id){
+      let $this = this
+      this.$axios({
+          method:'post',
+          url:'/forummessabe/admindelete',
+          data:$this.qs.stringify({    //这里是发送给后台的数据
+                id:id
+          })
+      }).then((response) =>{          //这里使用了ES6的语法
+          if(response.data.code =='200'){
+            this.$Message.success({
+              message: response.data.msg,
+            });
+            this.loadTalkData()
+          }
+      })
+    },
+    addTeam(){
+      this.$router.push({
+        path: '/addTalk',
+      })
+    },
     toSearch(){
       this.loadTalkData();
     },
@@ -90,6 +96,9 @@ export default {
       }).then((res) =>{ 
         this.dataList = [];         //这里使用了ES6的语法
         this.dataList = res.data.data;
+        for(let i in this.dataList){
+          this.$set(this.dataList[i], 'imgList', this.dataList[i].img.split(','));
+        }
       })
     },
     
@@ -132,6 +141,24 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.add{
+  position: absolute;
+  right: 20px;
+  width: 24px;
+  height: 24px;
+}
+.delete{
+  width: 30px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  img{
+    width: 20px !important;
+    height:20px !important;
+    border-radius: 0 !important;
+    margin-right: 0;
+  }
+}
 .pad15{
   padding: 30px;
 }

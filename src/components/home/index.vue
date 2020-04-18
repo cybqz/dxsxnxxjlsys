@@ -7,7 +7,7 @@
     </div>
     <div v-if="isTab == 1" class="pad15">
       <!-- 队伍 -->
-      <div class="title green">
+      <!-- <div class="title green">
         <span class="titleLine">|</span><span>猜你喜欢的队伍</span>
       </div>
       <ul class="party pad30">
@@ -15,7 +15,7 @@
             <img class="mrR10" src="@/assets/images/teamIcon.png" >
             <span>{{item.party}}({{item.num}}人)</span>
           </li>
-        </ul>
+        </ul> -->
 
 
       <!-- 论坛 -->
@@ -30,28 +30,21 @@
             <img src="@/assets/images/touxiang1.png">
             <div class="textCenter">
               <div class="name">{{item.name}}</div>
-              <div class="time">发布时间：{{item.time}}</div>
+              <div class="time">发布时间：{{item.createDateTime}}</div>
             </div>
           </div>
           <div class="containCenter pad15">
-            <div class="detailText">{{getText(item.text)}} <span v-if="item.text.length>100" class="blue"> 全文</span> </div>
+            <div class="detailText">{{getText(item.content)}} <span v-if="item.content.length>100" class="blue"> 全文</span> </div>
             
             <div class="detailImg">
-              <div v-for="(src, index) in item.img" :key="index">
-                <img :src="src" >
+              <div >
+                <img :src="$axios.defaults.baseURL+item.img" >
               </div>
             </div>
         
 
           </div>
-          <div class="containBottom">
-            <span  class="">
-              <img v-if="item.zan =='Y'" src="@/assets/images/zanY.png" >
-              <img v-else src="@/assets/images/zanN.png" >
-              {{item.zanNum}}
-            </span>
-            
-          </div>
+          
 
           <!-- 间隔线 -->
           <div class="line10"></div>
@@ -66,17 +59,16 @@
         <span class="titleLine">|</span><span>猜你喜欢的分享</span>
       </div>
       <ul class="share pad15">
-        <li class="padTOP" v-for='(item,i) in hotList' :key='i' @click="toDetail(selectedShare)">
+        <li class="padTOP" v-for='(item,i) in hotList' :key='i'>
           <div class="newTop">
-              <img :src="item.src">
+              <img :src="$axios.defaults.baseURL+item.imgSrc">
           </div>
           <div class="newBottom">
             <div class="title">{{item.title}}</div>
-            <div class="discrib">{{item.discrib}}</div>
-            <div class="time"><span>{{item.time}}</span> 发布</div>
+            <div class="discrib">{{item.discribe}}</div>
+            <div class="time"><span>{{item.createDateTime}}</span> 发布</div>
             <div class="priceAndDetail">
-              <div class="price">价格：<span v-if="item.price !='面议'&& item.price !='赠送'" class="red">￥</span> <span class="red">{{item.price}}</span></div>
-              <div class="detail"><span class="blue">查看详情></span></div>
+              <div class="price">价格：<span  class="red">￥</span> <span class="red">{{item.price}}</span></div>
             </div>
           </div>
         </li>
@@ -132,26 +124,8 @@ export default {
           'num':'34'
         }
       ],
-      hotList:[
-        {
-          'src':require('@/assets/images/4.jpg'),
-          'title':'三国志',
-          "discrib":'三国志三国志三国志',
-          'price':'赠送',
-          "time":'2019-09-09 18:36:42'
-        }
-      ],
-      dataList:[
-        {
-          'name':'你好呀小胖胖',
-          'time':'2019-09-09',
-          'text':'哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和啊哈哈啊哈啊哈和哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和哈哈哈哈哈哈哈哈哈啊哈哈啊哈啊哈和',
-          'img':[require('@/assets/images/5.jpg'),require('@/assets/images/6.jpg'),require('@/assets/images/3.jpg')],
-          'zanNum':'2312',
-          'zan':'Y',
-          'pinglun':'45454'
-        }
-      ],
+      hotList:[],
+      dataList:[],
       topList:[],
       
     }
@@ -169,6 +143,26 @@ export default {
         return text;
       }
     },
+    loadTalk(){
+      let $this = this;
+      this.$axios({
+          method:'post',
+          url:'forummessabe/recommendation',
+          data:{}
+      }).then((res) =>{          //这里使用了ES6的语法
+          this.dataList = res.data.data
+      })
+    },
+    loadShare(){
+      let $this = this;
+      this.$axios({
+          method:'post',
+          url:'shareobject/recommendation',
+          data:{}
+      }).then((res) =>{          //这里使用了ES6的语法
+          this.hotList = res.data.data
+      })
+    },
     loadTop10(){
       let $this = this;
       this.$axios({
@@ -181,7 +175,9 @@ export default {
     }
   },
   mounted(){
-    this.loadTop10()
+    this.loadTop10();
+    this.loadShare();
+    this.loadTalk();
   }
 }
 </script>

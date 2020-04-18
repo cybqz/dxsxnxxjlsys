@@ -17,11 +17,10 @@
                     <div class="delete" @click="deleteShare(item.id)">
                       <img src="@/assets/images/delete.png">
                     </div>
-                    </div>
+                  </div>
                   <div class="time"><span>{{item.createDateTime}}</span> 发布</div>
                   <div class="hotbottom">
                     <div class="price">价格：<span v-if="item.price !='面议'&& item.price !='赠送'" class="red">￥</span> <span class="red">{{item.price}}</span></div>
-                    <div class="detail"><span class="blue">查看详情></span></div>
                   </div>
                 </div>
               </li>
@@ -77,7 +76,8 @@ export default {
   name: 'my',
   data () {
     return {
-      
+      hotList:[],
+      dataList:[],
     }
   },
   components:{
@@ -109,10 +109,10 @@ export default {
           })
       }).then((response) =>{          //这里使用了ES6的语法
           if(response.data.code =='200'){
-            Toast({
+            this.$Message.success({
               message: response.data.msg,
             });
-            // this.$router.go(0);
+            window.location.reload()
           }
       })
     },
@@ -127,10 +127,10 @@ export default {
           })
       }).then((response) =>{          //这里使用了ES6的语法
           if(response.data.code =='200'){
-            Toast({
+            this.$Message.success({
               message: response.data.msg,
             });
-            this.$router.go(0);
+            window.location.reload()
           }
       })
     },
@@ -163,12 +163,12 @@ export default {
           })
       }).then((response) =>{   //这里使用了ES6的语法
           if(response.data.code =='200'){
-            Toast({
+            this.$Message.success({
               message: response.data.msg,
             });
-            this.$router.go(0);
+            window.location.reload()
           }else{
-             Toast({
+             this.$Messag.error({
               message: response.data.msg,
             });
           }
@@ -198,28 +198,31 @@ export default {
 </script>
 
 <style scoped lang = 'less'>
-
+.discribeText{
+  flex: 1;
+}
 .delete{
-    width: 0.6rem;
+    width: 30px;
     display: flex;
     align-items: center;
-    padding: 0.1rem;
+    padding: 10px;
     img{
-      width: 0.4rem;
-      height:0.4rem;
-      border-radius: 0;
+      width: 20px !important;
+      height:20px !important;
+      border-radius: 0 !important;
       margin-right: 0;
     }
   }
 .containTop{
   display: flex;
   align-items: center;
-  height:1.5rem;
-  padding-top: 0.6rem;
+  height:70px;
+  padding: 0 60px;
+  padding-top: 30px;
   img{
-    width: 1.5rem;
-    height:1.5rem;
-    margin-right: 0.6rem;
+    width: 70px;
+    height:70px;
+    margin-right: 30px;
     border-radius: 50%;
   }
   
@@ -228,15 +231,15 @@ export default {
     text-align: left;
     .name{
       width: 100%;
-      height: 0.8rem;
-      line-height: 0.8rem;
-      font-size: 0.48rem;
+      height: 40px;
+      line-height: 40px;
+      font-size: 14px;
     }
     .time{
       width: 100%;
-      font-size: 0.28rem;
-      height: 0.5rem;
-      line-height: 0.5rem;
+      font-size: 14px;
+      height: 40px;
+      line-height: 40px;
       color: #909090;
 
     }
@@ -244,20 +247,20 @@ export default {
   
 }
 .containCenter{
-  padding-top: 0.3rem;
-  font-size: 0.32rem;
+  padding-top: 30px;
+  font-size: 16px;
   text-align: left;
   .blue{
     color: #26a2ff;
-    font-size: 0.34rem;
+    font-size: 16px;
   }
   .detailImg{
-    padding-top: 0.3rem;
+    padding-top:15px;
     width: 100%;
     display: flex;
     div{
       flex: 1;
-      margin:  0.2rem;
+      margin:  10px;
       img{
         width: 100%;
         height: auto;
@@ -267,21 +270,21 @@ export default {
   
 }
 .containBottom{
-  margin: 0 0.3rem;
-  font-size: 0.28rem;
-  height: 1rem;
-  line-height: 1rem;
+  margin: 0 30px;
+  font-size:16px;
+  height: 40px;
+  line-height: 40pxx;
   color: #909090;
   text-align: right;
-  border-top: ghostwhite 0.04rem solid;
+  border-top: ghostwhite 1[x] solid;
   span{
     display: inline-block;
     width: 25%;
     text-align: right;
-    margin-left: 0.3rem;
+    margin-left: 30px;
     img{
       height: auto;
-      width:0.4rem;
+      width:24px;
       vertical-align: text-bottom;
     }
   }
@@ -290,51 +293,47 @@ export default {
 .hotShare{
   li{
     display: flex;
-    padding-top: 0.3rem;
-    border-bottom: ghostwhite 0.03rem solid;
+    padding: 30px;
+    border-bottom: ghostwhite 2px solid;
   }
   .hotleft{
-    width: 3rem;
-    margin-right: 0.3rem;
+    width: 300px;
+    margin-right: 30px;
       img{
-        border-radius: 0.04rem;
-        width: 3.3rem;
-        height: 2.2rem;
+        border-radius: 3px;
+        width: 210px;
+        height: 140px;
       }
   }
   .hotright{
     flex: 1;
-    padding-left: 0.3rem;
     .title{
-      height: 0.5rem;
-      line-height: 0.5rem;
+      height: 30px;
+      line-height: 30px;
       text-align: center;
-      font-size: 0.36rem;
+      font-size: 16px;
       font-weight:bold;
     }
     .discrib{
-      height: 0.8rem;
-      padding: 0.1rem 0;
+      height: 60px;
+      padding: 20px 0;
       width: 100%;
-      font-size: 0.28rem;
+      font-size: 14px;
       text-align: left;
       display: flex;
       color: #909090;
-      .discribeText{
-        flex: 1;
-      }
     }
     .time{
       text-align: left;
-      height: 0.4rem;
-      line-height: 0.4rem;
-      font-size: 0.24rem;
+      height: 20px;
+      line-height: 20px;
+      font-size: 12px;
       color: #909090;
     }
     .hotbottom{
-      height: 0.4rem;
-      line-height: 0.4rem;
-      font-size: 0.24rem;
+      height: 20px;
+      line-height: 20px;
+      font-size: 12px;
       display: flex;
       color: #909090;
       .price{
@@ -347,164 +346,22 @@ export default {
       }
       .red{
         color: red;
-        font-size: 0.28rem;
+        font-size: 14px;
       }
       .blue{
           color: #26a2ff;
-          font-size: 0.28rem;
+          font-size: 14px;
       }
     }
-  }
-}
-.tabmr{
-  margin: 0 1.5rem;
-}
-.padTOP{
-  padding-top: 0.3rem;
-}
-.QRcode{
-  margin: 0.3rem;
-  padding: 0.3rem;
-  box-shadow: inset 0 0 0.03rem 0 gainsboro;
-  border-radius: 0.1rem;
-  display: flex;
-  align-items: center;
-  .left{
-    flex: 1;
-    text-align: left;
-    font-size: 0.36rem;
-    color: orange;
-  }
-  .right{
-    flex: 1;
-    text-align: right;
-    img{
-      width: 0.6rem;
-      height:0.6rem;
-    }
-  }
-}
-.addIcon{
-  img{
-    width: 0.5rem;
-    height:0.5rem;
-    vertical-align: bottom;
   }
 }
 .line10{
-  height: 0.1rem;
+  height: 10px;
   background: ghostwhite;
-  margin-bottom: 0.1rem;
+  margin-bottom:10px;
 }
 .pad30{
-  padding: 0 0.3rem;
+  padding: 0 30px;
 }
-.padTOP{
-  padding-top: 0.3rem;
-}
-.mrTOP{
-  margin-top: 0.6rem;
-}
-.topWrap{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0.6rem 0.3rem;
-  padding: 0.3rem ;
-  box-shadow: inset 0 0 0.03rem 0 gainsboro;
-  border-radius: 0.1rem;
-  .left{
-      width: 1.8rem;
-      height:1.8rem;
-      margin-right: 0.3rem;
-     img{
-      width: 1.8rem;
-      height:1.8rem;
-      border-radius: 50%;
-    }
-  }
-  .right{
-    flex: 1;
-    .nameAndClass{
-      height: 0.8rem;
-      display: flex;
-      align-items: center;
-      .dengji{
-        width: 0.8rem;
-        height: 0.4rem;
-        font-size: 0.32rem;
-        font-weight: bold;
-        color: orange;
-        img{
-          width: 0.4rem;
-          height: 0.4rem;
-        }
-      }
-      .name{
-        text-align: left;
-        flex: 1;
-        font-size: 0.42rem;
-      }
-    }
-    .discribe{
-      height: 1rem;
-      font-size: 0.32rem;
-      font-weight: bold;
-      text-align: left;
-      img{
-        width: 0.4rem;
-        height: 0.4rem;
-      }
-    }
-  }
-}
-.intresting{
-  
-  box-shadow: inset 0 0 0.03rem 0 gainsboro;
-  border-radius: 0.1rem;
-  margin: 0.3rem;
-   text-align: left;
-  .title{
-    font-size: 0.36rem;
-    height: 0.6rem;
-    line-height: 0.6rem;
-   
-    color: orange;
-  }
-  .card{
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: wrap;
-    span{
-      height: 0.4rem;
-      line-height: 0.4rem;
-      display: inline-block;
-      background: gainsboro;
-      font-size: 0.32rem;
-      margin: 0.3rem;
-      padding: 0.1rem;
 
-    }
-  }
-}
-.chooseTab{
-  margin-top: 0.3rem;
-  padding:0.3rem;
-  display: flex;
-  li{
-    flex:1;
-    margin: 0 0.2rem;
-    div{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 0.36rem;
-      img{
-        width: 0.8rem;
-        height: auto;
-      }
-    }
-  }
-}
 </style>
