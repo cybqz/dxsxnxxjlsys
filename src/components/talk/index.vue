@@ -22,7 +22,7 @@
             <div class="name">{{item.name}}</div>
             <div class="time">发布时间：{{item.createDateTime}}</div>
           </div>
-          <div class="delete" @click="deleteTalk(item.id)">
+          <div v-if="hasRoleAdmin" class="delete" @click="deleteTalk(item.id)">
             <img src="@/assets/images/delete.png">
           </div>
         </div>
@@ -56,6 +56,8 @@ export default {
     return {
       message:"",
       dataList:[],
+      hasRoleAdmin:false
+
     }
   },
   methods:{
@@ -135,6 +137,7 @@ export default {
     }
   },
   mounted(){
+    this.hasRoleAdmin = sessionStorage.getItem("hasRoleAdmin");
     this.loadTalkData()
   }
 }

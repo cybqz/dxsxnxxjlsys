@@ -118,7 +118,7 @@ export default {
       name:'',
       discribe:'',
       cardList:[],
-      points:'1000',
+      points:'',
       pointsShow:false,
       setModel:false,
       setname:'',
@@ -169,6 +169,15 @@ export default {
     //积分查看
     lookPoints(){
       this.pointsShow = true;
+      let $this = this
+      this.$axios({
+          method:'post',
+          url:'accumulatepoints/select',
+          data:{}
+      }).then((res) =>{          //这里使用了ES6的语法
+      console.log(res)
+          this.points = res.data.data
+      })
     },
     //点前到
     sign(){
