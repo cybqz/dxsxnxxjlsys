@@ -7,7 +7,7 @@ import com.cyb.cleg.common.Constant;
 import com.cyb.cleg.timer.IntelligentRecommendation;
 import com.cyb.cleg.vo.ForumMessageVO;
 import com.cyb.cleg.utils.MyUtils;
-import com.cyb.common.pagenation.Pagenation;
+import com.cyb.common.pagination.Pagination;
 import com.cyb.common.tips.Tips;
 import com.cyb.forum.domain.ForumMessage;
 import com.cyb.forum.domain.ForumPraise;
@@ -110,20 +110,20 @@ public class ForumMessageController extends BaseController {
 
     @RequestMapping(value="/page")
     @ResponseBody
-    public Tips page (ForumMessage forumMessage, Pagenation pagenation) {
+    public Tips page (ForumMessage forumMessage, Pagination pagination) {
         super.validLogined();
         if(isLogined){
             tips = new Tips("查询成功", true, true);
             List<ForumMessageVO> listVO = null;
             int count = forumMessageService.countByForumMessage(forumMessage);
-            List<ForumMessage> list =  forumMessageService.selectSelective(forumMessage, pagenation);
+            List<ForumMessage> list =  forumMessageService.selectSelective(forumMessage, pagination);
             if(null != list && !list.isEmpty()){
 
                 listVO = new ArrayList<>(list.size());
                 setVO(list, listVO);
             }
-            pagenation.setDataCount(count);
-            tips.setPagenation(pagenation);
+            pagination.setDataCount(count);
+            tips.setPagination(pagination);
             tips.setData(listVO);
         }
         return tips;
@@ -131,21 +131,21 @@ public class ForumMessageController extends BaseController {
 
     @RequestMapping(value="/mypage")
     @ResponseBody
-    public Tips mypage (ForumMessage forumMessage, Pagenation pagenation) {
+    public Tips mypage (ForumMessage forumMessage, Pagination pagination) {
         super.validLogined();
         if(isLogined){
             tips = new Tips("查询成功", true, true);
             List<ForumMessageVO> listVO = null;
             forumMessage.setUserId(currentLoginedUser.getId());
             int count = forumMessageService.countByForumMessage(forumMessage);
-            List<ForumMessage> list =  forumMessageService.selectSelective(forumMessage, pagenation);
+            List<ForumMessage> list =  forumMessageService.selectSelective(forumMessage, pagination);
             if(null != list && !list.isEmpty()){
 
                 listVO = new ArrayList<>(list.size());
                 setVO(list, listVO);
             }
-            pagenation.setDataCount(count);
-            tips.setPagenation(pagenation);
+            pagination.setDataCount(count);
+            tips.setPagination(pagination);
             tips.setData(listVO);
         }
         return tips;

@@ -7,7 +7,7 @@ import com.cyb.cleg.service.TeamMemberServices;
 import com.cyb.cleg.service.TeamServices;
 import com.cyb.cleg.utils.MatrixToImageWriter;
 import com.cyb.cleg.vo.TeamVO;
-import com.cyb.common.pagenation.Pagenation;
+import com.cyb.common.pagination.Pagination;
 import com.cyb.common.tips.Tips;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -68,7 +68,7 @@ public class TeamController extends BaseController {
 
 	@RequestMapping(value="/page")
 	@ResponseBody
-	public Tips page (Team team, Pagenation pagenation) {
+	public Tips page (Team team, Pagination pagination) {
 		super.validLogined();
 		if(isLogined){
 			tips = new Tips("查询成功", true, true);
@@ -91,11 +91,11 @@ public class TeamController extends BaseController {
 					vo.setJoined(isMyCreated);
 					teamVOList.add(vo);
 				}
-				pagenation.setDataCount(list.size());
+				pagination.setDataCount(list.size());
 			}else{
-				pagenation.setDataCount(0);
+				pagination.setDataCount(0);
 			}
-			tips.setPagenation(pagenation);
+			tips.setPagination(pagination);
 			tips.setData(teamVOList);
 		}
 		return tips;
@@ -103,18 +103,18 @@ public class TeamController extends BaseController {
 
 	@RequestMapping(value="/mecreatepage")
 	@ResponseBody
-	public Tips mecreatepage (Team team, Pagenation pagenation) {
+	public Tips mecreatepage (Team team, Pagination pagination) {
 		super.validLogined();
 		if(isLogined){
 			tips = new Tips("查询成功", true, true);
 			team.setUserId(currentLoginedUser.getId());
 			List<Team> list =  teamServices.selectSelective(team);
 			if(null != list && !list.isEmpty()){
-				pagenation.setDataCount(list.size());
+				pagination.setDataCount(list.size());
 			}else{
-				pagenation.setDataCount(0);
+				pagination.setDataCount(0);
 			}
-			tips.setPagenation(pagenation);
+			tips.setPagination(pagination);
 			tips.setData(list);
 		}
 		return tips;

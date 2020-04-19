@@ -1,7 +1,7 @@
 package com.cyb.cleg.dao;
 
 import com.cyb.cleg.domain.ShareObject;
-import com.cyb.common.pagenation.Pagenation;
+import com.cyb.common.pagination.Pagination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -21,7 +21,7 @@ public interface ShareObjectMapper {
 
     ShareObject selectByPrimaryKey(String id);
 
-    List<ShareObject> hotsearch(@Param("shareObject") ShareObject shareObject,@Param("pagenation") Pagenation pagenation);
+    List<ShareObject> hotsearch(@Param("shareObject") ShareObject shareObject,@Param("pagination") Pagination pagination);
 
-    List<ShareObject> selectSelective(@Param("shareObject") ShareObject shareObject,@Param("pagenation") Pagenation pagenation);
+    List<ShareObject> selectSelective(@Param("shareObject") ShareObject shareObject,@Param("pagination") Pagination pagination);
 }

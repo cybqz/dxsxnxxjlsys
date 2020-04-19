@@ -4,7 +4,7 @@ import com.cyb.cleg.dao.ShareObjectMapper;
 import com.cyb.cleg.domain.ShareObject;
 import com.cyb.cleg.service.ShareObjectServices;
 import com.cyb.cleg.utils.MyUtils;
-import com.cyb.common.pagenation.Pagenation;
+import com.cyb.common.pagination.Pagination;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
@@ -41,10 +41,10 @@ public class ShareObjectServicesImpl implements ShareObjectServices {
     }
 
     @Override
-    public List<ShareObject> hotsearch(ShareObject record, Pagenation pagenation) {
+    public List<ShareObject> hotsearch(ShareObject record, Pagination pagination) {
         int count = shareObjectMapper.countByShareObject(record);
-        pagenation.setDataCount(count);
-        List<ShareObject> list = shareObjectMapper.hotsearch(record, pagenation);
+        pagination.setDataCount(count);
+        List<ShareObject> list = shareObjectMapper.hotsearch(record, pagination);
         if(null != list && !list.isEmpty()){
             new Thread(new Runnable() {
                 @Override
@@ -61,9 +61,9 @@ public class ShareObjectServicesImpl implements ShareObjectServices {
     }
 
     @Override
-    public List<ShareObject> selectSelective(ShareObject record, Pagenation pagenation) {
+    public List<ShareObject> selectSelective(ShareObject record, Pagination pagination) {
         int count = shareObjectMapper.countByShareObject(record);
-        pagenation.setDataCount(count);
-        return shareObjectMapper.selectSelective(record, pagenation);
+        pagination.setDataCount(count);
+        return shareObjectMapper.selectSelective(record, pagination);
     }
 }

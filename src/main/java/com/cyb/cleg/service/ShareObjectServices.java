@@ -1,7 +1,7 @@
 package com.cyb.cleg.service;
 
 import com.cyb.cleg.domain.ShareObject;
-import com.cyb.common.pagenation.Pagenation;
+import com.cyb.common.pagination.Pagination;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface ShareObjectServices {
 
     ShareObject selectByPrimaryKey(String id);
 
-    List<ShareObject> hotsearch(ShareObject record, Pagenation pagenation);
+    List<ShareObject> hotsearch(ShareObject record, Pagination pagination);
 
-    List<ShareObject> selectSelective(ShareObject record, Pagenation pagenation);
+    List<ShareObject> selectSelective(ShareObject record, Pagination pagination);
 }

@@ -5,7 +5,7 @@ import com.cyb.cleg.common.Constant;
 import com.cyb.cleg.domain.ShareObject;
 import com.cyb.cleg.service.ShareObjectServices;
 import com.cyb.cleg.timer.IntelligentRecommendation;
-import com.cyb.common.pagenation.Pagenation;
+import com.cyb.common.pagination.Pagination;
 import com.cyb.common.tips.Tips;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,40 +90,40 @@ public class ShareObjectController extends BaseController {
 
 	@RequestMapping(value="/page")
 	@ResponseBody
-	public Tips page (ShareObject usedBook, Pagenation pagenation) {
+	public Tips page (ShareObject usedBook, Pagination pagination) {
 		super.validLogined();
 		if(isLogined) {
-			List<ShareObject> list = shareObjectServices.selectSelective(usedBook, pagenation);
+			List<ShareObject> list = shareObjectServices.selectSelective(usedBook, pagination);
 			tips = new Tips("查询成功！", true, true);
 			tips.setData(list);
-			tips.setPagenation(pagenation);
+			tips.setPagination(pagination);
 		}
 		return tips;
 	}
 
 	@RequestMapping(value="/mypage")
 	@ResponseBody
-	public Tips myPage (ShareObject usedBook, Pagenation pagenation) {
+	public Tips myPage (ShareObject usedBook, Pagination pagination) {
 		super.validLogined();
 		if(isLogined) {
 			usedBook.setUserId(currentLoginedUser.getId());
-			List<ShareObject> list = shareObjectServices.selectSelective(usedBook, pagenation);
+			List<ShareObject> list = shareObjectServices.selectSelective(usedBook, pagination);
 			tips = new Tips("查询成功！", true, true);
 			tips.setData(list);
-			tips.setPagenation(pagenation);
+			tips.setPagination(pagination);
 		}
 		return tips;
 	}
 
 	@RequestMapping(value="/hotsearch")
 	@ResponseBody
-	public Tips hotsearch (ShareObject usedBook, Pagenation pagenation) {
+	public Tips hotsearch (ShareObject usedBook, Pagination pagination) {
 		super.validLogined();
 		if(isLogined) {
-			List<ShareObject> list = shareObjectServices.hotsearch(usedBook, pagenation);
+			List<ShareObject> list = shareObjectServices.hotsearch(usedBook, pagination);
 			tips = new Tips("查询成功！", true, true);
 			tips.setData(list);
-			tips.setPagenation(pagenation);
+			tips.setPagination(pagination);
 		}
 		return tips;
 	}
