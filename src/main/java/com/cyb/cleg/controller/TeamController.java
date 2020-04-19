@@ -1,6 +1,7 @@
 package com.cyb.cleg.controller;
 
 import com.cyb.authority.base.BaseController;
+import com.cyb.chat.service.CybTeamChatWSService;
 import com.cyb.cleg.domain.Team;
 import com.cyb.cleg.domain.TeamMember;
 import com.cyb.cleg.service.TeamMemberServices;
@@ -33,6 +34,9 @@ public class TeamController extends BaseController {
 
 	@Autowired
 	private TeamMemberServices teamMemberServices;
+
+	@Autowired
+	private CybTeamChatWSService cybTeamChatWSService;
 	
 	@RequestMapping(value="/add")
 	@ResponseBody
@@ -44,8 +48,10 @@ public class TeamController extends BaseController {
 				name = currentLoginedUser.getUserName();
 			}
 			Team team = new Team(null, currentLoginedUser.getId(), name, null);
-			int result = teamServices.insert(team);
-			if(result > 0){
+			tips = teamServices.insert(team);
+			if(tips.isValidate()){
+				Team resultTeam = (Team) tips.getData();
+				cybTeamChatWSService.addRegister(resultTeam.getId(), resultTeam.getUserId(), currentLoginedUser.getUserName());
 				tips = new Tips("添加组队成功！", true, true);
 			}
 		}
@@ -72,7 +78,7 @@ public class TeamController extends BaseController {
 		super.validLogined();
 		if(isLogined){
 			tips = new Tips("查询成功", true, true);
-			List<Team> list =  teamServices.selectSelective(null);
+			List<Team> list =  teamServices.selectSelective(team);
 			List<TeamVO> teamVOList = null;
 			if(null != list && !list.isEmpty()){
 				teamVOList = new ArrayList<>(list.size());
@@ -116,6 +122,32 @@ public class TeamController extends BaseController {
 			}
 			tips.setPagination(pagination);
 			tips.setData(list);
+		}
+		return tips;
+	}
+
+	@RequestMapping(value="/mejoinpage")
+	@ResponseBody
+	public Tips mejoinpage (Team team, Pagination pagination) {
+		super.validLogined();
+		if(isLogined){
+			tips = new Tips("查询成功", true, true);
+			List<Team> teamList = new ArrayList<>();
+			TeamMember teamMember = new TeamMember();
+			teamMember.setUserId(currentLoginedUser.getId());
+			teamMember.setIsCaptain(0);
+			List<TeamMember> list =  teamMemberServices.selectSelective(teamMember);
+			if(null != list && !list.isEmpty()){
+				for(TeamMember member : list){
+					Team teamResult = teamServices.selectByPrimaryKey(member.getTeamId());
+					teamList.add(teamResult);
+				}
+				pagination.setDataCount(teamList.size());
+			}else{
+				pagination.setDataCount(0);
+			}
+			tips.setPagination(pagination);
+			tips.setData(teamList);
 		}
 		return tips;
 	}

@@ -6,6 +6,7 @@ import com.cyb.cleg.domain.Team;
 import com.cyb.cleg.domain.TeamMember;
 import com.cyb.cleg.service.TeamServices;
 import com.cyb.cleg.utils.MyUtils;
+import com.cyb.common.tips.Tips;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,8 +15,6 @@ import java.util.List;
 
 @Service(value="teamServices")
 public class TeamServicesImpl implements TeamServices {
-
-	private static int MAX_USER_TEAM_COUNT = 5;
 	
 	@Resource
 	private TeamMapper teamMapper;
@@ -29,26 +28,23 @@ public class TeamServicesImpl implements TeamServices {
 	}
 
 	@Override
-	public int insert(Team record) {
+	public Tips insert(Team record) {
 
-		Team teamParam = new Team(null, record.getUserId(), null, null);
-		List<Team> list = teamMapper.selectSelective(teamParam);
-		if(list.size() >= MAX_USER_TEAM_COUNT){
-			return -1;
+		Tips tips = new Tips("新增失败", true, false);
+		List<Team> list = teamMapper.selectSelective(record);
+		if(null != list && list.size() > 0){
+			tips.setMsg("相同队伍已经存在");
 		}else{
-			String name = record.getName();
-			name += (list.size() + 1) + "对";
 			record.setId(MyUtils.getPrimaryKey());
 			record.setCreateDate(new Date());
-			record.setName(name);
 			int addTeam = teamMapper.insert(record);
 			if(addTeam > 0){
 				TeamMember teamMember = new TeamMember(MyUtils.getPrimaryKey(), record.getId(), record.getUserId(), 1, new Date());
 				teamMemberMapper.insert(teamMember);
-				return addTeam;
+				tips = new Tips("新增成功", true, record);
 			}
-			return 0;
 		}
+		return tips;
 	}
 
 	@Override

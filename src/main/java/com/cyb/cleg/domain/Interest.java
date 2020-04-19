@@ -17,6 +17,8 @@ public class Interest {
 
     private String value;
 
+    public Interest() {}
+
     public Interest(String id, String userId, String parameId, Date createDate) {
         this.id = id;
         this.userId = userId;

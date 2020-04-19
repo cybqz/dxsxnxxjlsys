@@ -2,7 +2,11 @@ package com.cyb.cleg.timer;
 
 import com.cyb.authority.dao.UserMapper;
 import com.cyb.authority.domain.User;
+import com.cyb.cleg.dao.InterestMapper;
+import com.cyb.cleg.dao.ParamesMapper;
 import com.cyb.cleg.dao.ShareObjectMapper;
+import com.cyb.cleg.domain.Interest;
+import com.cyb.cleg.domain.Parames;
 import com.cyb.cleg.domain.ShareObject;
 import com.cyb.cleg.kmeans.Cluster;
 import com.cyb.cleg.kmeans.KMeansRun;
@@ -39,6 +43,12 @@ public class IntelligentRecommendation {
     private UserMapper userMapper;
 
     @Resource
+    private InterestMapper interestMapper;
+
+    @Resource
+    private ParamesMapper paramesMapper;
+
+    @Resource
     private ForumMessageMapper forumMessageMapper;
 
     @Resource
@@ -56,10 +66,15 @@ public class IntelligentRecommendation {
 
             for(User user : userList){
 
+                int weight = getWeight(user.getId());
+                if(weight <= 0){
+                    continue;
+                }
+
                 ArrayList<float[]> dataSet = new ArrayList<float[]>();
                 for(ForumMessage message : forumMessageList){
                     dataSet.add(new float[] {
-                            user.getUserName().length(),
+                            weight,
                             message.getContent().length(),
                             message.getCreateDateTime().getTime()});
                 }
@@ -94,10 +109,15 @@ public class IntelligentRecommendation {
 
             for(User user : userList){
 
+                int weight = getWeight(user.getId());
+                if(weight <= 0){
+                    continue;
+                }
+
                 ArrayList<float[]> dataSet = new ArrayList<float[]>();
                 for(ShareObject shareObject : shareObjectList){
                     dataSet.add(new float[] {
-                            user.getUserName().length(),
+                            weight,
                             shareObject.getTitle().length(),
                             shareObject.getCreateDateTime().getTime()});
                 }
@@ -119,5 +139,19 @@ public class IntelligentRecommendation {
                 }
             }
         }
+    }
+
+    private int getWeight(String userId){
+        int weight = 0;
+        Interest interestParam = new Interest();
+        interestParam.setUserId(userId);
+        List<Interest> interestList = interestMapper.selectSelective(interestParam);
+        if(!CollectionUtils.isEmpty(interestList)){
+            for(Interest interest : interestList){
+                Parames parames = paramesMapper.selectByPrimaryKey(interest.getParameId());
+                weight += parames.getWeight();
+            }
+        }
+        return weight;
     }
 }

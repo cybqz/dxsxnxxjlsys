@@ -78,7 +78,7 @@ public class AccumulatePointsServicesImpl implements AccumulatePointsServices {
 			accumulatePointsParam.setParameId(parames.getId());
 			List<AccumulatePoints> accumulatePointsList = accumulatePointsMapper.selectSelective(accumulatePointsParam, startDate, endDate);
 			if(null == accumulatePointsList || accumulatePointsList.size() == 0){
-				Parames paramesParam = new Parames(null, Constant.PARAMES_NAME_SIGNIN, null, Constant.PARAMES_GROUP_POINTS);
+				Parames paramesParam = new Parames(null, Constant.PARAMES_NAME_SIGNIN, null, 0, Constant.PARAMES_GROUP_POINTS);
 				List<Parames> paramesList = paramesMapper.selectByParames(paramesParam);
 				if(null != paramesList && paramesList.size() > 0){
 
