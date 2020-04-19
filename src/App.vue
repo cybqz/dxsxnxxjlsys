@@ -18,7 +18,7 @@
       <div v-if="hasRoleAdmin"  class="bar">
         <div v-for="(item,i) in barListAdmin" :key="i" 
           :class="isActive == i?'isActive' : ''" 
-          @click="changeBar(i)"
+          @click="changeBarAdmin(i)"
           class="barName putHover">
           {{item}}
         </div>
@@ -113,7 +113,7 @@ export default {
     return {
       isLogined:false,
       barList:['首页推荐','共享社区','论坛社区','组队学习','我的'],
-      barListAdmin:['首页推荐','共享社区','论坛社区'],
+      barListAdmin:['共享社区','论坛社区'],
       isActive:'0',
       name:'',
       discribe:'',
@@ -269,6 +269,26 @@ export default {
           window.location.reload()
         }
       })
+    },
+    //changeBarAdmin切换导航
+    changeBarAdmin(i){
+      this.isActive  = i;
+      switch (i){
+				case 0:
+          this.$router.push({
+            path: '/share',
+            name: 'share'
+          })
+					break;
+				case 1:
+					this.$router.push({
+            path: '/talk',
+            name: 'talk'
+					})
+					break;
+				default:
+					break;
+			}
     },
     //切换导航
     changeBar(i){

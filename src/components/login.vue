@@ -84,7 +84,7 @@ export default {
           sessionStorage.setItem("userId",response.data.data.userId);
           sessionStorage.setItem("hasRoleAdmin",true);
           $this.$router.push({
-            path: '/',
+            path: '/share',
           })
           this.$router.go(0);
       })
@@ -98,6 +98,7 @@ export default {
         alert('密码不能为空')
         return
       }
+      debugger
       let $this = this
       this.$axios({
           method:'post',

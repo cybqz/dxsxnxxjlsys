@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
-
+let hasRoleAdmin = sessionStorage.getItem("hasRoleAdmin");
 const router =  new Router({
   //mode:"history",
   base: '/cleg',
-  routes: [
+  routes:!hasRoleAdmin? [
     {
       path: '/',
       name: 'home',
@@ -95,6 +95,31 @@ const router =  new Router({
       path: '/register',
       name: 'register',
       component: (resove) => require(['@/components/register'], resove),
+    },
+  ]:[
+    {
+      path: '/',
+      name: 'share',
+      component: (resove) => require(['@/components/share/index'], resove),
+      meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      },
+    },
+    {
+      path: '/share',
+      name: 'share',
+      component: (resove) => require(['@/components/share/index'], resove),
+      meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      },
+    },
+    {
+      path:'/talk',
+      name: 'talk',
+      component: (resove) => require(['@/components/talk/index'], resove),
+      meta: {
+        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录才能进入的
+      },
     },
   ]
 })
