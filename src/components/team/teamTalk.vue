@@ -54,7 +54,6 @@ export default {
         msg: msg,
         fromName:this.userName
       }
-      this.talkList.push(message)
       this.msg = '';
     },
     conWebSocket(){

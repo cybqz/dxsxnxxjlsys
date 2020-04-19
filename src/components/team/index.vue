@@ -2,7 +2,7 @@
   <div style="position:relative">
     <img class="add putHover" @click="addTeam()" src="@/assets/images/add.png" alt="">
     <div class="title red pad30">
-      <span class="titleLine">|</span><span>所有队伍</span>
+      <span class="titleLine">|</span><span>我加入的队伍</span>
     </div>
     <div class="pad30">
       <ul class="team shadow">
@@ -128,7 +128,7 @@ export default {
       let $this = this;
       this.$axios({
           method:'post',
-          url:'/team/page',
+          url:'/team/mejoinpage',
           data:{}
       }).then((res) =>{          //这里使用了ES6的语法
           this.teamList = res.data.data
