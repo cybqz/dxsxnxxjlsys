@@ -11,7 +11,7 @@ public class Parames {
 
     private String value;
 
-    private int weight;
+    private Integer weight;
 
     private String group;
 
@@ -19,7 +19,7 @@ public class Parames {
 
     private String remark;
 
-    public Parames(String id, String name, String value, int weight, String group) {
+    public Parames(String id, String name, String value, Integer weight, String group) {
         this.id = id;
         this.name = name;
         this.value = value;
